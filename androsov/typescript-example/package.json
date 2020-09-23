@@ -1,0 +1,22 @@
+{
+  "name": "typescript-example",
+  "version": "1.0.0",
+  "description": "Just studing typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ts",
+    "typescript"
+  ],
+  "author": "mxzpytlk",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^4.5.0"
+  }
+}
