@@ -1,0 +1,50 @@
+body{
+	margin:0; 
+}
+
+#gallery{
+	width:100%;
+	height:100vh;
+	position:relative;
+}
+
+#preview{
+	position:absolute;
+	left:0;
+	bottom:0;
+	z-index: 3;
+}
+
+.main-img{
+	position:absolute;
+	bottom:0;	
+	right:0;
+    width:100%;
+	height:100%;
+	z-index: 1;
+}
+
+#checkdiv{
+	position: absolute;
+	top:35px;	
+	left:10px;
+	visibility: hidden;
+	z-index: 7;
+}
+
+#but{
+	position:absolute;
+	top:10px;	
+	left:10px;
+	z-index: 5;
+}
+
+
+.preview-img{
+	box-sizing: border-box;
+	border-radius: 50%;
+	position:absolute;
+	width:200px;
+	height:200px;
+	bottom:0;
+}
