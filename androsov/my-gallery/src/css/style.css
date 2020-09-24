@@ -56,9 +56,14 @@ body {
 	width: 150px;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 50px;
 	margin-bottom: 50px;
 }
 
 #container-with-cathegories > div{
 	display: none;
+}
+
+#cathegory-btn {
+	margin-top: 50px;;
 }

@@ -27,19 +27,13 @@ var second_jpg_5 = require("../img/animals/second.jpg");
 var third_jpg_5 = require("../img/animals/third.jpg");
 var fourth_jpg_5 = require("../img/animals/fourth.jpg");
 var fifth_jpg_5 = require("../img/animals/fifth.jpg");
-var Image = /** @class */ (function () {
-    function Image(img, cathegory) {
-        this.img = img;
-        this.cathegory = cathegory;
-    }
-    return Image;
-}());
+var Image_1 = require("./Image");
+var prevues_1 = require("./prevues");
 var divWithMainImage = document.createElement('div'), divWithPrevues = document.createElement('div'), gallery = document.getElementById('gallery'), mainImage = createImg('', ['main-image']), imageSources = [{
         sources: [first_jpg_1["default"], second_jpg_1["default"], third_jpg_1["default"], fourth_jpg_1["default"], fifth_jpg_1["default"]],
         cathegory: 'puppy'
     },
-    {
-        sources: [first_jpg_2["default"], second_jpg_2["default"], third_jpg_2["default"], fourth_jpg_2["default"], fifth_jpg_2["default"]],
+    { sources: [first_jpg_2["default"], second_jpg_2["default"], third_jpg_2["default"], fourth_jpg_2["default"], fifth_jpg_2["default"]],
         cathegory: 'landskape'
     },
     {
@@ -53,55 +47,46 @@ var divWithMainImage = document.createElement('div'), divWithPrevues = document.
     {
         sources: [first_jpg_5["default"], second_jpg_5["default"], third_jpg_5["default"], fourth_jpg_5["default"], fifth_jpg_5["default"]],
         cathegory: 'animal'
-    }], allImages = [];
+    }].map(function (obj) {
+    var arr = [];
+    for (var _i = 0, _a = obj.sources; _i < _a.length; _i++) {
+        var src = _a[_i];
+        arr.push(new Image_1["default"](createImg(src, ['preview-image']), obj.cathegory));
+    }
+    return arr;
+});
+var prevues = new prevues_1["default"]([]);
 function createImg(src, classList) {
     if (classList === void 0) { classList = []; }
     var img = document.createElement('img');
-    for (var _i = 0, _a = Array.from(classList); _i < _a.length; _i++) {
-        var className = _a[_i];
+    for (var _i = 0, classList_1 = classList; _i < classList_1.length; _i++) {
+        var className = classList_1[_i];
         img.classList.add(className);
     }
     img.setAttribute('src', src);
     return img;
 }
-function askCaptcha() {
-    var a = Math.round(Math.random() * 100), b = Math.round(Math.random() * 100), operations = ['+', '-', '*'], operationIndex = Math.round(Math.random() * 3 - 0.5), userAnswer = +prompt(a + ' ' + operations[operationIndex] + ' ' + b), res;
-    switch (operationIndex) {
-        case 0:
-            res = a + b;
-            break;
-        case 1:
-            res = a - b;
-            break;
-        case 2:
-            res = a * b;
-            break;
-    }
-    if (userAnswer !== res) {
-        deleteBodyElements(document.body);
-    }
-}
-function deleteBodyElements(container) {
+function removeChildren(container) {
+    removeChildren.curContainer = container;
+    removeChildren.removedNodes = [];
     for (var _i = 0, _a = Array.from(container.children); _i < _a.length; _i++) {
         var elem = _a[_i];
-        deleteBodyElements.displeysStyles.push(elem.style.display);
-        elem.style.display = 'none';
+        removeChildren.removedNodes.push(elem);
+        elem.remove();
     }
 }
-deleteBodyElements.displeysStyles = [];
-deleteBodyElements["return"] = function () {
-    for (var _i = 0, _a = Array.from(document.body.children); _i < _a.length; _i++) {
+removeChildren.curContainer = null;
+removeChildren.removedNodes = [];
+removeChildren["return"] = function () {
+    for (var _i = 0, _a = removeChildren.removedNodes; _i < _a.length; _i++) {
         var elem = _a[_i];
-        elem.style.display = deleteBodyElements.displeysStyles.shift();
+        removeChildren.curContainer.appendChild(removeChildren.removedNodes.shift());
     }
 };
-function changeImage(src) {
-    allImages[changeImage.curIndex].img.classList.remove('curent-image');
-    changeImage.curIndex = Array.from(allImages).map(function (image) { return image.img.src; }).indexOf(src);
-    allImages[changeImage.curIndex].img.classList.add('curent-image');
+function changeMainImage(src) {
     mainImage.src = src;
+    prevues.changeCurImage(src);
 }
-changeImage.curIndex = 0;
 function enlargeOnScroll(event) {
     var transform = event.target.style.transform, scale = transform === '' ? 1 : +transform.slice(6, transform.length - 1);
     if (event.deltaY < 0) {
@@ -111,49 +96,85 @@ function enlargeOnScroll(event) {
         event.target.style.transform = "scale(" + scale * 0.95 + ")";
     }
 }
-function addImages(imageSources) {
-    allImages.splice(0, allImages.length);
-    for (var _i = 0, _a = imageSources.sources; _i < _a.length; _i++) {
-        var src = _a[_i];
-        var img = new Image(createImg(src, ['preview-image']), imageSources.cathegory);
+function addPrevues(images) {
+    for (var _i = 0, images_1 = images; _i < images_1.length; _i++) {
+        var img = images_1[_i];
         divWithPrevues.appendChild(img.img);
-        allImages.push(img);
+        img.img.addEventListener('click', function (event) {
+            changeMainImage(event.target.src);
+        });
+        prevues.add(img);
     }
+}
+function changePrevues(cathegories) {
+    removeChildren(divWithPrevues);
+    addPrevues(prevues.addVisibillity.apply(prevues, cathegories));
+    mainImage.src = prevues.allVisibleImages[0].img.src;
+}
+function showNextElementByClicking(btn) {
+    var nextSib = btn.nextElementSibling, displayStyle = nextSib.style.display, deleteList = function () {
+        nextSib.style.display = 'none';
+    };
+    if (displayStyle === 'none' || displayStyle === '') {
+        nextSib.style.display = 'block';
+    }
+    else {
+        deleteList();
+    }
+}
+function checkCheckboxes() {
+    var cathegories = [];
+    var container = Array.from(document.querySelectorAll('input'))
+        .filter(function (elem) { return elem.type === 'checkbox'; });
+    for (var _i = 0, _a = container; _i < _a.length; _i++) {
+        var cb = _a[_i];
+        if (cb.checked) {
+            cathegories.push(cb.value);
+        }
+    }
+    changePrevues(cathegories);
+}
+function appendCheckBox(cathegory) {
+    if (cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; }) === undefined) {
+        console.log('e2');
+        var p = document.createElement('p'), cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = cathegory;
+        cb.checked = true;
+        p.appendChild(cb);
+        p.innerHTML = p.innerHTML + ' ' + cathegory;
+        checkboxes.appendChild(p);
+        cb.addEventListener('change', checkCheckboxes);
+        return cb;
+    }
+    return cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; });
 }
 for (var _i = 0, imageSources_1 = imageSources; _i < imageSources_1.length; _i++) {
     var images = imageSources_1[_i];
-    Object.defineProperty(images, 'cathegory', {
-        enumerable: false
-    });
-}
-for (var _a = 0, imageSources_2 = imageSources; _a < imageSources_2.length; _a++) {
-    var images = imageSources_2[_a];
-    addImages(images);
+    addPrevues(images);
 }
 divWithPrevues.id = 'container-preview';
 gallery.appendChild(divWithMainImage);
 gallery.appendChild(divWithPrevues);
 divWithMainImage.appendChild(mainImage);
-changeImage(allImages[0].img.src);
-for (var _b = 0, allImages_1 = allImages; _b < allImages_1.length; _b++) {
-    var img = allImages_1[_b];
+changeMainImage(prevues.allImages[0].img.src);
+for (var _a = 0, _b = prevues.allImages; _a < _b.length; _a++) {
+    var img = _b[_a];
     img.img.addEventListener('click', function (event) {
-        changeImage(event.target.src);
+        prevues.changeCurImage(event.target.src);
+        mainImage.src = event.target.src;
     });
 }
 document.addEventListener('keydown', function (event) {
     if (event.code === 'ArrowLeft') {
-        var index = (changeImage.curIndex + allImages.length - 1) % allImages.length;
-        changeImage(allImages[index].img.src);
+        changeMainImage(prevues.prev.img.src);
     }
     else if (event.code === 'ArrowRight') {
-        var index = (changeImage.curIndex + 1) % allImages.length;
-        changeImage(allImages[index].img.src);
+        changeMainImage(prevues.next.img.src);
     }
 });
 setInterval(function () {
-    var index = (changeImage.curIndex + 1) % allImages.length;
-    changeImage(allImages[index].img.src);
+    changeMainImage(prevues.next.img.src);
 }, 10000);
 mainImage.addEventListener('click', function (event) {
     var img = document.createElement('img');
@@ -165,35 +186,34 @@ mainImage.addEventListener('click', function (event) {
     });
     img.addEventListener('click', function (event) {
         event.target.remove();
-        deleteBodyElements["return"]();
+        removeChildren["return"]();
     });
-    deleteBodyElements(document.body);
+    removeChildren(document.body);
     document.body.appendChild(img);
 });
-var cathegoryCont = document.getElementById('container-with-cathegories'), cathegoryBtn = document.getElementById('cathegory-btn'), cathegoryCheckBoxes = cathegoryCont.children[1].children;
-cathegoryBtn.addEventListener('click', function () {
-    var divWithCheckBoxes = cathegoryCont.children[1], displayStyle = divWithCheckBoxes.style.display, deleteList = function () {
-        //document.removeEventListener( 'mousedown', deleteList );
-        divWithCheckBoxes.style.display = 'none';
-    };
-    if (displayStyle === 'none' || displayStyle === '') {
-        //document.addEventListener( 'mousedown', deleteList);
-        divWithCheckBoxes.style.display = 'block';
-    }
-    else {
-        deleteList();
-    }
+var cathegoryBtn = document.getElementById('cathegory-btn'), cathegoryCheckBoxes = Array.from(document.querySelectorAll('input')).filter(function (elem) { return elem.type === 'checkbox'; });
+cathegoryBtn.addEventListener('click', function (event) {
+    showNextElementByClicking(event.target);
 });
 for (var _c = 0, _d = Array.from(cathegoryCheckBoxes); _c < _d.length; _c++) {
     var checkBox = _d[_c];
-    checkBox.addEventListener('change', function (event) {
-        // deleteBodyElements(divWithPrevues);
-        // let cathegories: Image[] = [];
-        // for (let cb of Array.from( cathegoryCheckBoxes ){
-        // 	if (cb.isChecked)
-        // }
-        console.log(event);
-    });
+    checkBox.addEventListener('click', checkCheckboxes);
 }
+document.getElementById('show-input-add-file-btn').addEventListener('click', function (event) {
+    showNextElementByClicking(event.target);
+});
+var fileChooser = document.getElementById('img-file-chooser'), cathegoryNameField = document.getElementById('cathegory-textfield'), addFileBtn = document.getElementById('add-image'), checkboxes = document.getElementById('checkboxes');
+addFileBtn.addEventListener('click', function () {
+    var file = fileChooser.files[fileChooser.files.length - 1], reader = new FileReader(), cathegory = cathegoryNameField.value;
+    if (file.type.startsWith('image/')) {
+        var img_1 = document.createElement('img');
+        reader.addEventListener('loadend', function (event) {
+            img_1.src = event.target.result;
+        });
+        reader.readAsDataURL(file);
+        appendCheckBox(cathegory);
+        addPrevues([new Image_1["default"](img_1, cathegory)]);
+    }
+});
 document.body.appendChild(accordion_1["default"](['Button 1', 'Button 2', 'Button 3'], ['Example 1', 'Example 2', 'Example 3']));
-//askCaptcha();
+//askCaptcha( () => removeChildren(document.body) );

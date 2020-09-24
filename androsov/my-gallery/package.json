@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --mode development --watch",
-    "start": "webpack-dev-server --mode development --open"
+    "start": "webpack-dev-server --mode development --open",
+    "watchtsc": "tsc src/scripts/index.ts -w"
   },
   "author": "Alex Mxzpytlk",
   "license": "ISC",

@@ -1,4 +1,5 @@
-import createAccordion from './accordion'
+import createAccordion from './accordion';
+import askCaptcha from './captcha';
 import '../css/style.css';
 import puppy1 from '../img/puppies/first.jpg';
 import puppy2 from '../img/puppies/second.jpg';
@@ -25,22 +26,18 @@ import animal2 from '../img/animals/second.jpg';
 import animal3 from '../img/animals/third.jpg';
 import animal4 from '../img/animals/fourth.jpg';
 import animal5 from '../img/animals/fifth.jpg';
-
-
-class Image {
-    constructor(public img: HTMLImageElement, public cathegory: string) {}
-}
+import Image from './Image';
+import PrevueContainer from './prevues'
 
 const divWithMainImage: HTMLDivElement = document.createElement( 'div' ),
 	divWithPrevues: HTMLDivElement = document.createElement( 'div' ),
 	gallery: HTMLElement = document.getElementById('gallery'),
 	mainImage: HTMLImageElement = createImg('', ['main-image']),
-	imageSources: Array<any> = [{
+	imageSources: Image[][] = [{
         sources: [puppy1, puppy2, puppy3, puppy4, puppy5],
         cathegory: 'puppy'
         },
-        {
-            sources: [ls1, ls2, ls3, ls4, ls5],
+        {            sources: [ls1, ls2, ls3, ls4, ls5],
             cathegory: 'landskape'
         },
         {
@@ -54,12 +51,18 @@ const divWithMainImage: HTMLDivElement = document.createElement( 'div' ),
         {
             sources: [animal1, animal2, animal3, animal4, animal5],
             cathegory: 'animal'
-        }],
-	allImages: Image[] = [];
+        }].map( obj => {
+			const arr: Image[] = [];
+			for (let src of obj.sources)
+				arr.push(new Image( createImg(src, ['preview-image']), obj.cathegory ));
+			return arr;
+		});
+
+let	prevues: PrevueContainer = new PrevueContainer([]);
 	
 function createImg(src: string, classList: string[] = []): HTMLImageElement {	
 	let img = document.createElement('img');
-	for (let className of Array.from( classList )) {
+	for (let className of classList ) {
 		img.classList.add( className );
 	}
 	
@@ -67,53 +70,27 @@ function createImg(src: string, classList: string[] = []): HTMLImageElement {
 	return img;
 }
 
-function askCaptcha() {
-	let a: number = Math.round( Math.random() * 100 ),
-		b: number = Math.round( Math.random() * 100 ),
-		operations: string[] = ['+', '-', '*'],
-		operationIndex: number = Math.round( Math.random() * 3 - 0.5 ),
-		userAnswer: number = +prompt( a + ' ' + operations[operationIndex] + ' ' + b ),
-		res: number;
-
-	switch (operationIndex) {
-		case 0:
-			res = a + b;
-			break;
-		case 1:
-			res = a - b;
-			break;
-		case 2:
-			res = a * b;
-			break;
-	}
-
-	if (userAnswer !== res) {
-		deleteBodyElements(document.body);
-	}
-}
-
-function deleteBodyElements(container: HTMLElement) {
+function removeChildren(container: HTMLElement) {
+	removeChildren.curContainer = container;
+	removeChildren.removedNodes = [];
 	for (let elem of Array.from( container.children )) {
-        
-        deleteBodyElements.displeysStyles.push( (elem as HTMLElement).style.display );
-		(elem as HTMLElement).style.display = 'none';
-	}
-}
-deleteBodyElements.displeysStyles = [];
-deleteBodyElements.return = function() {
-	for (let elem of Array.from( document.body.children )) {
-		(elem as HTMLElement).style.display = deleteBodyElements.displeysStyles.shift();
+        removeChildren.removedNodes.push( (elem as HTMLElement) );
+		(elem as HTMLElement).remove();
 	}
 }
 
+removeChildren.curContainer = null;
+removeChildren.removedNodes = [];
+removeChildren.return = function() {
+	for (let elem of removeChildren.removedNodes) {
+		removeChildren.curContainer.appendChild( removeChildren.removedNodes.shift() );
+	}
+}
 
-function changeImage(src: string){
-	allImages[changeImage.curIndex].img.classList.remove('curent-image');
-	changeImage.curIndex = Array.from( allImages ).map( image => image.img.src ).indexOf(src);
-	allImages[changeImage.curIndex].img.classList.add('curent-image');
+function changeMainImage(src : string): void {
 	mainImage.src = src;
+	prevues.changeCurImage( src );
 }
-changeImage.curIndex = 0;
 
 function enlargeOnScroll(event: WheelEvent) {
 	let transform: string = (event.target as HTMLImageElement).style.transform,
@@ -125,24 +102,70 @@ function enlargeOnScroll(event: WheelEvent) {
 	}
 }
 
-function addImages(imageSources) {
-	allImages.splice(0, allImages.length);
-	
-	for (let src of imageSources.sources) {
-		let img: Image = new Image(createImg( src, ['preview-image'] ), imageSources.cathegory);
+function addPrevues(images: Image[]) {
+	for (let img of images) {
 		divWithPrevues.appendChild( img.img );
-		allImages.push( img );
+		img.img.addEventListener('click', event => {
+			changeMainImage((event.target as HTMLImageElement).src);
+		})
+		prevues.add( img );
 	}
 }
 
-for (let images of imageSources) {
-    Object.defineProperty(images, 'cathegory', {
-        enumerable: false
-    });
+function changePrevues(cathegories: string[]) {
+	removeChildren( divWithPrevues );
+	addPrevues( prevues.addVisibillity(...cathegories) );
+	mainImage.src = prevues.allVisibleImages[0].img.src;
+}
+
+function showNextElementByClicking(btn: HTMLElement): void {
+	let nextSib: HTMLDivElement 
+			= btn.nextElementSibling as HTMLDivElement,
+		displayStyle: string = nextSib.style.display,
+		
+		deleteList = () => {
+			nextSib.style.display = 'none';
+		};
+
+	if (displayStyle === 'none' || displayStyle === '') {
+		nextSib.style.display = 'block';
+	} else {
+		deleteList();
+	}
+}
+
+function checkCheckboxes() {
+	let cathegories: string[] = [];
+	let container = Array.from( document.querySelectorAll( 'input' ) )
+		.filter( elem => elem.type === 'checkbox' );
+	for (let cb of container as HTMLInputElement[]){
+		if (cb.checked) {
+			cathegories.push( cb.value );
+		}
+	}
+	changePrevues( cathegories );
+}
+
+function appendCheckBox(cathegory: string): HTMLInputElement {
+	
+	if (cathegoryCheckBoxes.find( val => val.value === cathegory) === undefined) {
+		console.log('e2');
+		const p: HTMLElement = document.createElement( 'p' ),
+			cb: HTMLInputElement = document.createElement( 'input' );
+		cb.type = 'checkbox';
+		cb.value = cathegory;
+		cb.checked = true;
+		p.appendChild(cb);
+		p.innerHTML = p.innerHTML + ' ' + cathegory;
+		checkboxes.appendChild(p);
+		cb.addEventListener('change', checkCheckboxes);
+		return cb;
+	}
+	return cathegoryCheckBoxes.find( val => val.value === cathegory);
 }
 
 for (let images of imageSources) {
-	addImages(images);
+	addPrevues(images);
 }
 
 divWithPrevues.id = 'container-preview';
@@ -150,27 +173,26 @@ divWithPrevues.id = 'container-preview';
 gallery.appendChild( divWithMainImage );
 gallery.appendChild( divWithPrevues );
 divWithMainImage.appendChild( mainImage );
-changeImage( allImages[0].img.src );
 
-for (let img of allImages) {
+changeMainImage( prevues.allImages[0].img.src );
+
+for (let img of prevues.allImages) {
 	img.img.addEventListener('click', event => { 
-		changeImage( (event.target as HTMLImageElement).src); 
+		prevues.changeCurImage( (event.target as HTMLImageElement).src); 
+		mainImage.src = (event.target as HTMLImageElement).src;
 	});
 }	
 
 document.addEventListener('keydown', event => {
 	if (event.code === 'ArrowLeft') {
-		let index: number = (changeImage.curIndex + allImages.length - 1) % allImages.length;
-		changeImage( allImages[index].img.src );
+		changeMainImage( prevues.prev.img.src );
 	} else if (event.code === 'ArrowRight') {
-		let index: number = (changeImage.curIndex + 1) % allImages.length;	
-		changeImage( allImages[index].img.src );
+		changeMainImage( prevues.next.img.src );
 	}
 });
 
 setInterval(() => {
-	let index: number = (changeImage.curIndex + 1) % allImages.length;
-	changeImage( allImages[index].img.src );
+	changeMainImage( prevues.next.img.src );
 }, 10000);
 
 mainImage.addEventListener('click', event => {
@@ -186,48 +208,58 @@ mainImage.addEventListener('click', event => {
 	
 	img.addEventListener('click', event => {
 		(event.target as HTMLImageElement).remove();
-		deleteBodyElements.return();
+		removeChildren.return();
 	})
 
-	deleteBodyElements(document.body);
+	removeChildren(document.body);
 	document.body.appendChild( img );
 });
 
-const cathegoryCont: HTMLDivElement = 
-		document.getElementById( 'container-with-cathegories' ) as HTMLDivElement,
-	cathegoryBtn: HTMLButtonElement = 
+const cathegoryBtn: HTMLButtonElement = 
 		document.getElementById( 'cathegory-btn' ) as HTMLButtonElement,
-	cathegoryCheckBoxes: HTMLCollection = cathegoryCont.children[1].children as HTMLCollection;
+	cathegoryCheckBoxes: HTMLInputElement[] = 
+		Array.from( document.querySelectorAll( 'input' ) ).filter( elem => elem.type === 'checkbox' );
 
 
-cathegoryBtn.addEventListener( 'click', () => {
-	let divWithCheckBoxes: HTMLDivElement = (cathegoryCont.children[1] as HTMLDivElement),
-		displayStyle: string = divWithCheckBoxes.style.display,
-		
-		deleteList = () => {
-			//document.removeEventListener( 'mousedown', deleteList );
-			divWithCheckBoxes.style.display = 'none';
-		};
-
-	if (displayStyle === 'none' || displayStyle === '') {
-		//document.addEventListener( 'mousedown', deleteList);
-		divWithCheckBoxes.style.display = 'block';
-	} else {
-		deleteList();
-	}
+cathegoryBtn.addEventListener( 'click', event => {
+	showNextElementByClicking(event.target as HTMLButtonElement);
 });
 
 for (let checkBox of Array.from( cathegoryCheckBoxes )) {
-	checkBox.addEventListener('change', (event) => {
-		// deleteBodyElements(divWithPrevues);
-		// let cathegories: Image[] = [];
-		// for (let cb of Array.from( cathegoryCheckBoxes ){
-		// 	if (cb.isChecked)
-		// }
-		console.log(event)
-	})
+	checkBox.addEventListener('click', checkCheckboxes);
 }
 
+document.getElementById( 'show-input-add-file-btn' ).addEventListener( 'click', event => {
+	showNextElementByClicking(event.target as HTMLButtonElement);
+});
+
+const fileChooser: HTMLInputElement = 
+			(document.getElementById( 'img-file-chooser' ) as HTMLInputElement),
+		cathegoryNameField: HTMLInputElement =
+			(document.getElementById( 'cathegory-textfield' ) as HTMLInputElement),
+		addFileBtn: HTMLButtonElement 
+			= (document.getElementById( 'add-image' ) as HTMLButtonElement),
+		checkboxes: HTMLDivElement = document.getElementById( 'checkboxes' ) as HTMLDivElement;
+
+addFileBtn.addEventListener('click', () => {
+	const file: File = fileChooser.files[fileChooser.files.length - 1],
+		reader: FileReader = new FileReader(),
+		cathegory: string = cathegoryNameField.value;
+		
+
+    if (file.type.startsWith('image/')) {
+		let img = document.createElement( 'img' );
+		reader.addEventListener('loadend', event => {
+			img.src = event.target.result as string;
+		});
+		reader.readAsDataURL(file);
+		appendCheckBox(cathegory);
+		addPrevues([new Image(img, cathegory)]);
+	}
+});
+
+
+
 document.body.appendChild( createAccordion(['Button 1', 'Button 2', 'Button 3'],
-	 ['Example 1', 'Example 2', 'Example 3']) ); 
-//askCaptcha();
+	['Example 1', 'Example 2', 'Example 3']) );
+//askCaptcha( () => removeChildren(document.body) );
