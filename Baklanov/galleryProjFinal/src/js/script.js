@@ -65,7 +65,15 @@ import fantasy from "../images/fantasy.jpg";
         previews[i].setAttribute('src',images[i]);// заполняем контейнеры изображениями с диска 
         previews[i].classList.add('preview-image');
     }
-    
+    let st=10;
+    for(let i=0; i<previews.length; i++){
+        previews[i].style.margin="30px";
+        previews[i].style.marginBottom=st+"px";
+        if(i<2)
+            st+=35;
+        else
+            st-=35;
+    }
     
 
     let i = 0;
