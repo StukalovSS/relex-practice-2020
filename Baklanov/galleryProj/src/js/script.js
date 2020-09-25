@@ -5,17 +5,12 @@
 //     alert("Правильно!");
 //import Zoom from "zooming";
 import "../css/styles.css";
-import js from "../images/jslogo.png";
-import nature from "../images/nature.jpg";
-import planet from "../images/planet.jpg";
-import whale from "../images/whale.jpg";
-import fantasy from "../images/fantasy.jpg";
     const images = [
-        js,
-        nature,
-        planet,
-        whale,
-        fantasy,
+        {path: "../src/images/jslogo.png",category: "light"},
+        {path: "../src/images/nature.jpg",category: "light"},
+        {path: "../src/images/whale.jpg",category: "light"},
+        {path: "../src/images/planet.jpg",category: "dark"},
+        {path: "../src/images/fantasy.jpg",category: "dark"}
     ];
 
     const textContent = [
@@ -31,20 +26,20 @@ import fantasy from "../images/fantasy.jpg";
     //Контейнер для показываемого изображения 
     let mainImageCon = mainCon.appendChild(document.createElement('div')); 
     let mainImage = mainImageCon.appendChild(document.createElement('img'));
-    // mainImage.addEventListener('click', function(){
-    //     if (document.body.firstChild != mainImage) {
-    //         document.body.insertAdjacentElement("afterbegin", mainImage);
-    //     mainImage.setAttribute("class", "mainImageAfter");
-    //     mainCon.classList.add("GalleryHide");
-    //     } 
-    //     else {
-    //         mainImageCon.insertAdjacentElement("afterbegin", mainImage);
-    //         mainImage.setAttribute("class", "mainImage");
-    //         mainCon.classList.remove("GalleryHide");
-    //     }
-    // });
+    mainImage.addEventListener('click', function(){
+        if (document.body.firstChild != mainImage) {
+            document.body.insertAdjacentElement("afterbegin", mainImage);
+        mainImage.setAttribute("class", "mainImageAfter");
+        mainCon.classList.add("GalleryHide");
+        } 
+        else {
+            mainImageCon.insertAdjacentElement("afterbegin", mainImage);
+            mainImage.setAttribute("class", "mainImage");
+            mainCon.classList.remove("GalleryHide");
+        }
+    });
     mainImage.classList.add('mainImage');
-    mainImage.setAttribute('src', images[0]);
+    mainImage.setAttribute('src', images[0].path);
     //zooming.listen('.mainImage');
     
     
@@ -62,7 +57,7 @@ import fantasy from "../images/fantasy.jpg";
             }
             previews[i].classList.add("image-border");
         })
-        previews[i].setAttribute('src',images[i]);// заполняем контейнеры изображениями с диска 
+        previews[i].setAttribute('src',images[i].path);// заполняем контейнеры изображениями с диска 
         previews[i].classList.add('preview-image');
     }
     let st=10;
