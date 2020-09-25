@@ -1,0 +1,33 @@
+{
+  "name": "my-gallery",
+  "version": "1.0.0",
+  "description": "Photo Gallery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --mode development --watch",
+    "start": "webpack-dev-server --mode development --open",
+    "watchtsc": "tsc src/scripts/index.ts -w"
+  },
+  "author": "Alex Mxzpytlk",
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^4.3.0",
+    "file-loader": "^6.1.0",
+    "style-loader": "^1.2.1",
+    "zooming": "^2.1.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^4.5.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mxzpytlk/my-gallery.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mxzpytlk/my-gallery/issues"
+  },
+  "homepage": "https://github.com/mxzpytlk/my-gallery#readme"
+}

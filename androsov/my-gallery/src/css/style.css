@@ -1,0 +1,69 @@
+body {
+	background-color: #e8e8e8;
+}
+
+#container-preview {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	min-width: 100%;
+	flex-wrap: wrap;
+}
+
+#gallery {
+	position: relative;
+	padding-top: 50px;
+	width: 800px;	
+	margin-left: auto;	
+	margin-right: auto;	
+}
+
+.preview-image {
+	margin-top: 50px;
+	border-radius: 50%;
+	margin-bottom: 50px;
+	width: 101px;
+	height: 101px;
+}
+
+.main-image {
+	width: 800px;
+	height: 800px;
+}
+
+.curent-image {
+	border: 4px groove orange;
+}
+
+.accord-btn {
+	background-color: red;
+	width: 150px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: white;
+}
+
+.accordion {
+	margin-bottom: 30px;	
+	width: 150px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#container-with-cathegories {
+	width: 150px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#container-with-cathegories > div{
+	display: none;
+}
+
+#cathegory-btn {
+	margin-top: 50px;;
+}
