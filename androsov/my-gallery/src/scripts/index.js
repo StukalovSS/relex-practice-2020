@@ -149,6 +149,33 @@ function appendCheckBox(cathegory) {
         cathegoryNameField.nextElementSibling.appendChild(option);
     }
 }
+function handleImage(file) {
+    var reader = new FileReader(), cathegory = cathegoryNameField.value;
+    if (file.type.startsWith('image/')) {
+        var img_1 = document.createElement('img');
+        reader.addEventListener('loadend', function (event) {
+            img_1.src = event.target.result;
+        });
+        reader.readAsDataURL(file);
+        appendCheckBox(cathegory);
+        addPrevues([new Image_1["default"](img_1, cathegory)]);
+    }
+}
+function dragenter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+function dragover(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+function drop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var dt = e.dataTransfer, files = dt.files;
+    console.log(files);
+    handleImage(files[files.length - 1]);
+}
 for (var _i = 0, imageSources_1 = imageSources; _i < imageSources_1.length; _i++) {
     var images = imageSources_1[_i];
     addPrevues(images);
@@ -204,14 +231,10 @@ document.getElementById('show-input-add-file-btn').addEventListener('click', fun
 });
 var fileChooser = document.getElementById('img-file-chooser'), cathegoryNameField = document.getElementById('cathegory-textfield'), addFileBtn = document.getElementById('add-image'), checkboxes = document.getElementById('checkboxes');
 addFileBtn.addEventListener('click', function () {
-    var file = fileChooser.files[fileChooser.files.length - 1], reader = new FileReader(), cathegory = cathegoryNameField.value;
-    if (file.type.startsWith('image/')) {
-        var img_1 = document.createElement('img');
-        reader.addEventListener('loadend', function (event) {
-            img_1.src = event.target.result;
-        });
-        reader.readAsDataURL(file);
-        appendCheckBox(cathegory);
-        addPrevues([new Image_1["default"](img_1, cathegory)]);
-    }
+    var file = fileChooser.files[fileChooser.files.length - 1];
+    handleImage(file);
 });
+var dropbox = document.querySelector(".file-field");
+dropbox.addEventListener("dragenter", dragenter, false);
+dropbox.addEventListener("dragover", dragover, false);
+dropbox.addEventListener("drop", drop, false);
