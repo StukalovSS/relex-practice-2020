@@ -1,11 +1,114 @@
 body {
-    background-color: #CECECE;
+    position: relative;
+    font-family: 'Arial';
+    color: #3c3c3c;
 }
 
-#gallery {
-    position: relative;
-    width: 950px;
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 940px;
     margin: 0 auto;
+    padding: 0 10px;
+    padding-top: 30px;
+    /* outline: 2px solid greenyellow; */
+}
+
+.dropdown {
+    position: relative;
+    width: 184px;
+    /* outline: 2px solid blue; */
+}
+
+.gallery {
+    position: relative;
+    /* outline: 2px solid tomato; */
+}
+
+.open-menu {
+    cursor: pointer;
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.open-menu::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    width: 53px;
+    height: 53px;
+    content: "";
+    background-image: url(../img/menu-icon.svg);
+    background-repeat: no-repeat;
+}
+
+.menu {
+    position: absolute;
+    left: 22%;
+    top: 13%;
+    border: 5px solid #bed0df;
+    border-radius: 7px;
+}
+
+.menu__item {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: #3c3c3c;
+    text-align: left;
+    padding: 9px;
+}
+
+.category__title {
+    position: relative;
+    padding-left: 33px;
+}
+
+.category__title--active:after {
+    position: absolute;
+    top: 29%;
+    left: 11%;
+    content: "";
+    width: 2px;
+    height: 19px;
+    background-color: #bed0df;
+}
+
+.category__title:before {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    content: "";
+    width: 18px;
+    height: 2px;
+    background-color: #bed0df;
+}
+
+.category__list {
+    margin: 0;
+    margin-left: 21%;
+    padding: 0;
+    list-style: none;
+    font-size: 18px;
+}
+
+.category__elem {
+    margin-bottom: 7px;
+}
+
+.main-image-container {
+    position: relative;
+}
+
+.main-image {
+    cursor: pointer;
+    width: 720px;
+    height: 530px;
 }
 
 .preview {
@@ -14,44 +117,94 @@ body {
     bottom: 0;
 }
 
-.preview-image {
-    cursor: pointer;
-    width: 180px;
-    height: 180px;
-    opacity: 0.7;
-    border-radius: 50%;
-    box-shadow: 0 4px 20px black;
-}
 .preview-image:not(:last-child) {
     margin-right: 10px;
 }
 
-.main-image {
+.preview-image {
     cursor: pointer;
-    width: 950px;
-    height: 600px;
-    display: block;
-    margin: 0 auto;
+    width: 120px;
+    height: 120px;
+    opacity: 0.7;
+    border-radius: 50%;
+    box-shadow: 0 4px 20px black;
 }
 
 .image-select {
     cursor: default;
     opacity: 0.9;
-    border: 3px solid rgb(6, 6, 105);
+    border: 3px solid #bed0df;
 }
 
-.main-image-container {
-    position: relative;
-}
-
-/* .image-full {
+.modal-add {
+    display: flex;
+    flex-wrap: wrap;
     position: fixed;
-    left: 50%;
     top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-} */
+    width: 300px;
+    height: 192px;
+    border: 5px solid #bed0df;
+    border-radius: 7px;
+    padding: 20px;
+    background-color: white;
+}
 
-.modal {
+.modal-add__close {
+    cursor: pointer;
+    position: absolute;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    right: 3%;
+}
+
+.modal-add__close::before {
+    position: absolute;
+    right: 22%;
+    content: "";
+    width: 19px;
+    height: 2px;
+    background-color: #bed0df;
+    transform: rotate(45deg);
+}
+
+.modal-add__close:after {
+    position: absolute;
+    top: -8px;
+    right: 11px;
+    content: "";
+    width: 2px;
+    height: 19px;
+    background-color: #bed0df;
+    transform: rotate(45deg);
+}
+
+.modal-add input[type="file"] {
+    padding-top: 24px;
+    padding-bottom: 15px;
+    font-size: 16px;
+}
+
+.modal-add input[type="text"] {
+    padding: 3px;
+    margin-top: 6px;
+    font-size: 17px;
+}
+
+.modal-add__save-btn {
+    margin: auto;
+    border: none;
+    outline: none;
+    color: #3c3c3c;
+    background-color: #bed0df;
+    font-size: 17px;
+    padding: 8px;
+    border-radius: 7px;
+}
+
+/* .modal {
     position: fixed;
     left: 0;
     top: 0;
@@ -77,4 +230,4 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-}
+} */
