@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var accordion_1 = require("./accordion");
 require("../css/style.css");
 var first_jpg_1 = require("../img/puppies/first.jpg");
 var second_jpg_1 = require("../img/puppies/second.jpg");
@@ -135,8 +134,8 @@ function checkCheckboxes() {
     changePrevues(cathegories);
 }
 function appendCheckBox(cathegory) {
-    if (cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; }) === undefined) {
-        console.log('e2');
+    if (cathegoryCheckBoxes
+        .find(function (val) { return val.textContent.toLowerCase() === cathegory.toLowerCase(); }) === undefined) {
         var p = document.createElement('p'), cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.value = cathegory;
@@ -145,9 +144,10 @@ function appendCheckBox(cathegory) {
         p.innerHTML = p.innerHTML + ' ' + cathegory;
         checkboxes.appendChild(p);
         cb.addEventListener('change', checkCheckboxes);
-        return cb;
+        var option = document.createElement('option');
+        option.textContent = cathegory;
+        cathegoryNameField.nextElementSibling.appendChild(option);
     }
-    return cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; });
 }
 for (var _i = 0, imageSources_1 = imageSources; _i < imageSources_1.length; _i++) {
     var images = imageSources_1[_i];
@@ -215,5 +215,3 @@ addFileBtn.addEventListener('click', function () {
         addPrevues([new Image_1["default"](img_1, cathegory)]);
     }
 });
-document.body.appendChild(accordion_1["default"](['Button 1', 'Button 2', 'Button 3'], ['Example 1', 'Example 2', 'Example 3']));
-//askCaptcha( () => removeChildren(document.body) );

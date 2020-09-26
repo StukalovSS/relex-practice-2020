@@ -1,5 +1,3 @@
-import createAccordion from './accordion';
-import askCaptcha from './captcha';
 import '../css/style.css';
 import puppy1 from '../img/puppies/first.jpg';
 import puppy2 from '../img/puppies/second.jpg';
@@ -146,10 +144,10 @@ function checkCheckboxes() {
 	changePrevues( cathegories );
 }
 
-function appendCheckBox(cathegory: string): HTMLInputElement {
+function appendCheckBox(cathegory: string) {
 	
-	if (cathegoryCheckBoxes.find( val => val.value === cathegory) === undefined) {
-		console.log('e2');
+	if (cathegoryCheckBoxes
+		.find( val => val.textContent.toLowerCase() === cathegory.toLowerCase()) === undefined) {
 		const p: HTMLElement = document.createElement( 'p' ),
 			cb: HTMLInputElement = document.createElement( 'input' );
 		cb.type = 'checkbox';
@@ -159,9 +157,11 @@ function appendCheckBox(cathegory: string): HTMLInputElement {
 		p.innerHTML = p.innerHTML + ' ' + cathegory;
 		checkboxes.appendChild(p);
 		cb.addEventListener('change', checkCheckboxes);
-		return cb;
+
+		const option = document.createElement('option');
+		option.textContent = cathegory;
+		cathegoryNameField.nextElementSibling.appendChild(option);
 	}
-	return cathegoryCheckBoxes.find( val => val.value === cathegory);
 }
 
 for (let images of imageSources) {
@@ -257,9 +257,3 @@ addFileBtn.addEventListener('click', () => {
 		addPrevues([new Image(img, cathegory)]);
 	}
 });
-
-
-
-document.body.appendChild( createAccordion(['Button 1', 'Button 2', 'Button 3'],
-	['Example 1', 'Example 2', 'Example 3']) );
-//askCaptcha( () => removeChildren(document.body) );
