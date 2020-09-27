@@ -1,7 +1,6 @@
 {
   "name": "galleryprojfinal",
   "version": "1.0.0",
-  "description": "",
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,11 +13,13 @@
     "css-loader": "^4.3.0",
     "file-loader": "^6.1.0",
     "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.4",
     "zooming": "^2.1.1"
   },
   "devDependencies": {
     "html-webpack-plugin": "^4.5.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
-  }
+  },
+  "description": "Gallery"
 }

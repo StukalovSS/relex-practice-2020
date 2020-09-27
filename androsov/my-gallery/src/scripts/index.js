@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-var accordion_1 = require("./accordion");
 require("../css/style.css");
 var first_jpg_1 = require("../img/puppies/first.jpg");
 var second_jpg_1 = require("../img/puppies/second.jpg");
@@ -135,8 +134,8 @@ function checkCheckboxes() {
     changePrevues(cathegories);
 }
 function appendCheckBox(cathegory) {
-    if (cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; }) === undefined) {
-        console.log('e2');
+    if (cathegoryCheckBoxes
+        .find(function (val) { return val.textContent.toLowerCase() === cathegory.toLowerCase(); }) === undefined) {
         var p = document.createElement('p'), cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.value = cathegory;
@@ -145,9 +144,37 @@ function appendCheckBox(cathegory) {
         p.innerHTML = p.innerHTML + ' ' + cathegory;
         checkboxes.appendChild(p);
         cb.addEventListener('change', checkCheckboxes);
-        return cb;
+        var option = document.createElement('option');
+        option.textContent = cathegory;
+        cathegoryNameField.nextElementSibling.appendChild(option);
     }
-    return cathegoryCheckBoxes.find(function (val) { return val.value === cathegory; });
+}
+function handleImage(file) {
+    var reader = new FileReader(), cathegory = cathegoryNameField.value;
+    if (file.type.startsWith('image/')) {
+        var img_1 = document.createElement('img');
+        reader.addEventListener('loadend', function (event) {
+            img_1.src = event.target.result;
+        });
+        reader.readAsDataURL(file);
+        appendCheckBox(cathegory);
+        addPrevues([new Image_1["default"](img_1, cathegory)]);
+    }
+}
+function dragenter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+function dragover(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+function drop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var dt = e.dataTransfer, files = dt.files;
+    console.log(files);
+    handleImage(files[files.length - 1]);
 }
 for (var _i = 0, imageSources_1 = imageSources; _i < imageSources_1.length; _i++) {
     var images = imageSources_1[_i];
@@ -204,16 +231,10 @@ document.getElementById('show-input-add-file-btn').addEventListener('click', fun
 });
 var fileChooser = document.getElementById('img-file-chooser'), cathegoryNameField = document.getElementById('cathegory-textfield'), addFileBtn = document.getElementById('add-image'), checkboxes = document.getElementById('checkboxes');
 addFileBtn.addEventListener('click', function () {
-    var file = fileChooser.files[fileChooser.files.length - 1], reader = new FileReader(), cathegory = cathegoryNameField.value;
-    if (file.type.startsWith('image/')) {
-        var img_1 = document.createElement('img');
-        reader.addEventListener('loadend', function (event) {
-            img_1.src = event.target.result;
-        });
-        reader.readAsDataURL(file);
-        appendCheckBox(cathegory);
-        addPrevues([new Image_1["default"](img_1, cathegory)]);
-    }
+    var file = fileChooser.files[fileChooser.files.length - 1];
+    handleImage(file);
 });
-document.body.appendChild(accordion_1["default"](['Button 1', 'Button 2', 'Button 3'], ['Example 1', 'Example 2', 'Example 3']));
-//askCaptcha( () => removeChildren(document.body) );
+var dropbox = document.querySelector(".file-field");
+dropbox.addEventListener("dragenter", dragenter, false);
+dropbox.addEventListener("dragover", dragover, false);
+dropbox.addEventListener("drop", drop, false);

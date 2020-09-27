@@ -1,5 +1,3 @@
-import createAccordion from './accordion';
-import askCaptcha from './captcha';
 import '../css/style.css';
 import puppy1 from '../img/puppies/first.jpg';
 import puppy2 from '../img/puppies/second.jpg';
@@ -146,10 +144,10 @@ function checkCheckboxes() {
 	changePrevues( cathegories );
 }
 
-function appendCheckBox(cathegory: string): HTMLInputElement {
+function appendCheckBox(cathegory: string) {
 	
-	if (cathegoryCheckBoxes.find( val => val.value === cathegory) === undefined) {
-		console.log('e2');
+	if (cathegoryCheckBoxes
+		.find( val => val.textContent.toLowerCase() === cathegory.toLowerCase()) === undefined) {
 		const p: HTMLElement = document.createElement( 'p' ),
 			cb: HTMLInputElement = document.createElement( 'input' );
 		cb.type = 'checkbox';
@@ -159,10 +157,49 @@ function appendCheckBox(cathegory: string): HTMLInputElement {
 		p.innerHTML = p.innerHTML + ' ' + cathegory;
 		checkboxes.appendChild(p);
 		cb.addEventListener('change', checkCheckboxes);
-		return cb;
+
+		const option = document.createElement('option');
+		option.textContent = cathegory;
+		cathegoryNameField.nextElementSibling.appendChild(option);
 	}
-	return cathegoryCheckBoxes.find( val => val.value === cathegory);
 }
+
+function handleImage(file: File) {
+	const reader: FileReader = new FileReader(),
+		cathegory: string = cathegoryNameField.value;
+	
+	if (file.type.startsWith('image/')) {
+		let img = document.createElement( 'img' );
+		reader.addEventListener('loadend', event => {
+			img.src = event.target.result as string;
+		});
+		reader.readAsDataURL(file);
+		appendCheckBox(cathegory);
+		addPrevues([new Image(img, cathegory)]);
+	}
+}
+
+function dragenter(e: Event) {
+	e.stopPropagation();
+	e.preventDefault();
+  }
+  
+  function dragover(e: Event) {
+	e.stopPropagation();
+	e.preventDefault();
+  }
+
+  function drop(e: DragEvent) {
+	e.stopPropagation();
+	e.preventDefault();
+  
+	let dt: DataTransfer = e.dataTransfer,
+			files = dt.files;
+
+	console.log( files );
+  
+	handleImage(files[files.length - 1]);
+  }
 
 for (let images of imageSources) {
 	addPrevues(images);
@@ -242,24 +279,11 @@ const fileChooser: HTMLInputElement =
 		checkboxes: HTMLDivElement = document.getElementById( 'checkboxes' ) as HTMLDivElement;
 
 addFileBtn.addEventListener('click', () => {
-	const file: File = fileChooser.files[fileChooser.files.length - 1],
-		reader: FileReader = new FileReader(),
-		cathegory: string = cathegoryNameField.value;
-		
-
-    if (file.type.startsWith('image/')) {
-		let img = document.createElement( 'img' );
-		reader.addEventListener('loadend', event => {
-			img.src = event.target.result as string;
-		});
-		reader.readAsDataURL(file);
-		appendCheckBox(cathegory);
-		addPrevues([new Image(img, cathegory)]);
-	}
+	const file: File = fileChooser.files[fileChooser.files.length - 1];
+    handleImage(file);
 });
 
-
-
-document.body.appendChild( createAccordion(['Button 1', 'Button 2', 'Button 3'],
-	['Example 1', 'Example 2', 'Example 3']) );
-//askCaptcha( () => removeChildren(document.body) );
+let dropbox = document.querySelector(".file-field");
+dropbox.addEventListener("dragenter", dragenter, false);
+dropbox.addEventListener("dragover", dragover, false);
+dropbox.addEventListener("drop", drop, false);

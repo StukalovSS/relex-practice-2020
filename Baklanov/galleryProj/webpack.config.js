@@ -9,6 +9,11 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+              },
+            {
                 test: /\.css$/i,
                 use: [
                     {
@@ -32,6 +37,9 @@ module.exports = {
             },
         ],
     },
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ],
+      },
     plugins: [new HtmlWebpackPlugin({
         filename: 'index.html', //в случае файла с другим именем написать здесь его название 
         template: './src/index.html'
