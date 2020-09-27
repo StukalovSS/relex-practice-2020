@@ -6,6 +6,19 @@
 </head>
 <body>
     <div id="Gallery"></div>
-    <!-- <script src="../dist/main.js"></script> -->
+    <div id="modal" class="modal">
+        <button class="modalCloseButton">✖</button>
+        <div class="inputCon">
+           <input type="file" class="inputFile" id="input">
+           <label for = "input" class="inputButton">Выберите файл</label>
+        </div>
+        <div id="drop-area">
+            <form class="my-form">
+              <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
+              <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+            </form>
+          </div>
+        <div class="chooseCategoryCon"></div>
+    </div>
 </body>
 </html>

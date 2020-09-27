@@ -19,6 +19,7 @@
 }
 .preview-image {
     position: relative;
+    margin: 10px;
     width: 130px;
     height: 130px;
     border-radius: 50%;
@@ -41,4 +42,106 @@
 }
 .image-border {
 Box-shadow:0px 8px 0px coral,0px -8px 0px coral,8px 0px 0px coral,-8px 0px 0px coral;
+}
+/* .addImageAndCategoryChangeCon {
+    position: fixed;
+    width: 250px;
+    height: 200px;
+    top: 0;
+    margin-left: 20px;
+} */
+.buttonAddimages {
+position: relative;
+padding: 10px 30px;
+background-color: coral;
+opacity: 0.75;
+margin: 10px;
+border-radius: 100px;
+border:  none;
+display: none;
+}
+.buttonChangeCategory  {
+    position: relative;
+    top: 30%;
+    margin: 10px;
+    padding: 10px 30px;
+    background-color: coral;
+    border-radius: 100px;
+    opacity: 0.75;
+    border: none;
+    display: none;
+}
+.actionMenu {
+    position: fixed;
+    width: 250px;
+    height: 200px;
+    top: 0;
+    margin-left: 20px;
+}
+.contextButton{
+position: relative;
+padding: 10px 30px;
+background-color: grey;
+opacity: 0.75;
+font-size: 2em;
+border-radius: 100px;
+border:  none;
+}
+/* стили модального окна */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px;
+    height: 400px;
+    background:  mediumaquamarine;
+    opacity: 0.97;
+}
+.modalCloseButton {
+    position: fixed;
+    background-color: red;
+    opacity: 0.8;
+    padding: 5px 10px;
+    font-size: 2em;
+    top: 0;
+    right: 0;
+    border: none;
+}
+.inputFile {
+    visibility: hidden;
+    background: transparent;
+}
+.inputCon {
+    position: relative;
+    top: 20%;
+    width: 300px;
+    height: 50px;
+}
+.inputButton {
+    background: transparent;
+    background-color: gray;
+    position: relative;
+    margin-left: 10px;
+    padding: 15px 30px;
+    font-size: 1em;
+    border-radius: 100px;
+    border:  none;
+}
+.modalOpen {
+    display: block;
+}
+#drop-area {
+    position: fixed;
+    right: 20px;
+    bottom: 50px;
+    width: 300px;
+    padding: 20px;
+    height: 250px;
+    font-size: 1.5em;
+    border: 2px dashed black;
+    border-radius: 20px;
+}
+#fileElem {
+   display: none;
 }

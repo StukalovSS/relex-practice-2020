@@ -3,18 +3,16 @@
 // let answer = prompt(`Сколько будет ${a} + ${b} ?`);
 // if (answer == a+b) {
 //     alert("Правильно!");
-import Zoom from "zooming";
+//let modal = document.body.appendChild(document.createElement('div')); добавление элементов в body
 import "../css/styles.css";
     const images = [
         {path: "../src/images/jslogo.png",category: "light"},
         {path: "../src/images/nature.jpg",category: "light"},
-        {path: "../src/images/whale.jpg",category: "light"},
         {path: "../src/images/blueWhale.webp",category: "light"},
         {path: "../src/images/purpleWorld.jpg",category: "dark"},
         {path: "../src/images/subNat.jpeg",category: "dark"},
         {path: "../src/images/planet.jpg",category: "dark"}
     ];
-
     const textContent = [
         "Просто логотип JavaScript",
         "Природа",
@@ -23,12 +21,13 @@ import "../css/styles.css";
         "Фантастический мир",
     ];
     let mainCon = document.getElementById("Gallery");
-    //const zooming = new Zooming();
 
     //Контейнер для показываемого изображения 
-    let mainImageCon = mainCon.appendChild(document.createElement('div')); 
+    let mainImageCon = mainCon.appendChild(document.createElement("div"));
+    mainImageCon.setAttribute("id", "mainImageCon"); 
     mainImageCon.setAttribute("class","mainImageCon");
     let mainImage = mainImageCon.appendChild(document.createElement('img'));
+    //переключение картинок с помощью клика 
     mainImage.addEventListener('click', function(){
         if (document.body.firstChild != mainImage) {
             document.body.insertAdjacentElement("afterbegin", mainImage);
@@ -43,14 +42,61 @@ import "../css/styles.css";
     });
     mainImage.classList.add('mainImage');
     mainImage.setAttribute('src', images[0].path);
-    //zooming.listen('.mainImage');
-    
-    
 
+    //создание меню действий
+    
+let actionMenu = mainCon.appendChild(document.createElement("div"));
+actionMenu.setAttribute("class", "actionMenu");
+let contexButton = actionMenu.appendChild(document.createElement("button"));
+contexButton.setAttribute("class", "contextButton");
+contexButton.innerHTML ="☰";
+let addImageAndCategoryChangeCon = actionMenu.appendChild(document.createElement("div"));
+addImageAndCategoryChangeCon.setAttribute("class", "addImageAndCategoryChangeCon");
+let buttonAddimages = addImageAndCategoryChangeCon.appendChild(document.createElement("button"));
+buttonAddimages.innerHTML = "Добавить изображение";
+buttonAddimages.setAttribute("class","buttonAddimages");
+let buttonChangeCategory = addImageAndCategoryChangeCon.appendChild(document.createElement("button"));
+buttonChangeCategory.innerHTML = "Категории";
+buttonChangeCategory.setAttribute("class", "buttonChangeCategory");
+contexButton.addEventListener("click", function() {
+    if (contexButton.innerHTML == '☰') {
+          contexButton.innerHTML = '▲';
+          buttonAddimages.style.display = 'block';
+          buttonChangeCategory.style.display = 'block';
+    }
+    else {
+        contexButton.innerHTML = "☰";
+        buttonAddimages.style.display = 'none';
+        buttonChangeCategory.style.display = 'none';
+    }
+});
+
+    //работа с модальным окном
+    let modal = document.querySelector(".modal");
+    let modalCloseButton = document.querySelector(".modalCloseButton");
+    let inputCon = document.querySelector(".inputCon");
+    let inputFile = document.querySelector(".inputFile");
+    let inputLabel = document.querySelector(".inputButton");
+    let chooseCategoryCon = document.querySelector(".chooseCategoryCon");
+    buttonAddimages.addEventListener('click', function() {
+        modal.classList.add ("modalOpen");
+    })
+    modalCloseButton.addEventListener ("click", function() {
+        modal.classList.remove("modalOpen");
+    })
+    inputFile.onchange = function(){
+        images.push({path:"../src/images/"+ inputFile.files[0].name, category: "oph"});
+        console.log(images[images.length-1]);
+        previewsInit();
+        modal.classList.toggle("modalOpen");
+    };
+    //drag and drop
     //Контейнер для превью
     let previewCon = mainCon.appendChild(document.createElement('div'));
-    previewCon.setAttribute("id", "previewCon");
     const previews = [];
+    previewsInit();
+    previewCon.setAttribute("id", "previewCon");
+    function previewsInit () {
     for (let i =0; i < images.length; i++) {
         previews.push(previewCon.appendChild(document.createElement('img')));// создаем контейнеры для изображений 
         previews[i].addEventListener("click", function() {
@@ -63,17 +109,18 @@ import "../css/styles.css";
         previews[i].setAttribute('src',images[i].path);// заполняем контейнеры изображениями с диска 
         previews[i].classList.add('preview-image');
     }
-    let st=8;
-    for(let i=0; i<previews.length; i++){
-        previews[i].style.margin="30px";
-        previews[i].style.marginBottom=st+"px";
-        if(i<previews.length /2-1)
-            st+=15;
-        else
-            st-=15;
-    }
-    
-
+    // let st = 8;
+    // for(let i=0; i<previews.length; i++){
+    //     previews[i].style.margin="30px";
+    //     previews[i].style.marginBottom=st+"px";
+    //     if(i<previews.length /2-1)
+    //         st+=15;
+    //     else
+    //         st-=15;
+    // }
+    // st = 0;
+}
+    //переключение картинок стрелочками
     let i = 0;
     previews[0].classList.add("image-border");
     document.addEventListener('keydown', function(event) {
@@ -115,4 +162,5 @@ import "../css/styles.css";
         }
         
       });
-// }
+
+    // }

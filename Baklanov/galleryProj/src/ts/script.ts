@@ -47,7 +47,7 @@ import "../css/styles.css";
     //Контейнер для превью
     let previewCon = mainCon.appendChild(document.createElement('div'));
     previewCon.setAttribute("id", "previewCon");
-    const previews = [];
+    const previews:any = [];
     for (let i =0; i < images.length; i++) {
         previews.push(previewCon.appendChild(document.createElement('img')));// создаем контейнеры для изображений 
         previews[i].addEventListener("click", function() {
