@@ -9,8 +9,10 @@ import "../css/styles.css";
         {path: "../src/images/jslogo.png",category: "light"},
         {path: "../src/images/nature.jpg",category: "light"},
         {path: "../src/images/whale.jpg",category: "light"},
-        {path: "../src/images/planet.jpg",category: "dark"},
-        {path: "../src/images/fantasy.jpg",category: "dark"}
+        {path: "../src/images/blueWhale.webp",category: "light"},
+        {path: "../src/images/purpleWorld.jpg",category: "dark"},
+        {path: "../src/images/subNat.jpeg",category: "dark"},
+        {path: "../src/images/planet.jpg",category: "dark"}
     ];
 
     const textContent = [
@@ -61,14 +63,14 @@ import "../css/styles.css";
         previews[i].setAttribute('src',images[i].path);// заполняем контейнеры изображениями с диска 
         previews[i].classList.add('preview-image');
     }
-    let st=10;
+    let st=8;
     for(let i=0; i<previews.length; i++){
         previews[i].style.margin="30px";
         previews[i].style.marginBottom=st+"px";
-        if(i<2)
-            st+=35;
+        if(i<previews.length /2-1)
+            st+=15;
         else
-            st-=35;
+            st-=15;
     }
     
 

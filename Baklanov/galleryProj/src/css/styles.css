@@ -14,13 +14,13 @@
 #previewCon {
     position: absolute;
     bottom: 0;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-left: 6%;
+    margin-right: 6%;
 }
 .preview-image {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
 }
 .mainImageCon {
