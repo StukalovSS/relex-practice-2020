@@ -1,3 +1,4 @@
+import { NoEmitOnErrorsPlugin } from 'webpack';
 import './css/style.css';
 // import Zoom from '../node_modules/zooming/build/zooming.min.js';
 const Zoom = require('../node_modules/zooming/build/zooming.min.js');
@@ -22,6 +23,8 @@ const images: any = [];
 images.push(img1, img2, img3, img4);
 
 const categories = ['Животные', 'Антарктида ночью', 'Пейзаж'];
+let remImg: any = [];
+
 
 const container = document.createElement('div');
 document.body.appendChild(container);
@@ -36,6 +39,80 @@ dropdown.appendChild(openMenu);
 openMenu.classList.add('open-menu');
 
 
+function workCheckbox(checkbox: any) {
+    checkbox.addEventListener('click', (e: any) => {
+        let ctg: string = (<HTMLInputElement>checkbox).value;
+        let checked: boolean = checkbox.checked;
+
+        if (checked) {
+            if (remImg.length != 0) {
+                let ind1 = 0;
+                let rrr = 0;
+                while (ind1 < remImg.length) {
+                    if (remImg[ind1].getAttribute('category') == ctg) {
+                        for (let q = rrr; q < images.length; q++) {
+                            if (ctg == images[q].category) {
+                                rrr = q + 1;
+                                addNewImage(q);
+                                break;
+                            }
+                        }
+                        remImg.splice(ind1, 1);
+                    }
+                    else {
+                        ind1++;
+                    }
+                }
+                mainImage.src = previewImages[0].src;
+                previewImages[0].classList.add("image-select");
+            }
+            else {
+                let ind2 = 0;
+                while (ind2 < previewImages.length) {
+                    if (previewImages[ind2].getAttribute('category') != ctg) {
+                        remImg.push(previewImages[ind2]);
+                        previewImages[ind2].parentNode.removeChild(previewImages[ind2]);
+                        previewImages.splice(ind2, 1);
+                        ind2 = 0;
+                    }
+                    else {
+                        ind2++;
+                    }
+                }
+                mainImage.src = previewImages[0].src;
+                previewImages[0].classList.add("image-select");
+            }
+        }
+
+        else {
+            if (previewImages.length != 0) {
+                let ind1 = 0;
+                while (ind1 < previewImages.length) {
+                    if (previewImages[ind1].getAttribute('category') == ctg) {
+                        remImg.push(previewImages[ind1]);
+                        previewImages[ind1].parentNode.removeChild(previewImages[ind1]);
+                        previewImages.splice(ind1, 1);
+                        ind1 = 0;
+                    }
+                    else { ind1++; }
+                }
+                if (previewImages.length > 0) {
+                    mainImage.src = previewImages[0].src;
+                    previewImages[0].classList.add("image-select");
+                }
+                else {
+                    for (let k = 0; k < images.length; k++) {
+                        addNewImage(k);
+                    }
+                    mainImage.src = previewImages[0].src;
+                    previewImages[0].classList.add("image-select");
+                    remImg = [];
+                }
+            }
+
+        }
+    });
+}
 
 openMenu.addEventListener('click', () => {
     if (dropdown.childNodes.length == 1) {
@@ -53,43 +130,38 @@ openMenu.addEventListener('click', () => {
         categoryTitle.classList.add('category__title--active');
         categoryTitle.textContent = 'Категории';
 
+        const categoryList = document.createElement('ul');
+        category.appendChild(categoryList);
+        categoryList.classList.add('category__list');
+
+        for (let a = 0; a < categories.length; a++) {
+            const categoryElem = document.createElement('li');
+            categoryList.appendChild(categoryElem);
+            categoryElem.classList.add('category__elem');
+
+            const labelCategory = document.createElement('label');
+            categoryElem.appendChild(labelCategory);
+
+            const checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            labelCategory.textContent = categories[a];
+            labelCategory.appendChild(checkbox);
+            checkbox.setAttribute('value', categories[a]);
+            checkbox.setAttribute('name', 'filter');
+            workCheckbox(checkbox);
+        }
+
+        let cl: number = 1;
         categoryTitle.addEventListener('click', () => {
-            if (category.childNodes.length == 1) {
+            if (cl % 2 == 1) {
                 categoryTitle.classList.remove('category__title--active');
-                const categoryList = document.createElement('ul');
-                category.appendChild(categoryList);
-                categoryList.classList.add('category__list');
-                for (let a = 0; a < categories.length; a++) {
-                    const categoryElem = document.createElement('li');
-                    categoryList.appendChild(categoryElem);
-                    categoryElem.classList.add('category__elem');
-
-                    const labelCategory = document.createElement('label');
-                    categoryElem.appendChild(labelCategory);
-
-                    const checkbox = document.createElement('input');
-                    checkbox.setAttribute('type', 'checkbox');
-                    labelCategory.textContent = categories[a];
-                    labelCategory.appendChild(checkbox);
-                    checkbox.setAttribute('value', categories[a]);
-
-                    checkbox.addEventListener('click', (e: any) => {
-                        let c = (<HTMLInputElement>checkbox).value;
-                        for (let i = 0; i < previewImages.length; i++) {
-                            if (previewImages[i].getAttribute('category') != c) {
-                                previewImages[i].parentNode.removeChild(previewImages[i]);
-                                previewImages.splice(i, 1);
-                                i--;
-                            }
-                        }
-                        mainImage.src = previewImages[0].src;
-                    });
-                }
+                categoryList.classList.add('category__list--show');
             }
-            else {
-                category.removeChild(category.lastChild);
+            else if (cl % 2 == 0) {
                 categoryTitle.classList.add('category__title--active');
+                categoryList.classList.remove('category__list--show');
             }
+            cl++;
         });
 
         const buttonAdd = document.createElement('button');
@@ -103,45 +175,157 @@ openMenu.addEventListener('click', () => {
             document.body.appendChild(modalAdd);
             modalAdd.classList.add('modal-add');
 
+            const modalAddInner = document.createElement('div');
+            modalAdd.appendChild(modalAddInner);
+            modalAddInner.classList.add('modal-add__inner');
+
             const closeBtn = document.createElement('button');
-            modalAdd.appendChild(closeBtn);
+            modalAddInner.appendChild(closeBtn);
             closeBtn.classList.add('modal-add__close');
 
-            const inputFile = document.createElement('input');
-            modalAdd.appendChild(inputFile);
-            inputFile.setAttribute('type', 'file');
+            const dropZone = document.createElement('div');
+            modalAddInner.appendChild(dropZone);
+            dropZone.classList.add('drop-zone');
 
+            const inputFileLabel = document.createElement('label');
+            dropZone.appendChild(inputFileLabel);
+            inputFileLabel.setAttribute('for', 'add-pic');
+            inputFileLabel.classList.add('modal-add__file')
+            inputFileLabel.textContent = 'Выберите изображение';
+
+            const inputFile = document.createElement('input');
+            dropZone.appendChild(inputFile);
+            inputFile.setAttribute('type', 'file');
+            inputFile.setAttribute('id', 'add-pic');
+
+            const selectContainer = document.createElement('div');
+            selectContainer.classList.add('select');
+            modalAddInner.appendChild(selectContainer);
             const inputCategoryLabel = document.createElement('label');
-            modalAdd.appendChild(inputCategoryLabel);
+            selectContainer.appendChild(inputCategoryLabel);
             inputCategoryLabel.textContent = 'Категория:';
             const inputCategory = document.createElement('input');
-            inputCategoryLabel.appendChild(inputCategory);
+            selectContainer.appendChild(inputCategory);
             inputCategory.setAttribute('type', 'text');
+            inputCategory.classList.add('select__input');
+            const selectList = document.createElement('ul');
+            selectList.classList.add('select__list');
+            selectContainer.appendChild(selectList);
+
+            for (let i = 0; i < categories.length; i++) {
+                const selectItem = document.createElement('li');
+                selectItem.classList.add('select__item');
+                selectList.appendChild(selectItem);
+                selectItem.textContent = categories[i];
+            }
+
+            // выбор категории из существующих
+            let selectItems = document.querySelectorAll('.select__item');
+            for (let i = 0; i < selectItems.length; i++) {
+                selectItems[i].addEventListener('click', () => {
+                    inputCategory.value = selectItems[i].textContent;
+                    inputCategory.classList.remove('new-category');
+                })
+            }
+
+            // поиск категории по вводу
+            inputCategory.addEventListener('keyup', () => {
+                for (let i = 0; i < selectItems.length; i++) {
+                    let ctg = selectItems[i].textContent;
+                    let ctgInp = inputCategory.value.toUpperCase();
+                    let elem: HTMLElement = selectItems[i] as HTMLElement;
+                    if (ctg.toUpperCase().indexOf(ctgInp) > -1) {
+                        elem.style.display = "";
+                        inputCategory.classList.remove('new-category');
+                    } else {
+                        elem.style.display = "none";
+                        inputCategory.classList.add('new-category');
+                    }
+                }
+            })
 
             const saveBtn = document.createElement('button');
-            modalAdd.appendChild(saveBtn);
+            modalAddInner.appendChild(saveBtn);
             saveBtn.classList.add('modal-add__save-btn');
             saveBtn.textContent = 'Добавить';
 
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                })
+            });
 
-            inputFile.addEventListener('change', () => {
-                if (inputFile.files && inputFile.files[0]) {
-                    let reader = new FileReader();
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drop-zone--active');
+                })
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drop-zone--active');
+                })
+            });
+
+            function fileFunc(files: any) {
+                let reader = new FileReader();
+                reader.readAsDataURL(files[0]);
+
+                reader.onload = function (e: any) {
+                    let addImgPreview = document.createElement('img');
+                    addImgPreview.setAttribute('src', reader.result as string);
+                    dropZone.removeChild(inputFileLabel);
+                    dropZone.appendChild(addImgPreview);
+                    dropZone.classList.add('no-border');
+                    addImgPreview.classList.add('img-size');
 
                     saveBtn.addEventListener('click', () => {
-                        reader.onload = function (e: any) {
+                        if (inputCategory.textContent != "") {
+                            if (inputCategory.classList.contains('new-category')) {
+                                let newCtg = inputCategory.value;
+                                categories.push(newCtg);
+
+                                const newCtgElem = document.createElement('li');
+                                categoryList.appendChild(newCtgElem);
+                                newCtgElem.classList.add('category__elem');
+
+                                const newLabelCtg = document.createElement('label');
+                                newCtgElem.appendChild(newLabelCtg);
+
+                                const newCheckbox = document.createElement('input');
+                                newCheckbox.setAttribute('type', 'checkbox');
+                                newLabelCtg.textContent = categories[categories.length - 1];
+                                newLabelCtg.appendChild(newCheckbox);
+                                newCheckbox.setAttribute('value', categories[categories.length - 1]);
+                                newCheckbox.setAttribute('name', 'filter');
+                                workCheckbox(newCheckbox);
+                            }
+
                             const newImg: Image = new Image('', '');
                             newImg.category = (<HTMLInputElement>inputCategory).value;
                             newImg.path = e.target.result;
                             images.push(newImg);
                             addNewImage(images.length - 1);
-                            // document.querySelector('.main-image').setAttribute('src', e.target.result);
-                        };
-                        reader.readAsDataURL(inputFile.files[0]);
-                        modalAdd.remove();
-                    })
+                            modalAdd.remove();
+                        }
+                    });
                 }
-            })
+            }
+
+            // добавление картинки перетаскиванием
+            dropZone.addEventListener('drop', (evt) => {
+                let dt = evt.dataTransfer;
+                let files = dt.files;
+                fileFunc(files);
+            });
+
+            // добавление картинки через нажатие кнопки
+            inputFile.addEventListener('change', () => {
+                if (inputFile.files && inputFile.files[0]) {
+                    fileFunc(inputFile.files);
+                }
+            });
 
             closeBtn.addEventListener('click', () => {
                 modalAdd.remove();

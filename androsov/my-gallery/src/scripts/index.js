@@ -1,59 +1,10 @@
 "use strict";
 exports.__esModule = true;
 require("../css/style.css");
-var first_jpg_1 = require("../img/puppies/first.jpg");
-var second_jpg_1 = require("../img/puppies/second.jpg");
-var third_jpg_1 = require("../img/puppies/third.jpg");
-var fourth_jpg_1 = require("../img/puppies/fourth.jpg");
-var fifth_jpg_1 = require("../img/puppies/fifth.jpg");
-var first_jpg_2 = require("../img/landskapes/first.jpg");
-var second_jpg_2 = require("../img/landskapes/second.jpg");
-var third_jpg_2 = require("../img/landskapes/third.jpg");
-var fourth_jpg_2 = require("../img/landskapes/fourth.jpg");
-var fifth_jpg_2 = require("../img/landskapes/fifth.jpg");
-var first_jpg_3 = require("../img/still-lifes/first.jpg");
-var second_jpg_3 = require("../img/still-lifes/second.jpg");
-var third_jpg_3 = require("../img/still-lifes/third.jpg");
-var fourth_jpg_3 = require("../img/still-lifes/fourth.jpg");
-var fifth_jpg_3 = require("../img/still-lifes/fifth.jpg");
-var first_jpg_4 = require("../img/cars/first.jpg");
-var second_jpg_4 = require("../img/cars/second.jpg");
-var third_jpg_4 = require("../img/cars/third.jpg");
-var fourth_jpg_4 = require("../img/cars/fourth.jpg");
-var fifth_jpg_4 = require("../img/cars/fifth.jpg");
-var first_jpg_5 = require("../img/animals/first.jpg");
-var second_jpg_5 = require("../img/animals/second.jpg");
-var third_jpg_5 = require("../img/animals/third.jpg");
-var fourth_jpg_5 = require("../img/animals/fourth.jpg");
-var fifth_jpg_5 = require("../img/animals/fifth.jpg");
+var imageSources_1 = require("./imageSources");
 var Image_1 = require("./Image");
 var prevues_1 = require("./prevues");
-var divWithMainImage = document.createElement('div'), divWithPrevues = document.createElement('div'), gallery = document.getElementById('gallery'), mainImage = createImg('', ['main-image']), imageSources = [{
-        sources: [first_jpg_1["default"], second_jpg_1["default"], third_jpg_1["default"], fourth_jpg_1["default"], fifth_jpg_1["default"]],
-        cathegory: 'puppy'
-    },
-    { sources: [first_jpg_2["default"], second_jpg_2["default"], third_jpg_2["default"], fourth_jpg_2["default"], fifth_jpg_2["default"]],
-        cathegory: 'landskape'
-    },
-    {
-        sources: [first_jpg_3["default"], second_jpg_3["default"], third_jpg_3["default"], fourth_jpg_3["default"], fifth_jpg_3["default"]],
-        cathegory: 'still-live'
-    },
-    {
-        sources: [first_jpg_4["default"], second_jpg_4["default"], third_jpg_4["default"], fourth_jpg_4["default"], fifth_jpg_4["default"]],
-        cathegory: 'car'
-    },
-    {
-        sources: [first_jpg_5["default"], second_jpg_5["default"], third_jpg_5["default"], fourth_jpg_5["default"], fifth_jpg_5["default"]],
-        cathegory: 'animal'
-    }].map(function (obj) {
-    var arr = [];
-    for (var _i = 0, _a = obj.sources; _i < _a.length; _i++) {
-        var src = _a[_i];
-        arr.push(new Image_1["default"](createImg(src, ['preview-image']), obj.cathegory));
-    }
-    return arr;
-});
+var divWithMainImage = document.createElement('div'), divWithPrevues = document.createElement('div'), gallery = document.getElementById('gallery'), mainImage = createImg('', ['main-image']), imageSources = imageSources_1["default"]();
 var prevues = new prevues_1["default"]([]);
 function createImg(src, classList) {
     if (classList === void 0) { classList = []; }
@@ -128,14 +79,13 @@ function checkCheckboxes() {
     for (var _i = 0, _a = container; _i < _a.length; _i++) {
         var cb = _a[_i];
         if (cb.checked) {
-            cathegories.push(cb.value);
+            cathegories.push(cb.value.toLowerCase());
         }
     }
     changePrevues(cathegories);
 }
 function appendCheckBox(cathegory) {
-    if (cathegoryCheckBoxes
-        .find(function (val) { return val.textContent.toLowerCase() === cathegory.toLowerCase(); }) === undefined) {
+    if (!prevues.cathegories.includes(cathegory.toLowerCase())) {
         var p = document.createElement('p'), cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.value = cathegory;
@@ -149,16 +99,22 @@ function appendCheckBox(cathegory) {
         cathegoryNameField.nextElementSibling.appendChild(option);
     }
 }
-function handleImage(file) {
+function handleImage(files) {
     var reader = new FileReader(), cathegory = cathegoryNameField.value;
-    if (file.type.startsWith('image/')) {
-        var img_1 = document.createElement('img');
-        reader.addEventListener('loadend', function (event) {
-            img_1.src = event.target.result;
-        });
-        reader.readAsDataURL(file);
-        appendCheckBox(cathegory);
-        addPrevues([new Image_1["default"](img_1, cathegory)]);
+    var _loop_1 = function (file) {
+        if (file.type.startsWith('image/')) {
+            var img_1 = document.createElement('img');
+            reader.addEventListener('loadend', function (event) {
+                img_1.src = event.target.result;
+            });
+            reader.readAsDataURL(file);
+            appendCheckBox(cathegory);
+            addPrevues([new Image_1["default"](img_1, cathegory)]);
+        }
+    };
+    for (var _i = 0, _a = Array.from(files); _i < _a.length; _i++) {
+        var file = _a[_i];
+        _loop_1(file);
     }
 }
 function dragenter(e) {
@@ -173,11 +129,10 @@ function drop(e) {
     e.stopPropagation();
     e.preventDefault();
     var dt = e.dataTransfer, files = dt.files;
-    console.log(files);
-    handleImage(files[files.length - 1]);
+    handleImage(files);
 }
-for (var _i = 0, imageSources_1 = imageSources; _i < imageSources_1.length; _i++) {
-    var images = imageSources_1[_i];
+for (var _i = 0, imageSources_2 = imageSources; _i < imageSources_2.length; _i++) {
+    var images = imageSources_2[_i];
     addPrevues(images);
 }
 divWithPrevues.id = 'container-preview';
@@ -231,8 +186,7 @@ document.getElementById('show-input-add-file-btn').addEventListener('click', fun
 });
 var fileChooser = document.getElementById('img-file-chooser'), cathegoryNameField = document.getElementById('cathegory-textfield'), addFileBtn = document.getElementById('add-image'), checkboxes = document.getElementById('checkboxes');
 addFileBtn.addEventListener('click', function () {
-    var file = fileChooser.files[fileChooser.files.length - 1];
-    handleImage(file);
+    handleImage(fileChooser.files);
 });
 var dropbox = document.querySelector(".file-field");
 dropbox.addEventListener("dragenter", dragenter, false);
