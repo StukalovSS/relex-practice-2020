@@ -3,7 +3,7 @@
 // let answer = prompt(`Сколько будет ${a} + ${b} ?`);
 // if (answer == a+b) {
 //     alert("Правильно!");
-//import Zoom from "zooming";
+import Zoom from "zooming";
 import "../css/styles.css";
     const images = [
         {path: "../src/images/jslogo.png",category: "light"},
@@ -21,10 +21,11 @@ import "../css/styles.css";
         "Фантастический мир",
     ];
     let mainCon = document.getElementById("Gallery");
-   //const zooming = new Zooming();
+    //const zooming = new Zooming();
 
     //Контейнер для показываемого изображения 
     let mainImageCon = mainCon.appendChild(document.createElement('div')); 
+    mainImageCon.setAttribute("class","mainImageCon");
     let mainImage = mainImageCon.appendChild(document.createElement('img'));
     mainImage.addEventListener('click', function(){
         if (document.body.firstChild != mainImage) {
