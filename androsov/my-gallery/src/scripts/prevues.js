@@ -103,6 +103,13 @@ var PrevueContainer = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(PrevueContainer.prototype, "cathegories", {
+        get: function () {
+            return Array.from(this.sortedImages.keys());
+        },
+        enumerable: false,
+        configurable: true
+    });
     return PrevueContainer;
 }());
 exports["default"] = PrevueContainer;

@@ -1,60 +1,13 @@
 import '../css/style.css';
-import puppy1 from '../img/puppies/first.jpg';
-import puppy2 from '../img/puppies/second.jpg';
-import puppy3 from '../img/puppies/third.jpg';
-import puppy4 from '../img/puppies/fourth.jpg';
-import puppy5 from '../img/puppies/fifth.jpg';
-import ls1 from '../img/landskapes/first.jpg';
-import ls2 from '../img/landskapes/second.jpg';
-import ls3 from '../img/landskapes/third.jpg';
-import ls4 from '../img/landskapes/fourth.jpg';
-import ls5 from '../img/landskapes/fifth.jpg';
-import sl1 from '../img/still-lifes/first.jpg';
-import sl2 from '../img/still-lifes/second.jpg';
-import sl3 from '../img/still-lifes/third.jpg';
-import sl4 from '../img/still-lifes/fourth.jpg';
-import sl5 from '../img/still-lifes/fifth.jpg';
-import car1 from '../img/cars/first.jpg';
-import car2 from '../img/cars/second.jpg';
-import car3 from '../img/cars/third.jpg';
-import car4 from '../img/cars/fourth.jpg';
-import car5 from '../img/cars/fifth.jpg';
-import animal1 from '../img/animals/first.jpg';
-import animal2 from '../img/animals/second.jpg';
-import animal3 from '../img/animals/third.jpg';
-import animal4 from '../img/animals/fourth.jpg';
-import animal5 from '../img/animals/fifth.jpg';
+import getImgSrc from './imageSources';
 import Image from './Image';
-import PrevueContainer from './prevues'
+import PrevueContainer from './prevues';
 
 const divWithMainImage: HTMLDivElement = document.createElement( 'div' ),
 	divWithPrevues: HTMLDivElement = document.createElement( 'div' ),
 	gallery: HTMLElement = document.getElementById('gallery'),
 	mainImage: HTMLImageElement = createImg('', ['main-image']),
-	imageSources: Image[][] = [{
-        sources: [puppy1, puppy2, puppy3, puppy4, puppy5],
-        cathegory: 'puppy'
-        },
-        {            sources: [ls1, ls2, ls3, ls4, ls5],
-            cathegory: 'landskape'
-        },
-        {
-            sources: [sl1, sl2, sl3, sl4, sl5],
-            cathegory: 'still-live'
-        },
-        {
-            sources: [car1, car2, car3, car4, car5],
-            cathegory: 'car'
-        }, 
-        {
-            sources: [animal1, animal2, animal3, animal4, animal5],
-            cathegory: 'animal'
-        }].map( obj => {
-			const arr: Image[] = [];
-			for (let src of obj.sources)
-				arr.push(new Image( createImg(src, ['preview-image']), obj.cathegory ));
-			return arr;
-		});
+	imageSources: Image[][] = getImgSrc();
 
 let	prevues: PrevueContainer = new PrevueContainer([]);
 	
@@ -138,7 +91,7 @@ function checkCheckboxes() {
 		.filter( elem => elem.type === 'checkbox' );
 	for (let cb of container as HTMLInputElement[]){
 		if (cb.checked) {
-			cathegories.push( cb.value );
+			cathegories.push( cb.value.toLowerCase() );
 		}
 	}
 	changePrevues( cathegories );
@@ -146,8 +99,8 @@ function checkCheckboxes() {
 
 function appendCheckBox(cathegory: string) {
 	
-	if (cathegoryCheckBoxes
-		.find( val => val.textContent.toLowerCase() === cathegory.toLowerCase()) === undefined) {
+	if ( !prevues.cathegories.includes( cathegory.toLowerCase() ) ) {
+		
 		const p: HTMLElement = document.createElement( 'p' ),
 			cb: HTMLInputElement = document.createElement( 'input' );
 		cb.type = 'checkbox';
@@ -164,18 +117,20 @@ function appendCheckBox(cathegory: string) {
 	}
 }
 
-function handleImage(file: File) {
+function handleImage(files: FileList) {
 	const reader: FileReader = new FileReader(),
 		cathegory: string = cathegoryNameField.value;
-	
-	if (file.type.startsWith('image/')) {
-		let img = document.createElement( 'img' );
-		reader.addEventListener('loadend', event => {
-			img.src = event.target.result as string;
-		});
-		reader.readAsDataURL(file);
-		appendCheckBox(cathegory);
-		addPrevues([new Image(img, cathegory)]);
+
+	for (let file of Array.from( files ) ) {
+		if (file.type.startsWith('image/')) {
+			let img = document.createElement( 'img' );
+			reader.addEventListener('loadend', event => {
+				img.src = event.target.result as string;
+			});
+			reader.readAsDataURL(file);
+			appendCheckBox(cathegory);
+			addPrevues([new Image(img, cathegory)]);
+		}
 	}
 }
 
@@ -196,9 +151,7 @@ function dragenter(e: Event) {
 	let dt: DataTransfer = e.dataTransfer,
 			files = dt.files;
 
-	console.log( files );
-  
-	handleImage(files[files.length - 1]);
+	handleImage(files);
   }
 
 for (let images of imageSources) {
@@ -279,8 +232,7 @@ const fileChooser: HTMLInputElement =
 		checkboxes: HTMLDivElement = document.getElementById( 'checkboxes' ) as HTMLDivElement;
 
 addFileBtn.addEventListener('click', () => {
-	const file: File = fileChooser.files[fileChooser.files.length - 1];
-    handleImage(file);
+    handleImage(fileChooser.files);
 });
 
 let dropbox = document.querySelector(".file-field");

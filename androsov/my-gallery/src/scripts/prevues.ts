@@ -81,6 +81,10 @@ export default class PrevueContainer {
         return this.allVisibleImages[index];
     }
 
+    get cathegories() {
+        return Array.from( this.sortedImages.keys() );
+    }
+
     // [Symbol.iterator]() {
     //     let it = this.allImages[Symbol.iterator]();
     //     return {
