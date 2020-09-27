@@ -74,7 +74,7 @@ display: none;
 .actionMenu {
     position: fixed;
     width: 250px;
-    height: 200px;
+    height: 500px;
     top: 0;
     margin-left: 20px;
 }
@@ -87,6 +87,29 @@ font-size: 2em;
 border-radius: 100px;
 border:  none;
 }
+.changeCategoryButCon {
+    position: relative;
+    right: 0px;
+    bottom: 0px;
+    width: 250px;
+    padding: 20px;
+    height: 250px;
+    font-size: 1.5em;
+    border: 6px dashed red;
+    border-radius: 20px;
+    display: none;
+}
+.disap {
+    display: block;
+}
+.check0 {
+    position: relative;
+    padding: 10px;
+}
+.check1 {
+    position: relative;
+    padding: 10px;
+}
 /* стили модального окна */
 .modal {
     position: fixed;
@@ -97,6 +120,7 @@ border:  none;
     height: 400px;
     background:  mediumaquamarine;
     opacity: 0.97;
+    display: none;
 }
 .modalCloseButton {
     position: fixed;

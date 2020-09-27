@@ -21,7 +21,16 @@ import "../css/styles.css";
         "Фантастический мир",
     ];
     let mainCon = document.getElementById("Gallery");
-
+    let categorys= [];
+    function unique() {
+      
+        for (let i =0; i < images.length; i++) {
+            if(!categorys.includes(images[i].category)){
+                categorys.push(images[i].category)
+            }
+         }
+      }
+      unique();
     //Контейнер для показываемого изображения 
     let mainImageCon = mainCon.appendChild(document.createElement("div"));
     mainImageCon.setAttribute("id", "mainImageCon"); 
@@ -58,18 +67,39 @@ buttonAddimages.setAttribute("class","buttonAddimages");
 let buttonChangeCategory = addImageAndCategoryChangeCon.appendChild(document.createElement("button"));
 buttonChangeCategory.innerHTML = "Категории";
 buttonChangeCategory.setAttribute("class", "buttonChangeCategory");
+let changeCategoryButCon = addImageAndCategoryChangeCon.appendChild(document.createElement("div"));
+let radioButtons =[];
+    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('input')));
+    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('label')));
+    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('input')));
+    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('label')));
+    radioButtons[0].setAttribute("type", "radio");
+    radioButtons[0].setAttribute("class", `check ${0}`);
+    radioButtons[0].setAttribute("id", "radioButtons");
+    radioButtons[1].setAttribute("for",`check ${0}` )
+    radioButtons[2].setAttribute("type", "radio");
+    radioButtons[2].setAttribute("class", `check ${1}`);
+    radioButtons[2].setAttribute("id", "radioButtons");
+    radioButtons[3].setAttribute("for",`check ${1}` )
+
+changeCategoryButCon.setAttribute("class","changeCategoryButCon" );
 contexButton.addEventListener("click", function() {
     if (contexButton.innerHTML == '☰') {
           contexButton.innerHTML = '▲';
           buttonAddimages.style.display = 'block';
           buttonChangeCategory.style.display = 'block';
+          changeCategoryButCon.classList.remove("disap");
     }
     else {
         contexButton.innerHTML = "☰";
         buttonAddimages.style.display = 'none';
         buttonChangeCategory.style.display = 'none';
+        changeCategoryButCon.classList.remove("disap");
     }
 });
+    buttonChangeCategory.addEventListener ("click", function () {
+        changeCategoryButCon.classList.toggle("disap");
+    });
 
     //работа с модальным окном
     let modal = document.querySelector(".modal");
