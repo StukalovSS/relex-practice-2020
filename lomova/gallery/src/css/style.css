@@ -90,11 +90,16 @@ body {
 }
 
 .category__list {
+    display: none;
     margin: 0;
     margin-left: 21%;
     padding: 0;
     list-style: none;
     font-size: 18px;
+}
+
+.category__list--show{
+    display: block;
 }
 
 .category__elem {
@@ -137,32 +142,49 @@ body {
 }
 
 .modal-add {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    outline: 2px solid firebrick;
+    background: rgba(0, 0, 0, .8);
+}
+
+.modal-add__inner {
     display: flex;
     flex-wrap: wrap;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 192px;
+    width: 460px;
+    height: 320px;
     border: 5px solid #bed0df;
     border-radius: 7px;
-    padding: 20px;
+    padding: 33px 20px 60px 20px;
     background-color: white;
+    box-shadow: 0 4px 20px black;
 }
 
 .modal-add__close {
     cursor: pointer;
     position: absolute;
+    right: 2%;
+    top: 3%;
+    width: 13px;
+    height: 13px;
     border: none;
     outline: none;
+    background-image: url(../img/close-icon.svg);
+    background-repeat: no-repeat;
     background-color: transparent;
-    right: 3%;
 }
 
-.modal-add__close::before {
+/* .modal-add__close::before {
     position: absolute;
-    right: 22%;
+    right: 35%;
     content: "";
     width: 19px;
     height: 2px;
@@ -173,25 +195,106 @@ body {
 .modal-add__close:after {
     position: absolute;
     top: -8px;
-    right: 11px;
+    right: 12px;
     content: "";
     width: 2px;
-    height: 19px;
+    height: 20px;
     background-color: #bed0df;
     transform: rotate(45deg);
+} */
+
+.drop-zone {
+    position: relative;
+    width: 100%;
+    height: 57%;
+    border: 3px dashed rgb(101, 100, 105);
 }
 
-.modal-add input[type="file"] {
-    padding-top: 24px;
-    padding-bottom: 15px;
-    font-size: 16px;
+.drop-zone--active {
+    border-color: rgb(201, 64, 64);
 }
 
-.modal-add input[type="text"] {
+.img-size {
+    width: 237px;
+    height: 183px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+.no-border {
+    border: none;
+}
+
+.modal-add__file {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px 4px 6px 45px;
+    height: 20px;
+    cursor: pointer;
+    background-image: url(../img/pic-icon.svg);
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.modal-add__file:hover {
+    color: rgb(201, 64, 64);
+}
+
+.modal-add__file--succes {
+    color: rgb(15, 138, 15);
+}
+
+#add-pic {
+    display: none;
+}
+
+.select {
+    position: relative;
+}
+
+.select__input {
+    margin-left: 15px;
+    padding: 3px;
+    border: 2px solid #bed0df;
+}
+
+.select__list {
+    display: none;
+    position: absolute;
+    left: 36%;
+    top: 30%;
+    width: 163px;
+    min-height: 20%;
+    overflow: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #bed0df;
+    border-top: none;
+    background-color: rgb(236, 236, 236);
+}
+
+.select__input:focus + .select__list, .select__list:hover {
+    display: block;
+}
+
+.select__item {
+    padding: 3px;
+    cursor: pointer;
+}
+
+.select__item:not(:last-child) {
+    border-bottom: 2px solid #bed0df;
+}
+
+/* .modal-add input[type="text"] {
     padding: 3px;
     margin-top: 6px;
     font-size: 17px;
-}
+} */
 
 .modal-add__save-btn {
     margin: auto;
@@ -204,30 +307,8 @@ body {
     border-radius: 7px;
 }
 
-/* .modal {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
+.new-category {
+    background-image: url(../img/new-icon.svg);
+    background-repeat: no-repeat;
+    background-position: top 50% right 4%;
 }
-
-.modal-inner {
-    position: absolute;
-    overflow: auto;
-    left: 100px;
-    top: 30px;
-    right: 100px;
-    bottom: 30px;
-    background: rgba(0, 0, 0, .8);
-    box-shadow: 0 4px 20px black;
-}
-
-.modal__pic {
-    cursor: pointer;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-} */
