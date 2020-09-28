@@ -10,12 +10,23 @@ const picDel = require('../img/picDel.jpg');
 class Img{
     constructor(public puth: string,public category:string){};
 }
-const img1: Img = new Img(pic1.default,'summer');
-const img2: Img = new Img(pic2.default,'summer');
-const img3: Img = new Img(pic3.default,'summer');
-const img4: Img = new Img(pic4.default,'autumn');
-const img5: Img = new Img(pic5.default,'summer');
 
+let arrayOfCategory:any = [];
+arrayOfCategory.push('summer');
+arrayOfCategory.push('autumn');
+const img1: Img = new Img(pic1.default,arrayOfCategory[0]);
+const img2: Img = new Img(pic2.default,arrayOfCategory[0]);
+const img3: Img = new Img(pic3.default,arrayOfCategory[0]);
+const img4: Img = new Img(pic4.default,arrayOfCategory[1]);
+const img5: Img = new Img(pic5.default,arrayOfCategory[0]);
+
+
+let arrayCheck:any =[];
+const check1=document.getElementById("0");
+const check2=document.getElementById("1");
+arrayCheck.push(check1);
+arrayCheck.push(check2);
+let kCheck = 2;
 
 let arrayOfImgObject:any =[];
 arrayOfImgObject.push(img1);
@@ -42,7 +53,7 @@ const divImg = document.createElement('div');
 gallery.appendChild(divImg);
 divImg.setAttribute('id','preview');
 
-
+let current = 0; 
 let arrayOfImg:any = [],
 countOfImg=0;
 //добавление картинки 
@@ -61,7 +72,6 @@ let newImg2=createImg(countOfImg++);
 let newImg3=createImg(countOfImg++);
 let newImg4=createImg(countOfImg++);
 let newImg5=createImg(countOfImg++);
-console.log(arrayOfImg);
 
 //авторизация
 function authorization(){
@@ -100,7 +110,6 @@ function authorization(){
 
 
 
-let current=0;
  function funcBorder(e:any):void
  {
 	let mas:any[]= (Array.from(arrayOfImg)).map(function(num) 
@@ -117,7 +126,6 @@ let removeImg:any[] =[];
 let removeBool = false;
 let k:any,i,t1=true;
 let kImg=arrayOfImgObject.length;
-let tCheck1=false, tCheck2=false;
 
 //стрелочки
 function funcForKey(e:any):void{
@@ -129,11 +137,9 @@ function funcForKey(e:any):void{
 		let i;
 		k++;
 		for(i=0;i<removeImg.length;i++){
-			console.log(i);
 			if(removeImg[i]==(k%mas.length)){
-				console.log('зашел');
-			k++;
-			i=-1;
+				k++;
+				i=-1;
 			}
 		}
         mainImg.setAttribute('src',arrayOfImg[k%mas.length].src);
@@ -146,7 +152,6 @@ function funcForKey(e:any):void{
 		k-=1;
 		let i;
 		for(i=0;i<removeImg.length;i++){
-			console.log(i);
 			if(removeImg[i]==((mas.length+k)%mas.length)){
 				console.log('зашел');
 			k--;
@@ -158,84 +163,115 @@ function funcForKey(e:any):void{
 		current=(mas.length+k)%mas.length;
 }
 
-//проверка фильтра
-function funcCheck(){
-	if(tCheck1){
-		if(tCheck2){
-				for(let k=0;k<removeImg.length;k++){
-				divImg.appendChild(arrayOfImg[removeImg[k]]);
-		}
-			removeImg =[];
-			positionImg();
+
+let tNon = true;//если не выбран никакой
+let tAll = true;//если выбраны все
+let arrayCheckCategory:any = [];//массив выбранных категорий
+function filter(){
+	let checkId = Number((<HTMLInputElement>event.target).id);
+	let first = true;
+	let tNon = true;//если не выбран никакой
+	let tAll = true;//если выбраны все
+
+	for(let i=0;i<arrayCheck.length;i++){
+		if(!arrayCheck[i].checked){tAll = false;}
+		if(arrayCheck[i].checked){tNon = false;}
 	}
-		else 
-		{
-			let i=0,first =true;
-			for(i=0;i<arrayOfImg.length;i++){
-				if(arrayOfImgObject[i].category == 'autumn'){
-					divImg.removeChild(arrayOfImg[i]);
-					removeImg.push(i);
-				}
-				else{
-					if(first){
-						first =false;					
-						arrayOfImg[current%arrayOfImgObject.length].style.border = 'none';
-						current = i;
-						arrayOfImg[current%arrayOfImgObject.length].style.border = '3px solid #BDB76B';
-						mainImg.setAttribute('src',arrayOfImg[current%arrayOfImgObject.length].src);
-					}
-				}
-			}
-			console.log(removeImg);
-				positionImg();
+
+	if(tNon || tAll){
+		for(let i=0;i<removeImg.length;i++){
+			divImg.appendChild(arrayOfImg[removeImg[i]]);
 		}
+		removeImg = [];
+		positionImg();
+		if(!arrayCheckCategory.includes(checkId)){
+			arrayCheckCategory.push(checkId);
+		}
+		if(tNon){arrayCheckCategory = [];}
 	}
 	else{
-		if(tCheck2){
-			let first = true;
+		if(arrayCheck[checkId].checked){
+			arrayCheckCategory.push(checkId);
 			for(let i=0;i<arrayOfImg.length;i++){
-				if(arrayOfImgObject[i].category == 'summer'){
+				
+				if(arrayOfImgObject[i].category === arrayOfCategory[checkId]){
+					if(first){
+						first = false;
+						for(let cur=0;cur<arrayOfImg.length;cur++){
+							arrayOfImg[cur].style.border = 'none';}
+					    current = i;
+					    arrayOfImg[current].style.border = '3px solid #BDB76B';
+						mainImg.setAttribute('src',arrayOfImg[current].src);
+					}
+					
+					for(let rem=0;rem<removeImg.length;rem++){
+					    if(removeImg[rem] === i){
+						    divImg.appendChild(arrayOfImg[removeImg[rem]]);
+							removeImg.splice(rem,1);
+						}
+					}
+				}
+				else{
+					let boolCheck = false;
+					for(let j = 0;j<arrayCheckCategory.length;j++){
+						if(arrayOfImgObject[i].category === arrayOfCategory[arrayCheckCategory[j]]){
+							boolCheck = true;}
+					}
+					if(!removeImg.includes(i) && !boolCheck){
+						divImg.removeChild(arrayOfImg[i]);
+						removeImg.push(i);
+					}
+				}
+				positionImg();
+			}
+		}
+		else{
+			for(let i=0;i<arrayCheckCategory.length;i++){
+				if(arrayCheckCategory[i] === checkId){
+					arrayCheckCategory.splice(i,1);
+				}
+			}
+			for(let i=0;i<arrayOfImg.length;i++){
+				if(arrayOfImgObject[i].category != arrayOfCategory[checkId]){
+					if(!removeImg.includes(i)){
+						if(first){
+							first = false;
+							for(let cur=0;cur<arrayOfImg.length;cur++){
+							arrayOfImg[cur].style.border = 'none';}
+					        current = i;
+					        arrayOfImg[current].style.border = '3px solid #BDB76B';
+						    mainImg.setAttribute('src',arrayOfImg[current].src);
+						}
+					}
+				}
+				else{
 					divImg.removeChild(arrayOfImg[i]);
 					removeImg.push(i);
 				}
-				else{
-					if(first){
-						first =false;					
-						arrayOfImg[current%arrayOfImgObject.length].style.border = 'none';
-						current = i;
-						arrayOfImg[current%arrayOfImgObject.length].style.border = '3px solid #BDB76B';
-						mainImg.setAttribute('src',arrayOfImg[current%arrayOfImgObject.length].src);
-					}
-				}
 			}
 			positionImg();
+		}
 	}
-	else{
-		for(let k=0;k<removeImg.length;k++){
-		divImg.appendChild(arrayOfImg[removeImg[k]]);
 }
-	removeImg =[];
-	positionImg();
-}
-}
-}
+
 
 //позиционирование изображений preview
 function positionImg(){
 	let deleteImg=removeImg.length;
-	let l=0;
 	let ii=0;
 	let zero=-500;
 	let widthImg =1000/(countOfImg-1-deleteImg);
 	for (let i=0; i < countOfImg; i++){
-		if(!(i == removeImg[l])){
+		if(!removeImg.includes(i)){
 			let widthImgpx=ii*widthImg + 'px';
+			console.log(widthImgpx);
 			arrayOfImg[i].style.left = widthImgpx;
 			let bottomImg = Math.sqrt((1-(zero*zero/250000))*2500) + 'px';
+			console.log(bottomImg);
 			arrayOfImg[i].style.bottom = bottomImg;
 			zero+=widthImg;
 			ii++;
-		}else{l++;}
+		}
     }
 }
 
@@ -257,40 +293,62 @@ function scalingImg(){
 	});	
 }
 
+const listCategory = document.getElementById("listcategory");
 const btnSave = document.getElementById("butsave");
-const selectBox = document.getElementById("selectbox");
 function addingNewImg(files:any){
 	btnSave.onclick = function(){
-		sendFiles(files,(<HTMLSelectElement>selectBox).selectedIndex);
-		modalWindow.style.display = "none";
+		addFiles(files,(<HTMLInputElement>listCategory).value);
 	}
 }
 
-function sendFiles(files:any,k:number) {
-	let str:any;
-	switch(k){
-		case 0:
-			str = 'autumn';
-			break;
-	    case 1:
-			str = 'summer';
-			break;
-	}
-	var reader = new FileReader();
-	let imgNewToAdd;
-	if (files) {
-		reader.readAsDataURL(files);
-	  } 
-	reader.onloadend = function () {
-		imgNewToAdd = new Img(`${reader.result}`,str);
-		arrayOfImgObject.push(imgNewToAdd);
-		createImg(countOfImg);
-		arrayOfImg[countOfImg++].onclick = funcBorder;
-		positionImg();
-	}
+function addFiles(files:any,nameCategory:any) {
+	if(nameCategory != ""){
+		var reader = new FileReader();
+		let imgNewToAdd;
+		nameCategory = categoryOfImg(nameCategory);
+		if(files) {
+			reader.readAsDataURL(files);
+		} 
+		reader.onloadend = function (){
+			imgNewToAdd = new Img(`${reader.result}`,nameCategory);
+			arrayOfImgObject.push(imgNewToAdd);
+			createImg(countOfImg);
+			arrayOfImg[countOfImg++].onclick = funcBorder;
+			positionImg();
+		}
+	modalWindow.style.display = "none";
+}
+else{addingNewImg(files);}
 };
 
 
+let checkDiv=document.getElementById("checkdiv");
+let datalistCanegory = document.getElementById("category");
+function categoryOfImg(nameCategory:any){
+	if(arrayOfCategory.includes(String(nameCategory))){
+		return nameCategory;
+	}
+	else{
+		arrayOfCategory.push(nameCategory);
+		let newOption = document.createElement("option");
+		let newCheck = document.createElement("input");
+		newCheck.setAttribute('id',`${kCheck}`);
+		arrayCheck.push(newCheck);
+		newCheck.type = "checkbox";
+		var label = document.createElement('label');
+		label.setAttribute('for',`${kCheck}`);
+		label.textContent = nameCategory;
+		checkDiv.appendChild(newCheck);
+		checkDiv.appendChild(label);
+		newOption.value = nameCategory;
+		datalistCanegory.appendChild(newOption);
+		kCheck++;
+		newCheck.onclick = function(){
+			filter();
+		}
+		return nameCategory;
+	}
+}
 
 
 let t = true;//флаг авторизации
@@ -301,9 +359,6 @@ let imgNewFromPerson = document.getElementById("addnew");
 const btnCategory=document.getElementById("butcategory");
 let tCategory = true;//флаг меню категории
 let tMenu = true;//флаг общего меню
-const checkDiv=document.getElementById("checkdiv");
-const check1=document.getElementById("check1");
-const check2=document.getElementById("check2");
 const btnMenu=document.getElementById("butmenu");
 //main
 if(t){
@@ -312,10 +367,10 @@ if(t){
 	const zooming = new Zooming();
 	zooming.listen(mainImg);
 		
-
+	
 	imgNewFromPerson.addEventListener('change', function(){
 		addingNewImg((<HTMLInputElement>imgNewFromPerson).files[0]);
-	})
+	});
 
 	btnAddNewImg.onclick = function() {
 		modalWindow.style.display = "block"
@@ -330,8 +385,8 @@ if(t){
 
     for(i=0;i<arrayOfImg.length;i++){
 		arrayOfImg[i].onclick = funcBorder;}
-      
-    btnCategory.onclick = function(){
+	 	
+    btnCategory.onclick = function(){		
         if(tCategory){
 			checkDiv.style.visibility="visible";
 			tCategory=!tCategory;
@@ -342,14 +397,13 @@ if(t){
             checkDiv.style.visibility="hidden";
         }
 	}
-	
+
 	check1.onclick = function(){
-		tCheck1=!tCheck1;
-		funcCheck();
+		filter();
 	}
+
 	check2.onclick = function(){
-		tCheck2=!tCheck2;
-		funcCheck();
+		filter();
 	}
 
 	mainImg.onclick = function(){
