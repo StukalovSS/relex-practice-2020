@@ -7,4 +7,4 @@ canvas.height = document.documentElement.clientHeight - 9;
 
 const fg: FunctionGraph = new FunctionGraph( canvas, 10);
 
-fg.drawGraphic(n => n ** 2 );
+fg.drawGraphic( n => Math.sqrt(n ** 2 - n + 10) );

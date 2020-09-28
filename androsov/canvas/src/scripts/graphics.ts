@@ -17,3 +17,9 @@ export function fillCircle(x: number, y: number, r: number, gr: CanvasRenderingC
     gr.fill();
     gr.closePath();
 }
+
+export function writeString(text: string, x: number, y: number, gr: CanvasRenderingContext2D) {
+    gr.beginPath();
+    gr.strokeText(text, x, y);
+    gr.closePath();
+}

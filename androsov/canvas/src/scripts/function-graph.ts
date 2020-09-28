@@ -1,5 +1,5 @@
 import {drawLine} from './graphics';
-
+import {writeString} from './graphics'
 
 export default class Functioncanvas {
     private gr: CanvasRenderingContext2D;
@@ -8,7 +8,8 @@ export default class Functioncanvas {
     private x0: number;
     private y0: number;
 
-    constructor(canvas: HTMLCanvasElement, private step: number) {
+    constructor(canvas: HTMLCanvasElement, private step: number,
+             private funct: (n: number) => number = n => n) {
         if (step <= 0)
             throw new Error("Step can't be 0 or less");
         
@@ -28,29 +29,41 @@ export default class Functioncanvas {
 
         for (let i = 0; i < this.width / 2; i += this.step) {
             drawLine(this.x0 - i, this.y0,  this.x0 - i, this.y0 - 5, this.gr);
-            drawLine(canvas.width / 2 + i, canvas.height / 2, canvas.width / 2 + i, canvas.height / 2 - 5, this.gr);
+            drawLine(this.x0 + i, this.y0, this.x0 + i, this.y0 - 5, this.gr);
+            if (i != 0) {
+                writeString('-' + i, this.x(-i), this.y(1), this.gr);
+                writeString('' + i, this.x(i), this.y(1), this.gr);
+            }
         }
 
         for (let i = 0; i < this.height; i += this.step) {
+            
+                
             drawLine(this.x0, this.y0 + i,  this.x0 + 5, this.y0 + i, this.gr);
             drawLine(this.x0, this.y0 - i, this.x0 + 5, this.y0 - i, this.gr);
+            if (i != 0) {
+                writeString('-' + i, this.x(1), this.y(-i), this.gr);
+                writeString('' + i, this.x(1), this.y(i), this.gr);
+            }
         }
     }
 
-    drawGraphic( f: (n: number) => number ): void {
-        let prevX: number = this.x0,
-            prevY: number = f(this.x0),
-            prevMinusX = prevX,
-            prevYFromMinusX = prevY;
-    
-        
-        for (let i = 1; i < this.width / 2; i += 1) {
-            drawLine(prevX, prevY, this.width / 2 + i, this.height / 2 - f(i / 10), this.gr);
-            drawLine(prevMinusX, prevYFromMinusX, this.width / 2 - i, this.height / 2 - f(-i / 10), this.gr);
-            prevX = this.width / 2 + i;
-            prevY = this.height / 2 - f(i / 10);
-            prevMinusX = this.width / 2 - i;
-            prevYFromMinusX = this.height / 2 - f(-i / 10);
+    private x(x: number): number {
+        return Math.round( x * this.step + this.x0 );
+    }
+
+    private y(x: number): number {
+        return this.y0 - this.funct(x) * this.step;
+    }
+
+    drawGraphic( f: (n: number) => number = this.funct ): void {
+        this.funct = f;
+        let prevX: number = 0;
+
+        for (let x = 1; this.x(x) < this.width; x += 1) {
+            drawLine(this.x(prevX), this.y(prevX), this.x(x), this.y(x), this.gr);
+            drawLine(this.x(-prevX), this.y(-prevX), this.x(-x), this.y(-x), this.gr);
+            prevX = x;
         }
     }
 }
