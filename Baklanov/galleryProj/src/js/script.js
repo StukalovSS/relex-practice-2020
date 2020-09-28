@@ -69,18 +69,21 @@ buttonChangeCategory.innerHTML = "Категории";
 buttonChangeCategory.setAttribute("class", "buttonChangeCategory");
 let changeCategoryButCon = addImageAndCategoryChangeCon.appendChild(document.createElement("div"));
 let radioButtons =[];
-    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('input')));
-    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('label')));
-    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('input')));
-    radioButtons.push (changeCategoryButCon.appendChild(document.createElement('label')));
-    radioButtons[0].setAttribute("type", "radio");
-    radioButtons[0].setAttribute("class", `check ${0}`);
-    radioButtons[0].setAttribute("id", "radioButtons");
-    radioButtons[1].setAttribute("for",`check ${0}` )
-    radioButtons[2].setAttribute("type", "radio");
-    radioButtons[2].setAttribute("class", `check ${1}`);
-    radioButtons[2].setAttribute("id", "radioButtons");
-    radioButtons[3].setAttribute("for",`check ${1}` )
+let textForRadBut =[];
+let heigth = 10;
+for (let i = 0; i < categorys.length; i++) {
+    textForRadBut.push (changeCategoryButCon.appendChild(document.createElement('p')));
+    textForRadBut[i].innerHTML = categorys[i];
+    textForRadBut[i].setAttribute("align" ,"center");
+} 
+for (let i =0; i < categorys.length; i ++) {
+    radioButtons.push(textForRadBut[i].appendChild(document.createElement('input')));
+    radioButtons[i].setAttribute("type", "radio");
+    radioButtons[i].style.position = "absolute";
+    radioButtons[i].style.top = heigth+20 + 'px';
+    radioButtons[i].style.left = 10 + '%';
+    heigth +=30;
+}
 
 changeCategoryButCon.setAttribute("class","changeCategoryButCon" );
 contexButton.addEventListener("click", function() {
@@ -116,14 +119,23 @@ contexButton.addEventListener("click", function() {
     })
     inputFile.onchange = function(){
         images.push({path:"../src/images/"+ inputFile.files[0].name, category: "oph"});
-        console.log(images[images.length-1]);
-        previewsInit();
+        previews.push(previewCon.appendChild(document.createElement('img')));
+        previews[previews.length-1].setAttribute("src", "../src/images/"+ inputFile.files[0].name);
+        previews[previews.length-1].addEventListener("click", function() {
+            if(document.querySelector(".image-border")) {
+                document.querySelector(".image-border").classList.remove("image-border");
+            }
+            previews[previews.length-1].classList.add("image-border");
+        }) 
+        previews[previews.length-1].classList.add('preview-image');
+        console.log(previews);
+        console.log(images);
         modal.classList.toggle("modalOpen");
     };
     //drag and drop
     //Контейнер для превью
     let previewCon = mainCon.appendChild(document.createElement('div'));
-    const previews = [];
+    let previews = [];
     previewsInit();
     previewCon.setAttribute("id", "previewCon");
     function previewsInit () {

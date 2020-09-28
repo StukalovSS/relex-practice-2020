@@ -102,13 +102,9 @@ border:  none;
 .disap {
     display: block;
 }
-.check0 {
+.checkRadio {
     position: relative;
-    padding: 10px;
-}
-.check1 {
-    position: relative;
-    padding: 10px;
+    top: 75%;
 }
 /* стили модального окна */
 .modal {
