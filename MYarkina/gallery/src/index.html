@@ -11,23 +11,25 @@
 
         <input type="button" id="butcategory" value="Категории"> 
         <div id="checkdiv">
-            <input type="checkbox" id="check1" name="option2">Summer<Br>
-            <input type="checkbox" id="check2" name="option3">Autumn<Br>
+            <input type="checkbox" id="0" ><label for="0">Summer</label>
+            <input type="checkbox" id="1" ><label for="1">Autumn</label>
         </div>
 
         <input type="button" id="butadd" value="Добавить картинку">
+
         <div id="mymodal"> 
-            Добавить новое изображение<Br>
-            <input type="file" name="f" id="addnew"><Br>
+
+                  <input type="file" id="addnew"><Br>
+
             Выберите категорию картинки<Br>
-            <select id="selectbox">
-                <option>Autumn</option>
-                <option>Summer</option>
-            </select><Br>
+            <input id="listcategory" list="category" placeholder="Категории картинок">
+                <datalist id="category">
+                    <option value="autumn"></option>
+                    <option value="summer"></option>
+                </datalist>
                 <Br>
             <input type="button" id="butsave" value="Сохранить">
             <input type="button" id="butback" value="Отмена">
-             
         </div>
 
     </div>
