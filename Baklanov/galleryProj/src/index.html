@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+</head>
+<body>
+    <div id="Gallery"></div>
+    <div id="modal" class="modal">
+        <button class="modalCloseButton">✖</button>
+        <div class="inputCon">
+           <input type="file" class="inputFile" id="input">
+           <label for = "input" class="inputButton">Выберите файл</label>
+        </div>
+        <div id="drop-area">
+              <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
+              <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+          </div>
+        <div class="chooseCategoryCon"></div>
+    </div>
+</body>
+</html>
