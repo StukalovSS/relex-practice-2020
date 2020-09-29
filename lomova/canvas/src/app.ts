@@ -29,6 +29,7 @@ context.beginPath();
 // context.lineTo(1500, 340);
 // context.stroke();
 
+
 context.moveTo(c.width / 2, 0);
 context.lineTo(c.width / 2, c.height);
 context.stroke();
@@ -86,7 +87,7 @@ function f(x: number) {
     return Math.pow(x, 2);
 }
 
-function drawGraph(k: number){
+function drawGraph(k: number) {
     let x = (k - c.width / 2) / 20;
     let y = c.height / 2 - f(x);
     context.lineTo(k, y);
@@ -122,6 +123,3 @@ context.moveTo(c.width / 2, c.height / 2);
 for (let k = c.width / 2; k < c.width; k = k + 10) {
     drawGraph(k);
 }
-
-
-
