@@ -27,11 +27,11 @@ const sketch = (s) => {
         zoom = s.lerp(zoom, newZoom, 0.1);
 
         s.translate(-player.pos.x, -player.pos.y);
-        for (let i = -2000; i < s.width + 2000; i += s.width / 15) {
-            s.line(i, -2000, i, s.height + 2000);
+        for (let i = -2000; i <= 2000; i += s.width / 15) {
+            s.line(i, -2000, i, 2000);
         }
 
-        for (let i = -2000; i < s.height + 2000; i += s.width / 15) {
+        for (let i = -2000; i <= 2000; i += s.width / 15) {
             s.line(- 2000, i, 2000, i);
         }
 
