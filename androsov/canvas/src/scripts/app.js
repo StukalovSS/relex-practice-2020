@@ -15,7 +15,7 @@ const sketch = (s) => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.background(197, 227, 200);
         player = new Player(0, 0, s);
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 1000; i++) {
             food[i] = new Food(s);
         }
         // s.line(10, 10, s.width - 10, 10);
@@ -26,12 +26,18 @@ const sketch = (s) => {
     }
 
     s.draw = () => {
+
         s.background(197, 227, 200);
         s.translate(s.width / 2, s.height / 2);
         const newZoom = 36 / player.r;
-        zoom = s.lerp(zoom, newZoom, 0.1);
+        //zoom = s.lerp(zoom, newZoom, 0.1);
 
         s.translate(-player.pos.x, -player.pos.y);
+        for (let i = -3000; i < s.width + 3000; i += s.width / 15) {
+            s.line(i, -3000, i, s.height + 3000);
+        }
+        
+        
         player.show();
         for (let el of food) {
             el.show();
@@ -40,9 +46,7 @@ const sketch = (s) => {
         
         for(let i = food.length - 1; i >= 0; i--) {
             food[i].show();
-            // if(player.eats(food[i])) {
-            //     food.splice(i, 1);
-            // }
+            player.eat(food[i]);
         }
     }
 }

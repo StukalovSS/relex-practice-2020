@@ -4,6 +4,7 @@ import p5 from 'p5';
 export default class Player extends Circle{
     constructor(x, y, s) {
         super(x, y, 36, s);
+        this.distanceFromCentre = s.createVector(x, y).mag();
 
         this.update = function() {
             const newvel = s.createVector(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
@@ -12,7 +13,7 @@ export default class Player extends Circle{
             this.pos.add(this.vel);
         }
 
-        this.eats = function (other) {
+        this.eat = function (other) {
             let d = p5.Vector.dist(this.pos, other.pos);
             if (d < this.r + other.r) {
                 let sum = s.PI * this.r * this.r + s.PI * other.r * other.r;
