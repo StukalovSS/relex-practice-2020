@@ -1,5 +1,4 @@
 import p5 from 'p5';
-import Circle from './primitivs/circle';
 import Player from './game-objects/player';
 import Food from './game-objects/food';
 
@@ -18,11 +17,6 @@ const sketch = (s) => {
         for (let i = 0; i < 1000; i++) {
             food[i] = new Food(s);
         }
-        // s.line(10, 10, s.width - 10, 10);
-        // s.line(10, 10, 10, s.height - 10);
-        // s.line(10, s.height - 10, s.width - 10, s.height - 10);
-        // s.line(s.width - 10, 10, s.width - 10, s.height - 10);
-        //circle.show(s.width / 2, s.height / 2, 80);
     }
 
     s.draw = () => {
