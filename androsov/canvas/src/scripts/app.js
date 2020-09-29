@@ -30,13 +30,17 @@ const sketch = (s) => {
         s.background(197, 227, 200);
         s.translate(s.width / 2, s.height / 2);
         const newZoom = 36 / player.r;
-        //zoom = s.lerp(zoom, newZoom, 0.1);
+        zoom = s.lerp(zoom, newZoom, 0.1);
 
         s.translate(-player.pos.x, -player.pos.y);
-        for (let i = -3000; i < s.width + 3000; i += s.width / 15) {
-            s.line(i, -3000, i, s.height + 3000);
+        for (let i = -2000; i < s.width + 2000; i += s.width / 15) {
+            s.line(i, -2000, i, s.height + 2000);
         }
-        
+
+        for (let i = -2000; i < s.height + 2000; i += s.width / 15) {
+            s.line(- 2000, i, 2000, i);
+        }
+
         
         player.show();
         for (let el of food) {
