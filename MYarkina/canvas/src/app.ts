@@ -101,12 +101,12 @@ function graf(f:any,color:any){
 }
 
 
-graf(parabol,"black");
+graf(parabol,"red");
 function cub(x:any){
     return x*x*x;
 }
 
-graf(cub,"black");
+graf(cub,"blue");
 
 
 
@@ -115,17 +115,19 @@ mainCanvas.addEventListener("wheel",function(event){
     if(y > 0 ){
         if(curStep<100){
             context.clearRect(0,0,mainCanvas.width,mainCanvas.height);
+            context.strokeStyle="black";
             oc();
             del(curStep+=20);
-            graf(parabol,"black");
-            graf(cub,"black");
+            graf(parabol,"red");
+            graf(cub,"blue");
         }
     }
     else if(curStep !=20){
         context.clearRect(0,0,mainCanvas.width,mainCanvas.height);
+        context.strokeStyle="black";
         oc();
         del(curStep-=20);
-        graf(parabol,"black");
-        graf(cub,"black");
+        graf(parabol,"red");
+        graf(cub,"blue");
     }
 });	
