@@ -12,13 +12,14 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "css-loader": "^4.3.0",
     "html-webpack-plugin": "^4.5.0",
+    "p5": "^1.1.9",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.4",
     "typescript": "^4.0.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "css-loader": "^4.3.0"
+    "webpack-dev-server": "^3.11.0"
   }
 }
