@@ -15,8 +15,15 @@ export default class Player extends Circle {
             if ((Math.abs(newvel.x + this.pos.x) < 1990 && Math.abs(newvel.y + this.pos.y) < 1990 ) ||
                 ((newvel.x > 0) && inRange(this.pos.x, -1990) || (newvel.x < 0) && inRange(this.pos.x, 1990) || 
                 (newvel.y > 0) && inRange(this.pos.y, -1990) || (newvel.y < 0) && inRange(this.pos.y, 1990))) {
+                        console.log('start');
+                        console.log(this.vel);
+                        console.log(this.newvel);
                         this.vel.lerp(newvel, 0.1);
+                        console.log(this.vel);
+
+                        //console.log(this.pos);
                         this.pos.add(this.vel);
+                        //console.log(this.pos);
                     }
         }
 
