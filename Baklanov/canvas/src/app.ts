@@ -1,4 +1,3 @@
-// import p5 from 'p5';
 const p5 = require('../node_modules/p5/lib/p5');
 import {Circle} from './circle';
 
@@ -41,8 +40,6 @@ const sketch = (s: typeof p5) => {
             food[i].show();
             if(player.eats(food[i])) {
                 food.splice(i, 1);
-                //food[i].pos.x = s.random(-s.width, s.width);
-                //food[i].pos.y = s.random(-s.height, s.height);
             }
         }
     }
