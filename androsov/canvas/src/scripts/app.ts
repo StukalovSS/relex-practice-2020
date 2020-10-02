@@ -1,7 +1,24 @@
 import Player from './game-objects/player';
 import Food from './game-objects/food';
 
-const p5 = require('../../node_modules/p5/lib/p5');
+const p5 = require('../../node_modules/p5/lib/p5'),
+    http = require('http'),
+    options = {
+        hostname: '127.0.0.1',
+        port: 5000,
+        path: '/',
+        method: 'GET'
+    };
+
+const req = http.request(options, (res: any) => {
+    res.on('data', (body: any) => {
+        console.log(JSON.parse(new TextDecoder("utf-8").decode(body)));
+    });
+
+    res.on('end', (chunck: any) => {
+        console.log('Response end');
+    });
+}).end();
 
 let player: Player,
     food: Food[] = [],
