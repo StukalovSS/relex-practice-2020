@@ -5,7 +5,7 @@ const p5 = require('../../node_modules/p5/lib/p5'),
     http = require('http'),
     options = {
         hostname: '127.0.0.1',
-        port: 5000,
+        port: 6000,
         path: '/',
         method: 'GET'
     };
