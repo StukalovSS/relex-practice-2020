@@ -1,31 +1,50 @@
-let canvasElem = document.getElementById("HTMLCanvasElement") as HTMLCanvasElement;
-canvasElem.height = window.innerHeight;
-canvasElem.width = window.innerWidth;
-let canvasContextElem = canvasElem.getContext('2d');
-canvasContextElem.beginPath();
-function drawLine (x1:number,y1:number, x2:number, y2:number) {
-    canvasContextElem.moveTo(x1,y1);
-    canvasContextElem.lineTo(x2,y2);
-    canvasContextElem.stroke();
+const p5 = require('../node_modules/p5/lib/p5');
+import {Circle} from './circle';
+
+let player: any;
+const food: any = [];
+let zoom: number = 1;
+const sketch = (s: typeof p5) => {
+    s.setup = () => {
+        s.createCanvas(window.innerWidth, window.innerHeight);
+        s.background(220);
+        player = new Circle(0, 0, 36, s);
+        for(let i = 0; i < 100; i++) {
+            let obj = new Circle(s.random(-s.width, s.width), s.random(-s.height, s.height), 20, s);
+            food.push(obj);
+        }
+    }
+
+    s.draw = () => {
+        s.background(220);
+        s.translate(s.width/2, s.height/2);
+        const newZoom: number = 36 / player.r;
+        zoom = s.lerp(zoom, newZoom, 0.0001);
+        s.scale(zoom);
+
+        s.translate(-player.pos.x, -player.pos.y);
+
+        for(let i = -s.width; i < s.width; i = i + 50) {
+            s.line(i, -s.height, i, s.height);
+            s.stroke(126);
+        }
+        for(let i = -s.height; i < s.height; i = i + 50) {
+            s.line(-s.width, i, s.width, i);
+            s.stroke(126);
+        }
+        
+        player.show();
+        player.update();
+
+        for(let i = food.length - 1; i >= 0; i--) {
+            food[i].show();
+            if(player.eats(food[i])) {
+                food.splice(i, 1);
+            }
+        }
+    }
+
 }
-drawLine(innerWidth/2,0,innerWidth/2,innerHeight);
-drawLine(0,innerHeight/2, innerWidth, innerHeight/2);
-let size = 10;
-let step = 50;
- for (let i =innerHeight/2; i < innerHeight; i+=step) {
-drawLine(innerWidth/2+size,i,innerWidth/2-size,i );
- }
- for (let i =innerHeight/2; i >0; i-=step) {
-    drawLine(innerWidth/2+size,i,innerWidth/2-size,i );
- }
- for (let i =innerWidth/2; i <innerWidth; i+=step) {
-     drawLine(i,innerHeight/2+size,i,innerHeight/2-size )
- }
- for (let i =innerWidth/2; i >0; i-=step) {
-    drawLine(i,innerHeight/2-size,i,innerHeight/2+size )
-}
-for(var i=-20;i<20;i+=0.01){
-    canvasContextElem.moveTo(0,0);
-    canvasContextElem.fillStyle="red";
-    canvasContextElem.fillRect(innerWidth/2+i*10,innerHeight/2-10-Math.pow(i,2),3,3);
-}
+
+const sketchInst = new p5(sketch);
+
