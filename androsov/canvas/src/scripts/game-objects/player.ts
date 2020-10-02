@@ -15,13 +15,11 @@ export default class Player extends Circle {
     update() {
         const newvel = this.s.createVector(this.s.mouseX - this.s.width / 2, this.s.mouseY - this.s.height / 2);
         newvel.setMag(3);
-        
-        if ((Math.abs(newvel.x + this.pos.x) < 1990 && Math.abs(newvel.y + this.pos.y) < 1990 ) ||
-            ((newvel.x > 0) && inRange(this.pos.x, -1990) || (newvel.x < 0) && inRange(this.pos.x, 1990) || 
-            (newvel.y > 0) && inRange(this.pos.y, -1990) || (newvel.y < 0) && inRange(this.pos.y, 1990))) {
-                    this.vel.lerp(newvel, 0.1); 
-                    this.pos.add(this.vel);
-                }
+        this.vel.lerp(newvel, 0.1); 
+        this.pos.x = this.s.constrain(this.pos.x, -2000, 2000);
+        this.pos.y = this.s.constrain(this.pos.y, -2000, 2000);
+        this.pos.add(this.vel);
+              
     }
 
     eat(other: Food) {
@@ -36,11 +34,4 @@ export default class Player extends Circle {
             return false;
         }
     }
-}
-
-function inRange(number: number, point: number): boolean {
-    if (Math.abs(point - number) < 10)
-        return true;
-    else 
-        return false;
 }
