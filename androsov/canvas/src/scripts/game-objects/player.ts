@@ -1,46 +1,42 @@
 import Circle from '../primitivs/circle';
-import Vector from '../primitivs/vector';
+import Food from './food';
+const p5 = require('../../../node_modules/p5/lib/p5')
+
+'use strict'
 
 export default class Player extends Circle {
-    constructor(x: number, y: number, gr: CanvasRenderingContext2D, color: string) {
-        super(x, y, 36, gr, color);
-        this.fill();
+    private distanceFromCentre: number;
+    
+    constructor(x: number, y: number, s: any) {
+        super(x, y, 36, s);
+        this.distanceFromCentre = s.createVector(x, y).mag();
     }
 
-    update(x: number, y: number) {
-        const newvel = new Vector(x, y);
-        newvel.mag = 3;
+    update() {
+        const newvel = this.s.createVector(this.s.mouseX - this.s.width / 2, this.s.mouseY - this.s.height / 2);
+        newvel.setMag(3);
         
-        if (this.distanceFromCentre <= 1990 ||
-            ((newvel.x > 0) && inRange(this.x, -2000) || (newvel.x < 0) && inRange(this.x, 2000) || 
-            (newvel.y > 0) && inRange(this.y, -2000) || (newvel.y < 0) && inRange(this.y, 2000))) {
-                let vel = new Vector(this.x, this.y);
-                vel.lerp(newvel, 0.1);
-                this.x += vel.x;
-                this.y += vel.y;
-        }
-        this.fill();
+        if ((Math.abs(newvel.x + this.pos.x) < 1990 && Math.abs(newvel.y + this.pos.y) < 1990 ) ||
+            ((newvel.x > 0) && inRange(this.pos.x, -1990) || (newvel.x < 0) && inRange(this.pos.x, 1990) || 
+            (newvel.y > 0) && inRange(this.pos.y, -1990) || (newvel.y < 0) && inRange(this.pos.y, 1990))) {
+                    this.vel.lerp(newvel, 0.1); 
+                    this.pos.add(this.vel);
+                }
     }
 
-    // eat(other) {
-    //     let d = p5.Vector.dist(this.pos, other.pos);
-    //     if (d < this.r + other.r) {
-    //         let sum = s.PI * this.r * this.r + s.PI * other.r * other.r;
-    //         this.r = s.sqrt(sum / s.PI);
-    //         other.isEated();
-    //         return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // }
-
-    get distanceFromCentre(): number {
-        return Math.sqrt(this.x **2 + this.y ** 2);
+    eat(other: Food) {
+        let d = p5.Vector.dist(this.pos, other.pos);
+        if (d < this.r + other.r) {
+            let sum = this.s.PI * this.r * this.r + this.s.PI * other.r * other.r;
+            this.r = this.s.sqrt(sum / this.s.PI);
+            other.isEated();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
-
-
 
 function inRange(number: number, point: number): boolean {
     if (Math.abs(point - number) < 10)

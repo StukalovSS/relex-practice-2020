@@ -1,14 +1,13 @@
 import Circle from '../primitivs/circle';
 
 export default class Food extends Circle{
-    constructor(gr: CanvasRenderingContext2D) {
-        super(-1990 + Math.random() * 3980, -1990 + Math.random() * 3980 , 10, gr);
-        this.fill();
-        this.stroke();
+    constructor(s: any) {
+        super(s.random(- 1990, 1990), 
+            s.random(- 1990, 1990) , 10, s);
     }
 
-    isEated = function() {
-        this.x = -1990 + Math.random() * 3980;
-        this.y = -1990 + Math.random() * 3980;
+    isEated() {
+        this.pos.x = this.s.random(-1990, 1990);
+        this.pos.y = this.s.random(-1990, 1990);
     }
 }
