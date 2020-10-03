@@ -1,8 +1,6 @@
 import Circle from '../primitivs/circle';
 import Food from './food';
-const p5 = require('../../../node_modules/p5/lib/p5')
-
-'use strict'
+const p5 = require('../../../node_modules/p5/lib/p5');
 
 export default class Player extends Circle {
     private distanceFromCentre: number;
