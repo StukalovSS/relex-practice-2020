@@ -11,27 +11,43 @@ const p5 = require('../../node_modules/p5/lib/p5'),
     };
 
 const req = http.request(options, (res: any) => {
+    res.on('end', (chunck: any) => console.log('Response end'));
+
     res.on('data', (body: any) => {
+        console.log('second')
         console.log(JSON.parse(new TextDecoder("utf-8").decode(body)));
     });
-
-    res.on('end', (chunck: any) => {
-        console.log('Response end');
-    });
 }).end();
+
+async function drawField(x: number, y: number, callback: (req: object) => void) {
+    const options = {
+        hostname: '127.0.0.1',
+        port: 3000,
+        path: `/?x=${x}&y=${y}`,
+        method: 'GET'
+    };
+
+    const req = http.request(options, (res: any) => {
+        res.on('data', (body: any) => {
+            callback( JSON.parse(new TextDecoder("utf-8").decode(body)) );
+        });
+
+        res.on('end', (chunck: any) => console.log('Response end'));
+    }).end();
+}
+
+let zoom: number = 1;
 
 
 const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.background(197, 227, 200);
-        // player = new Player(0, 0, s);
-        // for (let i = 0; i < 1000; i++) {
-        //     food[i] = new Food(s);
-        // }
     }
 
     s.draw = () => {
+
+        drawField(0, 0, (object: object) => console.log(object));
 
         s.background(197, 227, 200);
         s.translate(s.width / 2, s.height / 2);
@@ -47,7 +63,7 @@ const sketch = (s: typeof p5) => {
             s.line(- 2000, i, 2000, i);
         }
 
-        console.log(s.mouseX, s.mouseY);
+        //console.log(s.mouseX, s.mouseY);
         
         // player.show();
         // for (let el of food) {

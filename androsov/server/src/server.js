@@ -145,7 +145,7 @@ app.use(function (require, response, next) {
 
 app.get("/", (request, response) => {
     
-
+    console.log('succes test');
     
     response.send(JSON.stringify({
         player: player,
