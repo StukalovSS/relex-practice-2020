@@ -77,7 +77,6 @@ class Player extends Circle {
     
     constructor(x, y) {
         super(x, y, 36);
-        this.distanceFromCentre = s.createVector(x, y).mag();
     }
 
     get distanceFromCentre() {
@@ -107,7 +106,7 @@ class Player extends Circle {
     }
 }
 
-class Food extends Circle{
+class Food extends Circle {
     constructor() {
         super(random(- 1990, 1990), 
             random(- 1990, 1990) , 10);
@@ -125,12 +124,16 @@ function random(min, max) {
 
 
 
-const express = require("express");
-
+import express from "express";
 
 const app = express();
 
+const player = new Player(random(-1950, 1950), random(-1950, 1950)),
+    food = [];
 
+for (let i = 0; i < 1000; i++) {
+    food.push(new Food( random(-2000, 2000), random(-2000, 2000) ));
+}
 
 app.use(function (require, response, next) {
     let origin = 'http://127.0.0.1/8080/';
@@ -141,22 +144,15 @@ app.use(function (require, response, next) {
 });
 
 app.get("/", (request, response) => {
-    let food = [];
-    for (let i = 0; i < 1000; i++) {
-        food[i] = {
-            x: Math.round( -2000 + Math.random() * 4000 ),
-            y: Math.round( -2000 + Math.random() * 4000 )
-        };
-    }
+    
 
     
     response.send(JSON.stringify({
-        x: Math.round( -2000 + Math.random() * 4000 ),
-        y: Math.round( -2000 + Math.random() * 4000 ),
+        player: player,
         food: food
     }));
 });
 
-app.listen(6000, function() {
+app.listen(3000, function() {
     console.log("Start server");
 });
