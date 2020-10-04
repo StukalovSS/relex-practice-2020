@@ -8,9 +8,4 @@ export default class Circle {
         this.pos = s.createVector(x, y);
         this.vel = s.createVector(0, 0); 
     }
-
-    show() {
-        this.s.fill(255);
-        this.s.ellipse(this.pos.x, this.pos.y, this.r * 2)
-    } 
 }
