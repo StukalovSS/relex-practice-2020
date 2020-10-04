@@ -38,12 +38,17 @@ class Vector {
     }
 
     get angle() {
-        let fi = Math.asin(this.y / this.length);
-        return fi > 0 ? fi : 2 * Math.PI - fi;
+        if (this.length === 0) {
+            return 0;
+        } else if (this.y > 0) {
+            return Math.acos(this.x / this.length);
+        } else {
+            return 2 * Math.PI - Math.acos( this.x / this.length );
+        }
     }
 
     set angle(angle) {
-        length = this.length;
+        let length = this.length;
         this.x = length * Math.cos(angle);
         this.y = length * Math.sin(angle);
     }
@@ -84,12 +89,10 @@ class Player extends Circle {
     }
 
     update(dx, dy) {
-        this.__prevVect.length = 3;
-        this.__prevVect.lerp(new Vector(dx, dy), 0.1); 
-        // this.pos.x = this.s.constrain(this.pos.x, -2000, 2000);
-        // this.pos.y = this.s.constrain(this.pos.y, -2000, 2000);
-        this.x += curVect.x;
-        this.y += curVect.y;
+        const vect = new Vector(dx, dy);
+        vect.length = 3;
+        this.x += vect.x;
+        this.y += vect.y;
     }
 
     eat(other) {
@@ -150,7 +153,11 @@ app.get("/", (request, response) => {
                 food: food
             }));
         } else {
-            player.update(request.query.x, request.query.y);
+            player.update(+request.query.x, +request.query.y);
+            for (let el of food) {
+                player.eat(el);
+            }
+
             response.send( JSON.stringify({
                 player: player,
                 food: food
