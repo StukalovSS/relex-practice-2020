@@ -1,29 +1,13 @@
-import Player from './game-objects/player';
-import Food from './game-objects/food';
+import Circle from './primitivs/circle';
 
 const p5 = require('../../node_modules/p5/lib/p5'),
-    http = require('http'),
-    options = {
-        hostname: '127.0.0.1',
-        port: 3000,
-        path: '/',
-        method: 'GET'
-    };
+    http = require('http');
 
-const req = http.request(options, (res: any) => {
-    res.on('end', (chunck: any) => console.log('Response end'));
-
-    res.on('data', (body: any) => {
-        console.log('second')
-        console.log(JSON.parse(new TextDecoder("utf-8").decode(body)));
-    });
-}).end();
-
-async function drawField(x: number, y: number, callback: (req: object) => void) {
+async function sendResponse(args: object, callback: (req: object) => void) {
     const options = {
         hostname: '127.0.0.1',
         port: 3000,
-        path: `/?x=${x}&y=${y}`,
+        path: args === null ? '/' : `/?${Object.entries(args).map(([key, val]) => key + '=' + val).join('&')}`,
         method: 'GET'
     };
 
@@ -43,12 +27,10 @@ const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.background(197, 227, 200);
+        sendResponse({}, (obj: object) => console.log(obj) );
     }
 
     s.draw = () => {
-
-        drawField(0, 0, (object: object) => console.log(object));
-
         s.background(197, 227, 200);
         s.translate(s.width / 2, s.height / 2);
         // const newZoom = 36 / player.r;
@@ -62,9 +44,8 @@ const sketch = (s: typeof p5) => {
         for (let i = -2000; i <= 2000; i += s.width / 15) {
             s.line(- 2000, i, 2000, i);
         }
-
-        //console.log(s.mouseX, s.mouseY);
         
+        sendResponse({}, (obj: object) => setTimeout((): void => console.log(obj), 1000) );
         // player.show();
         // for (let el of food) {
         //     el.show();

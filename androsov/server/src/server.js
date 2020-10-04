@@ -38,7 +38,7 @@ class Vector {
     }
 
     get angle() {
-        fi = Math.asin(this.y / this.length);
+        let fi = Math.asin(this.y / this.length);
         return fi > 0 ? fi : 2 * Math.PI - fi;
     }
 
@@ -60,7 +60,7 @@ class Vector {
         delta = delta > 1 ? 1 : delta;
         delta = delta < 0 ? 0 : delta;
 
-        dAngle = this.angleBetweenVectors(vect) * delta;
+        let dAngle = this.angleBetweenVectors(vect) * delta;
 
         if ( (vect.y > 0 && this.angle > vect.angle && this.angle < vect.angle + Math.PI) ||
                 (vect.y < 0 && (this.angle > vect.angle || this.angle < vect.angle - Math.PI)) ) {
@@ -144,14 +144,19 @@ app.use(function (require, response, next) {
 });
 
 app.get("/", (request, response) => {
-    
-    console.log('succes test');
-    
-    response.send(JSON.stringify({
-        player: player,
-        food: food
-    }));
-});
+        if (request.query.x == undefined || request.query.y == undefined) {
+            response.send(JSON.stringify({
+                player: player,
+                food: food
+            }));
+        } else {
+            player.update(request.query.x, request.query.y);
+            response.send( JSON.stringify({
+                player: player,
+                food: food
+            }) );
+        }
+    });
 
 app.listen(3000, function() {
     console.log("Start server");
