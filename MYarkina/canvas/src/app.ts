@@ -65,7 +65,7 @@ const sketch = (s:typeof p5) => {
             food.pop();
             k--;
         }
-        options.path = `/?id=${id}&x=${s.mouseX}&y=${s.mouseY}`;
+        options.path = `/?id=${id}&x=${s.mouseX}&y=${s.mouseY}&r=${player.r}`;
         s.background('#fae');
         s.translate(s.width/2,s.height/2);
 
@@ -79,6 +79,28 @@ const sketch = (s:typeof p5) => {
         s.translate(-player.pos.x,-player.pos.y);
         player.show();
         player.update();
+        for(let i=0;i<arrayPlayer.length;i++){
+            if(arrayPlayer[i].id != id){
+            let con = true;//если нового игрока еще нет на поле
+            for(let j=0;j<otherPlayers.length;j++){
+                if(otherPlayers[j].id === arrayPlayer[i].id){
+                    otherPlayers[j].obj.pos.x = arrayPlayer[i].x;
+                    otherPlayers[j].obj.pos.y = arrayPlayer[i].y;
+                    otherPlayers[j].obj.r = arrayPlayer[i].r;
+                    con = false;
+                    otherPlayers[j].obj.show();
+                }
+            }
+            if(con){
+                let newOther = new Circle(arrayPlayer[i].x,arrayPlayer[i].y,arrayPlayer[i].r,s);
+                otherPlayers.push({
+                    obj:newOther,
+                    id:arrayPlayer[i].id
+                });
+                newOther.show();
+            }
+        }
+        }
 
         for(let i = 0;i < food.length; i++){
             food[i].show();
