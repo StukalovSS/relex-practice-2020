@@ -99,6 +99,10 @@ class Player extends Circle {
 
     eat(other) {
         let d = this.distanceFromAnotherCircle(other);
+        if (other === this) {
+            return false;
+        }
+
         if (d < this.r + other.r) {
             let sum = this.square + other.square;
             this.r = Math.sqrt(sum / Math.PI);
@@ -108,6 +112,10 @@ class Player extends Circle {
         else {
             return false;
         }
+    }
+
+    isEated() {
+
     }
 }
 
@@ -154,6 +162,12 @@ app.get("/get_state", (request, response) => {
     player.update( +request.query.x, +request.query.y );
     for (let el of food) {
         player.eat(el);
+    }
+
+    for (let [id, enemy] of Array.from(players.entries()) ) {
+        if (player.eat(enemy)) {
+            players.delete(id);
+        }
     }
 
     let answer = JSON.stringify({
