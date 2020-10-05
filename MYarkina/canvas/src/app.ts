@@ -1,133 +1,129 @@
-const mainCanvas = document.getElementById("maincanvas") as HTMLCanvasElement;
-const context = mainCanvas.getContext("2d");
-mainCanvas.width = window.innerWidth;
-mainCanvas.height = window.innerHeight;
+const css = require('./css/style.css')
+const p5 = require('../node_modules/p5/lib/p5');
+const http = require("http");
+import {Circle} from './circle';
 
+//проверка налиичия еды на поле
+function checkFood(){
 
-//оси графика
-function oc(){
-    context.beginPath();
-    console.log(window.innerWidth);
-    context.moveTo((mainCanvas.width/2),0);
-    context.lineTo((mainCanvas.width/2),mainCanvas.height);
-    context.stroke();
-
-    context.beginPath();
-    context.moveTo(0,(mainCanvas.height/2));
-    context.lineTo(mainCanvas.width,(mainCanvas.height/2));
-    context.stroke();
 }
 
 
-//деления по оси X
-function delX(x:any,y:any){
-    context.beginPath();
-    context.moveTo(x,y);
-    context.lineTo(x,y+10);
-    context.stroke();
+let options = {
+    hostname:'127.0.0.1',
+    port:'3000',
+    path:`/?x=-1&y=-1`,
+    method:'GET'
 }
 
-
-//деления по оси Y
-function delY(x:any,y:any){
-        context.beginPath();
-        context.moveTo(x,y);
-        context.lineTo(x+10,y);
-        context.stroke();
+let array;
+let arrayFood:any;//массив для данных с сервера о еде
+let arrayPlayer:any;//массив для данных с сервера о игроках
+let id:any;//id текущего клиента
+let t = true;//если у текущего клиента нет id
+function reqToServer(){
+    let req =http.request(options,function(res:any){
+        res.on('data',function(body:any){
+            array = JSON.parse(new TextDecoder("utf-8").decode(body));
+            arrayFood = array.food;
+            arrayPlayer = array.players;
+            if(t){
+                t = false;
+                id = array.id;
+                options.path = `/?id=${id}&x=-1&y=-1`
+            }
+        });
+        res.on('end',function(ch:any){
+        });
+    });
+    req.end();
 }
 
-
-//черчение делений
-function del(k:any){
-    for(let i=mainCanvas.width/2;i<mainCanvas.width;i+=k){
-        delX(i,(mainCanvas.height/2)-5);}
-            
-    for(let i=mainCanvas.width/2;i>0;i-=k){
-        delX(i,(mainCanvas.height/2)-5);}
-            
-    for(let i=mainCanvas.height/2;i<mainCanvas.height;i+=k){
-        delY((mainCanvas.width/2)-5,i);}
-            
-    for(let i=mainCanvas.height/2;i>0;i-=k){
-        delY((mainCanvas.width/2)-5,i);}
-}
-
-
-function parabol(x:any){
-    return x*x;
-}
-
-
-let curStep=20;
-oc();
-del(curStep);
-function graf(f:any,color:any){
-    let k=0,t=true,i=mainCanvas.width/2,predX = i,predY=mainCanvas.height/2;
-    while(i<mainCanvas.width && t){
-        if((mainCanvas.height/2-curStep*k)>0){
-            context.beginPath();
-            context.arc(i,mainCanvas.height/2-curStep*f(k),1,0,2*Math.PI);
-            context.fill();
-            context.beginPath();
-            context.moveTo(predX,predY);
-            predX=i;
-            predY=mainCanvas.height/2-curStep*f(k);
-            context.lineTo(predX,predY);
-            context.strokeStyle=color;
-            context.stroke();
-            k++;
-            i+=curStep;
+let player:any;//игрок
+let otherPlayers:any = [];//остальные игроки сессии
+let food:any = [];//еда
+let zoom:number = 1;
+reqToServer();
+const sketch = (s:typeof p5) => {
+    s.setup = () =>{
+        s.createCanvas(window.innerWidth, window.innerHeight);
+        s.background('#fae');
+        player = new Circle(arrayPlayer[id].x,arrayPlayer[id].y,arrayPlayer[id].r,s); 
+        for(let i = 0;i < arrayFood.length;i++){
+            let newFood = new Circle(arrayFood[i].x,arrayFood[i].y,arrayFood[i].r,s);
+            food.push(newFood);
         }
-        else{t = false;}
     }
 
-    i=mainCanvas.width/2,k=0,t=true,predX = i,predY=mainCanvas.height/2
-    while(i>0 && t){
-        if((mainCanvas.height/2-curStep*k)>0){
-            context.beginPath();
-            context.arc(i,mainCanvas.height/2-curStep*f(k),1,0,2*Math.PI);
-            context.fill();
-            context.beginPath();
-            context.moveTo(predX,predY);
-            predX=i;
-            predY=mainCanvas.height/2-curStep*f(k);
-            context.lineTo(predX,predY);
-            context.stroke();
+    s.draw = ()=>{
+        for(let i=0;i<arrayFood.length;i++){
+            food[i].pos.x=arrayFood[i].x;
+            food[i].pos.y=arrayFood[i].y;
+        }
+        let k = food.length-arrayFood.length;
+        while(k != 0){
+            food.pop();
             k--;
-            i-=curStep;
         }
-        else{t = false;}
-    }
-}
+        options.path = `/?id=${id}&x=${s.mouseX}&y=${s.mouseY}&r=${player.r}`;
+        s.background('#fae');
+        s.translate(s.width/2,s.height/2);
+
+        mark(s);//разметка поля
+        
+        const newZoom = 36/player.r;
+        zoom = s.lerp(zoom,newZoom,0.001);
+        s.scale(zoom);
 
 
-graf(parabol,"red");
-function cub(x:any){
-    return x*x*x;
-}
-
-graf(cub,"blue");
-
-
-
-mainCanvas.addEventListener("wheel",function(event){
-    var y = event.deltaY;	
-    if(y > 0 ){
-        if(curStep<100){
-            context.clearRect(0,0,mainCanvas.width,mainCanvas.height);
-            context.strokeStyle="black";
-            oc();
-            del(curStep+=20);
-            graf(parabol,"red");
-            graf(cub,"blue");
+        s.translate(-player.pos.x,-player.pos.y);
+        player.show();
+        player.update();
+        for(let i=0;i<arrayPlayer.length;i++){
+            if(arrayPlayer[i].id != id){
+            let con = true;//если нового игрока еще нет на поле
+            for(let j=0;j<otherPlayers.length;j++){
+                if(otherPlayers[j].id === arrayPlayer[i].id){
+                    otherPlayers[j].obj.pos.x = arrayPlayer[i].x;
+                    otherPlayers[j].obj.pos.y = arrayPlayer[i].y;
+                    otherPlayers[j].obj.r = arrayPlayer[i].r;
+                    con = false;
+                    otherPlayers[j].obj.show();
+                }
+            }
+            if(con){
+                let newOther = new Circle(arrayPlayer[i].x,arrayPlayer[i].y,arrayPlayer[i].r,s);
+                otherPlayers.push({
+                    obj:newOther,
+                    id:arrayPlayer[i].id
+                });
+                newOther.show();
+            }
         }
-    }
-    else if(curStep !=20){
-        context.clearRect(0,0,mainCanvas.width,mainCanvas.height);
-        context.strokeStyle="black";
-        oc();
-        del(curStep-=20);
-        graf(parabol,"red");
-        graf(cub,"blue");
-    }
-});	
+        }
+
+        for(let i = 0;i < food.length; i++){
+            food[i].show();
+            if(player.eats(food[i])){
+                options.path += `&del=${i}&delx=${food[i].pos.x}`
+                food.splice(i,1);
+            }
+        }   
+        reqToServer();
+     }
+ }
+
+ const sketchInst = new p5(sketch);
+
+
+ function mark(s:any){
+    for(let i = -s.width; i < s.width; i += 80){
+        s.stroke('rgba(100%,0%,100%,0.5)');
+        s.line(i,-s.height,i,s.height);
+     }
+ 
+     for(let i = -s.height+36; i < s.height+36; i += 80) {
+         s.stroke('rgba(100%,0%,100%,0.5)');
+         s.line(-s.width, i, s.width, i);
+     }
+ }

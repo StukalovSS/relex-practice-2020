@@ -10,10 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^4.3.0",
     "html-webpack-plugin": "^4.5.0",
+    "http": "0.0.1-security",
+    "npm": "^6.14.8",
     "p5": "^1.1.9",
     "style-loader": "^1.2.1",
+    "text-encoding": "^0.7.0",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
