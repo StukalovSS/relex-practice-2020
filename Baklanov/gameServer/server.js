@@ -16,8 +16,8 @@ const food = [];
 app.get("/",(request, response) => {
     // response.send('отправлен запрос');
     let obj = {
-        "x": +request.query.x+10,
-        "y" : +request.query.y+10
+        "x": request.query.x,
+        "y" : request.query.y
     }
     let string = JSON.stringify(obj);
     response.send(string);

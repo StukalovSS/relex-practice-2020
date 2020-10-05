@@ -17,8 +17,8 @@ export class Circle {
             s.ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2);
         };
 
-        this.update = function () {
-            const newvel = s.createVector(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
+        this.update = function (newX:number, newY:number) {
+            const newvel = s.createVector(newX - s.width / 2, newY - s.height / 2);
             newvel.setMag(3);
 
             this.vel.lerp(newvel, 0.1);
