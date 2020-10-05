@@ -51,7 +51,7 @@ function drawField(s: any, player: Circle, circles: Circle []): void {
     sendResponse('get_state', {
         x: s.mouseX - s.width / 2, 
         y: s.mouseY - s.height / 2,
-        id: id
+        id: sessionStorage.id
     }, (obj: any) => {
         const circles: Circle[] = [];
 
@@ -75,11 +75,18 @@ const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.translate(s.width / 2, s.height / 2);
-        sendResponse('new_player', {}, (obj: any) => {
+        let [path, args] = sessionStorage.id === undefined ? ['new_player', {}] 
+            : ['get_state', {
+                x: s.mouseX - s.width / 2, 
+                y: s.mouseY - s.height / 2,
+                id: sessionStorage.id
+            }];
+
+        sendResponse(path, args, (obj: any) => {
             const player = new Circle(obj.player.x, obj.player.y, obj.player.r, s),
                 food: Circle[] = [];
 
-            id = obj.player.id;
+            sessionStorage.id = sessionStorage.id || obj.player.id;
 
             for (let el of obj.food) {
                 food.push(new Circle(el.x, el.y, el.r, s));
@@ -91,27 +98,6 @@ const sketch = (s: typeof p5) => {
 
     s.draw = () => {    
         s.translate(s.width / 2, s.height / 2);
-        // if (responseForbiden) {
-            // sendResponse('get_state', {
-            //     x: s.mouseX - s.width / 2, 
-            //     y: s.mouseY - s.height / 2,
-            //     id: id
-            // }, (obj: any) => {
-            //     const circles: Circle[] = [];
-
-            //     for (let el of obj.players) {
-            //             circles.push(new Circle(el.x, el.y, el.r, s));
-            //     }
-
-            //     for (let el of obj.food) {
-            //         circles.push(new Circle(el.x, el.y, el.r, s));
-            //     }
-                
-            //     responseForbiden = false;
-            //     drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
-                
-            // } );
-        // }
     }
 }
 
