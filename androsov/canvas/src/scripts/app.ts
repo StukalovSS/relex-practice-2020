@@ -18,9 +18,6 @@ async function sendResponse(path: string, args: object, callback: (req: object) 
         res.on('data', (body: any) => {
             let decode = new TextDecoder("utf-8").decode(body),
                 fromJSON = JSON.parse(decode);
-
-                console.log(decode);
-                console.log(fromJSON);
             
             callback(fromJSON);
         });
@@ -56,7 +53,6 @@ function drawField(s: any, player: Circle, circles: Circle []): void {
         y: s.mouseY - s.height / 2,
         id: id
     }, (obj: any) => {
-        console.log('Ex')
         const circles: Circle[] = [];
 
         for (let el of obj.players) {
@@ -80,13 +76,14 @@ const sketch = (s: typeof p5) => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.translate(s.width / 2, s.height / 2);
         sendResponse('new_player', {}, (obj: any) => {
-            console.log(obj);
             const player = new Circle(obj.player.x, obj.player.y, obj.player.r, s),
-            food: Circle[] = [];
+                food: Circle[] = [];
+
+            id = obj.player.id;
+
             for (let el of obj.food) {
                 food.push(new Circle(el.x, el.y, el.r, s));
             }
-            id = obj.player.id;
 
             drawField(s, player, food);
         } );

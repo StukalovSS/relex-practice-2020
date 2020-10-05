@@ -156,27 +156,39 @@ app.get("/get_state", (request, response) => {
         player.eat(el);
     }
 
-    response.send( JSON.stringify({
+    let answer = JSON.stringify({
         player: {
             x: player.x,
-            y: player.y
+            y: player.y,
+            r: player.r
         },
-        players: Array.from( players.values() ).map( obj => {
+        players: Array.from( players.values() ).filter( obj => obj.id !== player.id )
+        .map( obj => {
             obj.id = undefined;
             return obj;
         } ),
-        food: food
-    }) );
+        food: food.filter( obj =>  
+             Math.sqrt( (obj.x - player.x) ** 2 + (obj.y - player.y) ** 2 ) < 600 
+        )
+    });
+
+
+    response.send( answer );
 
 });
 
 
 app.get("/new_player", (request, response) => {
-        players.set( players.size, new Player( random(-2000, 2000), random(-2000, 2000), players.size) );
+        let player = new Player( random(-2000, 2000), random(-2000, 2000), players.size);
+        players.set( players.size, player );
 
         response.send( JSON.stringify({
             player: players.get(players.size - 1),
-            players: Array.from( players.values() ),
+            players: Array.from( players.values() ).filter( obj => obj.id !== player.id )
+            .map( obj => {
+                obj.id = undefined;
+                return obj;
+            } ),
             food: food
         }) );
 });
