@@ -79,9 +79,11 @@ class Vector {
 
 class Player extends Circle {
     __prevVect = new Vector(0, 0);
+    id;
     
-    constructor(x, y) {
+    constructor(x, y, id) {
         super(x, y, 36);
+        this.id = id;
     }
 
     get distanceFromCentre() {
@@ -131,7 +133,7 @@ import express from "express";
 
 const app = express();
 
-const player = new Player(random(-1950, 1950), random(-1950, 1950)),
+const players = new Map(),
     food = [];
 
 for (let i = 0; i < 1000; i++) {
@@ -146,24 +148,39 @@ app.use(function (require, response, next) {
     next();
 });
 
-app.get("/", (request, response) => {
-        if (request.query.x == undefined || request.query.y == undefined) {
-            response.send(JSON.stringify({
-                player: player,
-                food: food
-            }));
-        } else {
-            player.update(+request.query.x, +request.query.y);
-            for (let el of food) {
-                player.eat(el);
-            }
+app.get("/get_state", (request, response) => {
+    const player = players.get( +request.query.id );
+    
+    player.update( +request.query.x, +request.query.y );
+    for (let el of food) {
+        player.eat(el);
+    }
 
-            response.send( JSON.stringify({
-                player: player,
-                food: food
-            }) );
-        }
-    });
+    response.send( JSON.stringify({
+        player: {
+            x: player.x,
+            y: player.y
+        },
+        players: Array.from( players.values() ).map( obj => {
+            obj.id = undefined;
+            return obj;
+        } ),
+        food: food
+    }) );
+
+});
+
+
+app.get("/new_player", (request, response) => {
+        players.set( players.size, new Player( random(-2000, 2000), random(-2000, 2000), players.size) );
+
+        response.send( JSON.stringify({
+            player: players.get(players.size - 1),
+            players: Array.from( players.values() ),
+            food: food
+        }) );
+});
+
 
 app.listen(3000, function() {
     console.log("Start server");
