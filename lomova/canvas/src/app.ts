@@ -51,6 +51,7 @@ function sendCoord(x: number, y: number, s: any) {
             tempP.x = +newObj.pCurr.x;
             tempP.y = +newObj.pCurr.y;
             tempP.r = +newObj.pCurr.r;
+            console.log(tempP);
             // все игроки
             for (let i = 0; i < newObj.allP.length; i++) {
                 playersServer[i] = newObj.allP[i];
@@ -64,7 +65,6 @@ function sendCoord(x: number, y: number, s: any) {
         });
         res.on('end', function (chunck: any) {
             sendCoord(s.mouseX - s.width / 2, s.mouseY - s.height / 2, s);
-            console.log(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
             console.log('Response Ended');
         });
     });
@@ -80,8 +80,9 @@ const sketch = (s: typeof p5) => {
         for (let i = 0; i < playersServer.length; i++) {
             players[i] = new Circle(playersServer[i].x, playersServer.y, playersServer.r, s);
         }
+        
         // текущий
-        player = new Circle(tempP.x, tempP.y, tempP.r, s);
+        player = new Circle(0, 0, tempP.r, s);
         // еда
         for (let i = 0; i < 100; i++) {
             food[i] = new Circle(foodx[i], foody[i], foodr[i], s);
@@ -105,18 +106,20 @@ const sketch = (s: typeof p5) => {
             players[i] = new Circle(playersServer[i].x, playersServer.y, playersServer.r, s);
         }
         // текущий
-        player = new Circle(tempP.x, tempP.y, tempP.r, s);
+        player = new Circle(0, 0, tempP.r, s);
         // еда
         for (let i = 0; i < 100; i++) {
             food[i] = new Circle(foodx[i], foody[i], foodr[i], s);
         }
         s.translate(-player.pos.x, -player.pos.y);
-
+        player.pos.x = tempP.x;
+        player.pos.y = tempP.y;
+        console.log(player);
         player.show();
 
-        for(let i = 0; i < players.length; i++) {
-            players[i].show();
-        }
+        // for(let i = 0; i < players.length; i++) {
+        //     players[i].show();
+        // }
 
         for (let i = food.length - 1; i >= 0; i--) {
             food[i].show();
