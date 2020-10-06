@@ -1,5 +1,6 @@
 // import p5 from 'p5';
 const p5 = require('../node_modules/p5/lib/p5');
+const http = require('http');
 export class Circle {
     pos: number;
     r: number;
@@ -7,6 +8,7 @@ export class Circle {
     show: Function;
     update: Function;
     eats: Function;
+    coord: Function;
 
     constructor(public x: number, public y: number, r: number, public s: any) {
         this.pos = s.createVector(x, y);
@@ -17,6 +19,7 @@ export class Circle {
             s.fill(255);
             s.ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2);
         };
+
 
         this.update = function () {
             const newvel = s.createVector(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
