@@ -35,13 +35,10 @@ class Player {
     update(a, b) {
         const vect = new Vector(a, b);
         vect.length = 3;
-        this.x = this.x +  (vect.x - this.x) * 0.1;
-        this.y = this.y +  (vect.y - this.y) * 0.1; 
+        this.x = this.x +  (vect.x - this.x)*0.01; // 0.009
+        this.y = this.y +  (vect.y - this.y)*0.01; 
     }
 }
-
-
-
 
 
 let players = [];
@@ -76,14 +73,19 @@ app.get('/new_player', (req, res) => {
 app.get('/state', (req, res) => {
     let player_id = +req.query.player_id;
     let playerCurr;
+    console.log(player_id);
     players.forEach(element => {
         if(element.id == player_id){
             playerCurr = element;
         }
     });
+    console.log(playerCurr);
+    console.log(playerCurr.x, playerCurr.y);
     playerCurr.update(+req.query.x, +req.query.y);
+    console.log(playerCurr);
     let resPlayers = players.filter(el => el != playerCurr);
-    res.send(JSON.stringify({"f": food, "allP": resPlayers, "pCurr": playerCurr}));
+    res.send(JSON.stringify({"f": food, "allP": resPlayers, "pCurr": {"x": playerCurr.x, "y": playerCurr.y, "r": playerCurr.r}}));
+    console.log(playerCurr.x, playerCurr.y);
 });
 
 app.listen(3000, () => {
