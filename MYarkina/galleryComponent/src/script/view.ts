@@ -22,7 +22,7 @@ export class View implements IComponent{
         gallery.appendChild(this.divMainImg);
     }
 
-    setViewParams(param:any){
+    setViewParams(param:any,router:any){
         let mainImg = document.createElement('img');
         this.divMainImg.appendChild(mainImg);
         mainImg.classList.add('full-img');

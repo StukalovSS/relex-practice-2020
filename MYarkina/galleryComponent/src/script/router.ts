@@ -4,23 +4,23 @@ import { View } from "./view";
 
 export class Router  implements IComponent{
     private opth = window.location.search.substr(1);
+    private main:any;
     
-    
-    build(){
+    build(param:any){
         if(window.location.pathname == '/view'){
-        let main = new View();
-        main.build();
-        main.setViewParams(this.opth);}
+            this.main = new View();}
         else{
-            let main = new Gallery();
-            main.build();
-            main.setViewParams(this.opth);
+            this.main = new Gallery();
         }
+        this.main.build(param);
+        this.main.setViewParams(this.opth);
     }
     
     
     setViewParams(){}
     
-    destroy(){}
+    destroy(){
+        this.main.destroy();
+    }
     
 }

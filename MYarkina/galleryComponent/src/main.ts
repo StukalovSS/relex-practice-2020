@@ -1,3 +1,10 @@
 import { Router } from "./script/router";
 
-new Router().build();
+
+let p = new Router();
+p.build(p);
+window.addEventListener('popstate',function(){
+    p.destroy();
+    p = new Router();
+    p.build(p);
+});

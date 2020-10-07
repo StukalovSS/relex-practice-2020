@@ -1,6 +1,6 @@
 
 export interface IComponent{
-    build():any;
-    setViewParams(param:any):any;
+    build(param:any):any;
+    setViewParams(param:any,router:any):any;
     destroy():any;
 }

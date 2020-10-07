@@ -1,4 +1,5 @@
 import {IComponent} from "./icomponents";
+import {Router} from "./router";
 const pic1 = require('../img/picture1.jpg');
 const pic2 = require('../img/picture2.jpg');
 const pic3 = require('../img/picture3.jpg');
@@ -17,14 +18,13 @@ const gallery = document.getElementById("gallery");
 let arrayOfImg:any =[];
 export class Gallery implements IComponent{
     private mainImg = document.createElement('img');
+    private divMainImg = document.createElement('div');
 
+    build(param:any){
+        this.divMainImg.setAttribute('align','center');
+        gallery.appendChild(this.divMainImg);
 
-    build(){
-        const divMainImg = document.createElement('div');
-        divMainImg.setAttribute('align','center');
-        gallery.appendChild(divMainImg);
-
-        divMainImg.appendChild(this.mainImg);
+        this.divMainImg.appendChild(this.mainImg);
         this.mainImg.classList.add('main-img');
 
         const divImg = document.createElement('div');
@@ -34,7 +34,10 @@ export class Gallery implements IComponent{
             this.createImg(i);
             divImg.appendChild(arrayOfImg[i]);
             arrayOfImg[i].onclick = function(){
-                window.location.href = `gallery?${i}`
+                history.pushState({},'hello',`/gallery?${i}`);
+                param.destroy();
+                param = new Router();
+                param.build(param);
             }
         }
 
@@ -48,11 +51,12 @@ export class Gallery implements IComponent{
         this.mainImg.onclick = function(){
             window.location.href = `view?${param}`
         }
-        this.funcBorder(param);
-     
+        this.checkBorder();
+        this.funcBorder(param); 
     }
 
     destroy(){
+        this.mainImg.parentNode.removeChild(this.mainImg);
     }
 
     private createImg(k:any){
@@ -66,4 +70,13 @@ export class Gallery implements IComponent{
     {
         arrayOfImg[param].style.border = '3px solid #BDB76B';
     }
+
+    private checkBorder(){
+        for(let i=0;i<arrayOfImg.length;i++){
+            if(arrayOfImg[i].style.border = '3px solid #BDB76B'){
+                arrayOfImg[i].style.border = 'none';
+            }
+        }
+    }
+
 }
