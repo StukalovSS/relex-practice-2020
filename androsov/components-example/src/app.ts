@@ -1,3 +1,3 @@
 import Router from './components/router';
 
-new Router();
+new Router().build();

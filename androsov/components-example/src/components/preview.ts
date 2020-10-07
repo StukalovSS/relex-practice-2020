@@ -2,9 +2,11 @@ import IComponent from './component'
 
 export default class Preview implements IComponent{
     private div: HTMLDivElement;
-    private curIndex: number;
+    private curIndex: number = 0;
 
     constructor(private sources: string[]) {
+        this.div = document.getElementById( 'preview' ) as HTMLDivElement;
+        this.add( ...sources );
         this.changeCurImage( sources[0] );
     }
 
@@ -35,8 +37,9 @@ export default class Preview implements IComponent{
     }
 
     get(src: string): HTMLImageElement {
-        return Array.from( this.div.children ).
-            find( (img: HTMLImageElement) => img.src === src ) as HTMLImageElement;
+        const img =  Array.from( this.div.children ).
+            find( (img: HTMLImageElement) => img.src === 'http://localhost:8080/' + src ) as HTMLImageElement;
+        return img;
     }
 
     get curImage(): HTMLImageElement {
@@ -60,7 +63,7 @@ export default class Preview implements IComponent{
     }
 
     build(): void {
-        this.div = document.getElementById( 'preview' ) as HTMLDivElement;
+        
     }
 
     setViewParams(param: any): void {
