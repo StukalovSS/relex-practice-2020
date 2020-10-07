@@ -6,6 +6,7 @@ export default class View implements IComponent {
     constructor(public src: string) {
         const img: HTMLImageElement = document.createElement( 'img' );
         img.src = src;
+        img.classList.add( 'main-image' );
 
         this.img = img;
     }
