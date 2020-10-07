@@ -16,7 +16,7 @@ export default class View implements IComponent {
     }
 
     build(): void {
-        document.getElementById( 'view' ).appendChild( this.img )
+        document.getElementById( 'view' ).appendChild( this.img );
     }
 
     setViewParams(param: any): void {

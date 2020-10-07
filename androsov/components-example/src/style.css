@@ -2,7 +2,7 @@ body {
 	background-color: #e8e8e8;
 }
 
-#container-preview {
+#preview {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -10,7 +10,7 @@ body {
 	flex-wrap: wrap;
 }
 
-#gallery {
+#main{
 	position: relative;
 	padding-top: 50px;
 	width: 800px;	

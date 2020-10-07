@@ -5,7 +5,9 @@ export default class Preview implements IComponent{
     private curIndex: number = 0;
 
     constructor(private sources: string[]) {
-        this.div = document.getElementById( 'preview' ) as HTMLDivElement;
+        this.div = document.createElement( 'div' ) as HTMLDivElement;
+        this.div.id = 'preview'
+
         this.add( ...sources );
         this.changeCurImage( sources[0] );
     }
@@ -63,7 +65,7 @@ export default class Preview implements IComponent{
     }
 
     build(): void {
-        
+        document.getElementById( 'main' ).appendChild( this.div );
     }
 
     setViewParams(param: any): void {

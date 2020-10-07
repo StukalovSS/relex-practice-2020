@@ -24,24 +24,30 @@ export default class Router implements IComponent{
 
             for (let img of this.preview.images) {
                 img.addEventListener( 'click', event => {
+
                     window.location.href = 
-                        `127.0.0.1:8080/preview?page=
-                            ${this.sources.indexOf( (event.target as HTMLImageElement).src)}`
+                        `preview?page=${this.sources.indexOf(
+                            (event.target as HTMLImageElement).src
+                            .replace('http://localhost:8080/', '') )}`;
                 } )
             }
 
             this.view.img.addEventListener('click', event => {
                 window.location.href = 
-                    `127.0.0.1:8080/view?page=
-                        ${this.sources.indexOf( (event.target as HTMLImageElement).src)}`
+                    `view?page=${this.sources.indexOf(
+                        (event.target as HTMLImageElement).src
+                        .replace('http://localhost:8080/', '') )}`;
             })
-        } else if (window.location.pathname === '/preview') {
+
+        } else if (window.location.pathname === '/view') {
+            console.log(this.view);
             this.view.build();
             this.view.onFullScreen();
             this.view.img.addEventListener('click', event => {
                 window.location.href = 
-                    `127.0.0.1:8080/preview?page=
-                        ${this.sources.indexOf( (event.target as HTMLImageElement).src)}`
+                    `preview?page=${this.sources.indexOf( 
+                        (event.target as HTMLImageElement).src
+                        .replace('http://localhost:8080/', '') )}`
             })
         }
     }
