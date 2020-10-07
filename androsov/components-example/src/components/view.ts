@@ -21,7 +21,6 @@ export default class View implements IComponent {
 
     onFullScreen() {
         document.getElementById( 'main' ).style.width = '100%';
-        // document.getElementById( 'main' ).style.paddingTop = '0';
         this.img.style.width = '100%';
         this.img.style.height = '100vh';
     }
