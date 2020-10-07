@@ -10,6 +10,11 @@ export default class View implements IComponent {
         this.img = img;
     }
 
+    onFullScreen() {
+        this.img.style.width = '100%';
+        this.img.style.height = '100vh';
+    }
+
     build(): void {
         document.getElementById( 'view' ).appendChild( this.img )
     }

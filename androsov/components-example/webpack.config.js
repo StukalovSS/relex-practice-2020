@@ -7,6 +7,9 @@ module.exports={
         filename:'main.js',
         path: path.resolve(__dirname, 'dist')
     },
+    devServer: {
+        historyApiFallback: true
+    },
     module:{
         rules: [
         {
@@ -28,6 +31,17 @@ module.exports={
                     }
                 },
                 'css-loader'
+            ]
+        },
+        {
+            test: /\.(png|svg|jpg|git?g)$/,
+            use: [ 
+                {
+                    options: {
+                        outputPath: 'images/',
+                    },
+                    loader: 'file-loader'
+                }
             ]
         }
       ],

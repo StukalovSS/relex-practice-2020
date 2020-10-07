@@ -4,7 +4,9 @@ export default class Preview implements IComponent{
     private div: HTMLDivElement;
     private curIndex: number;
 
-    constructor(private sources: string[]) {}
+    constructor(private sources: string[]) {
+        this.changeCurImage( sources[0] );
+    }
 
     add( ...sources: string[] ): void {
         this.sources.push( ...sources );
