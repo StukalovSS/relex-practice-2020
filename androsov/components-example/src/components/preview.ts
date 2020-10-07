@@ -39,9 +39,8 @@ export default class Preview implements IComponent{
     }
 
     get(src: string): HTMLImageElement {
-        const img =  Array.from( this.div.children ).
+        return  Array.from( this.div.children ).
             find( (img: HTMLImageElement) => img.src === 'http://localhost:8080/' + src ) as HTMLImageElement;
-        return img;
     }
 
     get curImage(): HTMLImageElement {
