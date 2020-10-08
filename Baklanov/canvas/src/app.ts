@@ -1,5 +1,6 @@
 const p5 = require('../node_modules/p5/lib/p5');
 const http = require('http');
+import { LoaderOptionsPlugin } from 'webpack';
 import {Circle} from './circle';
 
 const options = {
@@ -9,11 +10,27 @@ const options = {
     method :'Get'
 }
 let player: any;
+let bodyParse :any;
 const food: any = [];
 let obj = {
     "x": 0,
     "y" : 0
+};
+function query () {
+    let req = http.request(options, function (response :any) {
+        response.on('data', function (body:any) {
+            let string = new TextDecoder("utf-8").decode(body);
+            console.log("получили   ");
+            bodyParse= JSON.parse(body);
+        });
+        response.on ('end', function(chunck:any) {
+            console.log('Response ended');
+        });
+    });
+    req.end();
+    return bodyParse;
 }
+let pathforNewPlayer = "/state?player_id =..&mx=..&my=..";
 let zoom: number = 1;
 const sketch = (s: typeof p5) => {
     s.setup = () => {
@@ -24,6 +41,10 @@ const sketch = (s: typeof p5) => {
             let obj = new Circle(s.random(-s.width, s.width), s.random(-s.height, s.height), 7, s);
             food.push(obj);
         }
+        options.path =  '/new_player'; 
+        query();
+        options.path =  `/state?player_id =${bodyParse}&mx=${s.mouseX}&my=${s.mouseY}`;
+        query();
     }
 
     s.draw = () => {
@@ -43,21 +64,23 @@ const sketch = (s: typeof p5) => {
             s.line(-s.width, i, s.width, i);
             s.stroke(126);
         }
-            options.path =  '/?x=' + s.mouseX +'&y=' + s.mouseY;
-            console.log("что посылали   " +options.path);
-            let req = http.request(options, function (response :any) {
-                response.on('data', function (body:any) {
-                    let string = new TextDecoder("utf-8").decode(body);
-                    console.log("получили   "+string);
-                    obj = JSON.parse(body);
-                });
-                response.on ('end', function(chunck:any) {
-                    console.log('Response ended');
-                });
-            });
-            req.end();
+        options.path =  `/state?player_id =${bodyParse}&mx=${s.mouseX}&my=${s.mouseY}`;
+        obj = query();
+            // options.path =  '/?x=' + s.mouseX +'&y=' + s.mouseY;
+            // console.log("что посылали   " +options.path);
+            // let req = http.request(options, function (response :any) {
+            //     response.on('data', function (body:any) {
+            //         let string = new TextDecoder("utf-8").decode(body);
+            //         console.log("получили   "+string);
+            //         obj = JSON.parse(body);
+            //     });
+            //     response.on ('end', function(chunck:any) {
+            //         console.log('Response ended');
+            //     });
+            // });
+            // req.end();
        player.show();
-        player.update(obj.x, obj.y);
+       player.update(obj.x, obj.y);
 
         for(let i = food.length - 1; i >= 0; i--) {
             food[i].show();

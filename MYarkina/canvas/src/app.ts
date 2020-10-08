@@ -3,35 +3,40 @@ const p5 = require('../node_modules/p5/lib/p5');
 const http = require("http");
 import {Circle} from './circle';
 
-//проверка налиичия еды на поле
-function checkFood(){
-
-}
 
 
-let options = {
-    hostname:'127.0.0.1',
+
+let id:any = 0;//id текущего клиента
+//Первый запрос от нового клиента к серверу
+let reqFirst =http.request(
+    {hostname:'127.0.0.1',
     port:'3000',
-    path:`/?x=-1&y=-1`,
+    path:`/new_player`,
     method:'GET'
-}
+},function(res:any){
+    res.on('data',function(body:any){
+        id = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).id : {};
+        console.log(id);
+    });
+    res.on('end',function(ch:any){
+        console.log("id получен");
+    });
+});
+reqFirst.end();
+//
 
-let array;
-let arrayFood:any;//массив для данных с сервера о еде
-let arrayPlayer:any;//массив для данных с сервера о игроках
-let id:any;//id текущего клиента
-let t = true;//если у текущего клиента нет id
-function reqToServer(){
+
+let arrayFood:any;//массив с координатами еды с сервера
+let playerServer:any;//массив с координатами игроков с сервера
+let otherPlayers:any = [];//остальные игроки сессии
+function reqToServer()//запрос для обновления данных 
+{
     let req =http.request(options,function(res:any){
         res.on('data',function(body:any){
-            array = JSON.parse(new TextDecoder("utf-8").decode(body));
+            let array =  body != "" ? JSON.parse(new TextDecoder("utf-8").decode(body)) : {};
             arrayFood = array.food;
-            arrayPlayer = array.players;
-            if(t){
-                t = false;
-                id = array.id;
-                options.path = `/?id=${id}&x=-1&y=-1`
-            }
+            playerServer = array.curPlayer;
+            otherPlayers = array.otherPlayers;
         });
         res.on('end',function(ch:any){
         });
@@ -39,38 +44,39 @@ function reqToServer(){
     req.end();
 }
 
-let player:any;//игрок
-let otherPlayers:any = [];//остальные игроки сессии
+let options = {
+    hostname:'127.0.0.1',
+    port:'3000',
+    path:`/state?playerid=${id}&mx=500&my=500`,
+    method:'GET'
+}
+reqToServer();
+let player:any;//main игрок сессии
 let food:any = [];//еда
 let zoom:number = 1;
-reqToServer();
 const sketch = (s:typeof p5) => {
     s.setup = () =>{
         s.createCanvas(window.innerWidth, window.innerHeight);
         s.background('#fae');
-        player = new Circle(arrayPlayer[id].x,arrayPlayer[id].y,arrayPlayer[id].r,s); 
-        for(let i = 0;i < arrayFood.length;i++){
-            let newFood = new Circle(arrayFood[i].x,arrayFood[i].y,arrayFood[i].r,s);
+        player = new Circle(playerServer.x,playerServer.y,playerServer.r,s);
+        for(let i = 0; i < arrayFood.length; i++){
+            let newFood = new Circle(arrayFood[i].x,arrayFood[i].y,10,s);
             food.push(newFood);
         }
     }
 
     s.draw = ()=>{
-        for(let i=0;i<arrayFood.length;i++){
-            food[i].pos.x=arrayFood[i].x;
-            food[i].pos.y=arrayFood[i].y;
+        food = [];
+        for(let i = 0;i < arrayFood.length;i++){
+            let newFood = new Circle(arrayFood[i].x,arrayFood[i].y,10,s);
+            food.push(newFood);
         }
-        let k = food.length-arrayFood.length;
-        while(k != 0){
-            food.pop();
-            k--;
-        }
-        options.path = `/?id=${id}&x=${s.mouseX}&y=${s.mouseY}&r=${player.r}`;
+        
         s.background('#fae');
         s.translate(s.width/2,s.height/2);
-
         mark(s);//разметка поля
         
+
         const newZoom = 36/player.r;
         zoom = s.lerp(zoom,newZoom,0.001);
         s.scale(zoom);
@@ -78,37 +84,19 @@ const sketch = (s:typeof p5) => {
 
         s.translate(-player.pos.x,-player.pos.y);
         player.show();
-        player.update();
-        for(let i=0;i<arrayPlayer.length;i++){
-            if(arrayPlayer[i].id != id){
-            let con = true;//если нового игрока еще нет на поле
-            for(let j=0;j<otherPlayers.length;j++){
-                if(otherPlayers[j].id === arrayPlayer[i].id){
-                    otherPlayers[j].obj.pos.x = arrayPlayer[i].x;
-                    otherPlayers[j].obj.pos.y = arrayPlayer[i].y;
-                    otherPlayers[j].obj.r = arrayPlayer[i].r;
-                    con = false;
-                    otherPlayers[j].obj.show();
-                }
-            }
-            if(con){
-                let newOther = new Circle(arrayPlayer[i].x,arrayPlayer[i].y,arrayPlayer[i].r,s);
-                otherPlayers.push({
-                    obj:newOther,
-                    id:arrayPlayer[i].id
-                });
-                newOther.show();
-            }
+        for(let i = 0; i < otherPlayers.length;i++){
+            new Circle(otherPlayers[i].x,otherPlayers[i].y,otherPlayers[i].r,s).show();
         }
-        }
+
+        player.update(playerServer.x,playerServer.y);
+   
+
+        options.path = `/state?playerid=${id}&mx=${s.mouseX}&my=${s.mouseY}`;
 
         for(let i = 0;i < food.length; i++){
             food[i].show();
-            if(player.eats(food[i])){
-                options.path += `&del=${i}&delx=${food[i].pos.x}`
-                food.splice(i,1);
-            }
         }   
+
         reqToServer();
      }
  }
