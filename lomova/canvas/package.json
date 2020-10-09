@@ -16,6 +16,10 @@
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.0",
     "style-loader": "^1.3.0",
+<<<<<<< HEAD
+    "ts-loader": "^8.0.4",
+=======
+>>>>>>> c6c5835105c9d8c2375aa32fe2bd698588dcd8f4
     "typescript": "^4.0.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
