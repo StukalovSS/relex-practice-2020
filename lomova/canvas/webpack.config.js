@@ -24,15 +24,15 @@ module.exports = {
             ],
             },
 
-            // {
-            // test: /\.(png|svg|jpg|gif|jpe?g)$/,
+            {
+            test: /\.(png|svg|jpg|gif|jpe?g)$/,
 
-            // use: [
-            //     {options: {outputPath: "img" },
-            //     loader: "file-loader"
-            //                 }
-            //     ]
-            // }
+            use: [
+                {options: {outputPath: "img" },
+                loader: "file-loader"
+                            }
+                ]
+            }
         ],
     },
 
