@@ -1,96 +1,112 @@
 const p5 = require('../node_modules/p5/lib/p5');
-import { Circle } from './circle';
 const http = require('http');
-
-let player: any, food: Circle[] = [];
-// let zoom: number = 1;
-let mx = 0, my = 0;
-let player_id = 0;
-
-let foodx: number[] = [];
-let foodr: number[] = [];
-let foody: number[] = [];
-let players: any = [];
-
-let playersServer: any = [];
-
-let tempP = { "x": 0, "y": 0, "r": 0 };
-
-let options =
-{
-    hostname: '127.0.0.1',
-    port: 3000,
-    path: '/new_player',
-    method: 'GET'
-};
-
-let req = http.request(options, function (res: any) {
-    res.on('data', function (body: any) {
-        let newp = JSON.parse(new TextDecoder("utf-8").decode(body));
-        player_id = newp.id;
-    });
-    res.on('end', function () {
-        console.log('Response Ended');
-    });
-});
-req.end();
+const lerp = require('lerp');
+import { Circle } from './circle';
 
 
-function sendCoord(x: number, y: number, s: any) {
-    mx = x;
-    my = y;
-    let req = http.request({
+
+
+let id: any = 0; //id текущего клиента
+//Первый запрос 
+let reqFirst = http.request(
+    {
         hostname: '127.0.0.1',
-        port: 3000,
-        path: '/state?player_id=' + player_id + '&x=' + mx + '&y=' + my,
+        port: '3000',
+        path: '/new_player',
         method: 'GET'
     }, function (res: any) {
         res.on('data', function (body: any) {
-            let newObj = JSON.parse(new TextDecoder("utf-8").decode(body));
-            // текущий игрок
-            tempP.x = +newObj.pCurr.x;
-            tempP.y = +newObj.pCurr.y;
-            tempP.r = +newObj.pCurr.r;
-            console.log(tempP);
-            // все игроки
-            for (let i = 0; i < newObj.allP.length; i++) {
-                playersServer[i] = newObj.allP[i];
-            }
-            // еда
-            for (let i = 0; i < 100; i++) {
-                foody[i] = +newObj.f[i].y;
-                foodx[i] = +newObj.f[i].x;
-                foodr[i] = +newObj.f[i].r;
-            }
+            id = JSON.parse((new TextDecoder("utf-8").decode(body))).id;
+            console.log(id);
         });
-        res.on('end', function (chunck: any) {
-            sendCoord(s.mouseX - s.width / 2, s.mouseY - s.height / 2, s);
+        res.on('end', function (ch: any) {
+            console.log("succesfull");
+        });
+    });
+reqFirst.end();
+
+
+
+
+
+let newData: any; // инфа с сервера о еде и игроках
+let tempPlayer = { x: 0, y: 0, r: 0 }; // текущий игрок с сервера
+let otherPlayers: any = [];  //остальные игроки 
+let foodX: any = [], foodY: any = [], foodR: any = []; // еда с сервера
+
+function coordPlayer(mx: number, my: number, s: any) {
+    // console.log(mx, my);
+    let options = {
+        hostname: '127.0.0.1',
+        port: 3000,
+        path: '/state?player_id=' + id + '&x=' + mx + '&y=' + my,
+        method: 'GET'
+    };
+    let req = http.request(options, (res: any) => {
+        res.on('data', (body: any) => {
+            newData = JSON.parse(new TextDecoder("utf-8").decode(body));
+            console.log(newData);
+            // текущий игрок с сервера
+            tempPlayer.x = newData.p.x;
+            tempPlayer.y = newData.p.y;
+            tempPlayer.r = newData.p.r;
+
+            // еда с сервера
+            for (let i = 0; i < newData.f.length; i++) {
+                foodX[i] = newData.f[i].x;
+                foodY[i] = newData.f[i].y;
+                foodR[i] = newData.f[i].r;
+            }
+
+            // остальные игроки
+            otherPlayers = newData.op;
+
+        });
+        res.on('end', () => {
+            coordPlayer(s.mouseX - s.width / 2, s.mouseY - s.height / 2, s);
             console.log('Response Ended');
         });
     });
     req.end();
 }
 
+
+let player: any; // текущий игрок
+const food: any = []; // еда
+let zoom = 1;
+
 const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(window.innerWidth, window.innerHeight);
         s.background(220);
-        sendCoord(0, 0, s);
-        // все игроки
-        for (let i = 0; i < playersServer.length; i++) {
-            players[i] = new Circle(playersServer[i].x, playersServer.y, playersServer.r, s);
-        }
-        
-        // текущий
-        player = new Circle(0, 0, tempP.r, s);
-        // еда
-        for (let i = 0; i < 100; i++) {
-            food[i] = new Circle(foodx[i], foody[i], foodr[i], s);
-        }
-    }
 
+        coordPlayer(s.mouseX, s.mouseY, s);
+
+        player = new Circle(tempPlayer.x, tempPlayer.y, tempPlayer.r, s);
+        for (let i = 0; i < foodX.length; i++) {
+            food[i] = new Circle(foodX[i], foodY[i], foodR[i], s);
+        }
+
+
+    }
     s.draw = () => {
         s.background(220);
+        s.translate(s.width / 2, s.height / 2);
+
+        player = new Circle(tempPlayer.x, tempPlayer.y, tempPlayer.r, s);
+        for (let i = 0; i < foodX.length; i++) {
+            food[i] = new Circle(foodX[i], foodY[i], foodR[i], s);
+        }
+
+        // console.log(zoom);
+        // const newZoom = 36 / player.r;
+        // console.log(newZoom);
+        // zoom = lerp(newZoom, zoom, 0.1);
+        // console.log(zoom);
+        // s.scale(zoom);
+
+        s.translate(-player.pos.x, -player.pos.y);
+        // сетка
         for (let i = -s.width; i < s.width; i = i + 50) {
             s.line(i, -s.height, i, s.height);
             s.stroke(126);
@@ -99,31 +115,23 @@ const sketch = (s: typeof p5) => {
             s.line(-s.width, i, s.width, i);
             s.stroke(126);
         }
-        s.translate(s.width / 2, s.height / 2);
 
-        // все игроки
-        for (let i = 0; i < playersServer.length; i++) {
-            players[i] = new Circle(playersServer[i].x, playersServer.y, playersServer.r, s);
-        }
-        // текущий
-        player = new Circle(0, 0, tempP.r, s);
-        // еда
-        for (let i = 0; i < 100; i++) {
-            food[i] = new Circle(foodx[i], foody[i], foodr[i], s);
-        }
-        s.translate(-player.pos.x, -player.pos.y);
-        player.pos.x = tempP.x;
-        player.pos.y = tempP.y;
-        console.log(player);
+        // показать текущего игрока
+        player.pos.x = s.constrain(player.pos.x, -s.width + player.r, s.width - player.r);
+        player.pos.y = s.constrain(player.pos.y, -s.height + player.r, s.height - player.r);
         player.show();
 
-        // for(let i = 0; i < players.length; i++) {
-        //     players[i].show();
-        // }
+        // показать остальных игроков
+        for (let i = 0; i < otherPlayers.length; i++) {
+            let otherNewPlayer = new Circle(otherPlayers[i].x, otherPlayers[i].y, otherPlayers[i].r, s);
+            otherNewPlayer.show();
+        }
 
+        // показать еду
         for (let i = food.length - 1; i >= 0; i--) {
             food[i].show();
         }
     }
 }
+
 const sketchInst = new p5(sketch);
