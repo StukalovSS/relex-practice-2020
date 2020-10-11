@@ -6,13 +6,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  @Input() src: string;
+  @Input() mainSrc: string;
 }
 
 
