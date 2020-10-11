@@ -15,3 +15,7 @@ img {
 	width: 101px;
 	height: 101px;
 }
+
+.curent-image {
+	border: 4px groove orange;
+}

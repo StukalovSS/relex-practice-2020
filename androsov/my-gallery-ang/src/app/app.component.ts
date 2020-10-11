@@ -9,4 +9,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   viewSrc: string = "./assets/images/first.jpg";
   title = 'my-gallery-ang';
+
+  onChooseImg(src: string): void {
+    this.viewSrc = src;
+  }
 }

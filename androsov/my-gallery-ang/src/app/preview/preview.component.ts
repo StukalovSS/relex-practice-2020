@@ -15,7 +15,11 @@ export class PreviewComponent implements OnInit {
   @Output() onClickImg = new EventEmitter<string>();
 
   chooseImage(e: any) {
-    this.onClickImg.emit(e.targer.src);
+    for (let img of Array.from(document.querySelectorAll('img'))  ) {
+      img.classList.remove('curent-image');
+    }
+    e.target.classList.add('curent-image');
+    this.onClickImg.emit(e.target.src);
   }
 
 }
