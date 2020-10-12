@@ -11,7 +11,7 @@ let id:any = 0;//id текущего клиента
 let reqFirst =http.request(
     {hostname:'127.0.0.1',
     port:'3000',
-    path:`/new_player`,
+    path:`/new_player?wid=${window.innerWidth}&heig=${window.innerHeight}`,
     method:'GET'
 },function(res:any){
     res.on('data',function(body:any){
@@ -78,7 +78,7 @@ const sketch = (s:typeof p5) => {
         
 
         const newZoom = 36/player.r;
-        zoom = s.lerp(zoom,newZoom,0.001);
+        zoom = s.lerp(zoom,newZoom,0.01);
         s.scale(zoom);
 
 
@@ -88,8 +88,12 @@ const sketch = (s:typeof p5) => {
             new Circle(otherPlayers[i].x,otherPlayers[i].y,otherPlayers[i].r,s).show();
         }
 
-        player.update(playerServer.x,playerServer.y);
-   
+    
+
+        player.pos.x = playerServer.x;
+        player.pos.y = playerServer.y;
+        player.r = playerServer.r;
+        //player.update();
 
         options.path = `/state?playerid=${id}&mx=${s.mouseX}&my=${s.mouseY}`;
 
