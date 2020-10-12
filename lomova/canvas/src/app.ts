@@ -73,13 +73,13 @@ function coordPlayer(mx: number, my: number, s: any) {
 
 let player: any; // текущий игрок
 const food: any = []; // еда
-let zoom = 1;
+let zoom = 1.0;
 
 const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(window.innerWidth, window.innerHeight);
         s.background(220);
-
+        
         coordPlayer(s.mouseX, s.mouseY, s);
 
         player = new Circle(tempPlayer.x, tempPlayer.y, tempPlayer.r, s);
@@ -98,12 +98,11 @@ const sketch = (s: typeof p5) => {
             food[i] = new Circle(foodX[i], foodY[i], foodR[i], s);
         }
 
-        // console.log(zoom);
-        // const newZoom = 36 / player.r;
-        // console.log(newZoom);
-        // zoom = lerp(newZoom, zoom, 0.1);
-        // console.log(zoom);
-        // s.scale(zoom);
+        
+        const newZoom = 36 / player.r;
+        zoom = lerp(zoom, newZoom, 0.1);
+        console.log(zoom);
+        s.scale(zoom);
 
         s.translate(-player.pos.x, -player.pos.y);
         // сетка
