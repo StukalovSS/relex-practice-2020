@@ -3,11 +3,7 @@ const http = require('http');
 const lerp = require('lerp');
 import { Circle } from './circle';
 
-
-
-
-let id: any = 0; //id текущего клиента
-//Первый запрос 
+let id: any = 0;
 let reqFirst = http.request(
     {
         hostname: '127.0.0.1',
@@ -25,10 +21,6 @@ let reqFirst = http.request(
     });
 reqFirst.end();
 
-
-
-
-
 let newData: any; // инфа с сервера о еде и игроках
 let tempPlayer = { x: 0, y: 0, r: 0 }; // текущий игрок с сервера
 let otherPlayers: any = [];  //остальные игроки 
@@ -39,7 +31,7 @@ function coordPlayer(mx: number, my: number, s: any) {
     let options = {
         hostname: '127.0.0.1',
         port: 3000,
-        path: '/state?player_id=' + id + '&x=' + mx + '&y=' + my,
+        ath: '/state?player_id=' + id + '&x=' + mx + '&y=' + my,
         method: 'GET'
     };
     let req = http.request(options, (res: any) => {
@@ -73,21 +65,18 @@ function coordPlayer(mx: number, my: number, s: any) {
 
 let player: any; // текущий игрок
 const food: any = []; // еда
-let zoom = 1.0;
+let zoom = 1;
 
 const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(window.innerWidth, window.innerHeight);
         s.background(220);
-        
         coordPlayer(s.mouseX, s.mouseY, s);
 
         player = new Circle(tempPlayer.x, tempPlayer.y, tempPlayer.r, s);
         for (let i = 0; i < foodX.length; i++) {
             food[i] = new Circle(foodX[i], foodY[i], foodR[i], s);
         }
-
-
     }
     s.draw = () => {
         s.background(220);
@@ -98,11 +87,12 @@ const sketch = (s: typeof p5) => {
             food[i] = new Circle(foodX[i], foodY[i], foodR[i], s);
         }
 
-        
-        const newZoom = 36 / player.r;
-        zoom = lerp(zoom, newZoom, 0.1);
-        console.log(zoom);
-        s.scale(zoom);
+        // console.log(zoom);
+        // const newZoom = 36 / player.r;
+        // console.log(newZoom);
+        // zoom = lerp(newZoom, zoom, 0.1);
+        // console.log(zoom);
+        // s.scale(zoom);
 
         s.translate(-player.pos.x, -player.pos.y);
         // сетка
@@ -114,12 +104,10 @@ const sketch = (s: typeof p5) => {
             s.line(-s.width, i, s.width, i);
             s.stroke(126);
         }
-
         // показать текущего игрока
         player.pos.x = s.constrain(player.pos.x, -s.width + player.r, s.width - player.r);
         player.pos.y = s.constrain(player.pos.y, -s.height + player.r, s.height - player.r);
         player.show();
-
         // показать остальных игроков
         for (let i = 0; i < otherPlayers.length; i++) {
             let otherNewPlayer = new Circle(otherPlayers[i].x, otherPlayers[i].y, otherPlayers[i].r, s);
@@ -132,5 +120,4 @@ const sketch = (s: typeof p5) => {
         }
     }
 }
-
 const sketchInst = new p5(sketch);

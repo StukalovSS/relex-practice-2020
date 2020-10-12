@@ -1,0 +1,12 @@
+.smallimg{
+    margin-top: 30%;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+.forsmallimg{
+    position: absolute;
+    margin-left: 20%;
+    margin-top: 10%;
+    z-index: 3;
+}
