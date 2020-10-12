@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,11 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  viewSrc: string = "./assets/images/first.jpg";
   title = 'my-gallery-ang';
 
-  onChooseImg(src: string): void {
-    this.viewSrc = src;
-  }
+  constructor() {}
+
+  // public mainImgOnFullScreen(src: string) {
+  //   this.router.navigate([`view/${src}`]);
+  // }
 }
