@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  bigScreen: boolean = false;
 
   constructor(private activateRoute: ActivatedRoute) { }
 

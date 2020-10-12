@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class FullScreenComponent implements OnInit {
   src: string;
+  bigScreen: boolean = true;
   private subscription: Subscription;
 
   constructor(private activateRoute: ActivatedRoute) { }

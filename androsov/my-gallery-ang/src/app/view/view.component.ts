@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent implements OnInit {
+  //private onFullScreen: boolean = false;
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -17,11 +19,15 @@ export class ViewComponent implements OnInit {
   }
 
   public mainImgOnFullScreen() {
+    console.log('ex')
+    let urlParams = !this.onFullScreen ? `view/${this.pictureName}` : '/';
+    this.onFullScreen = ! this.onFullScreen;
 
-    this.router.navigate([`view/${this.pictureName}`]);
+    this.router.navigate([urlParams]);
   }
 
   @Input() mainSrc: string;
+  @Input() onFullScreen: boolean;
 }
 
 

@@ -1,6 +1,6 @@
 <div class="main">
     <div class="view">
-        <app-view [mainSrc]="viewSrc"></app-view>
+        <app-view [mainSrc]="viewSrc" [onFullScreen]="bigScreen"></app-view>
     </div>
     <app-preview (onClickImg)="onChooseImg($event)"></app-preview>
   </div>
