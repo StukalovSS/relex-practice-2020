@@ -1,0 +1,24 @@
+.preview {
+    position: absolute;
+    left: 9px;
+    bottom: 9px;
+}
+
+.preview-image:not(:last-child) {
+    margin-right: 10px;
+}
+
+.preview-image {
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    opacity: 0.7;
+    border-radius: 50%;
+    box-shadow: 0 4px 20px black;
+}
+
+.image-select {
+    cursor: default;
+    opacity: 0.9;
+    border: 3px solid #bed0df;
+}
