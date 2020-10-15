@@ -1,0 +1,9 @@
+:host {
+    width: 320px;
+}
+
+.section__header {
+    background-color: #add19a;
+    height: 40px;
+    width: 100%;
+}
