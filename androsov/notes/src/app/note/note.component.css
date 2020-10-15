@@ -1,0 +1,24 @@
+:host {
+    height: 175px;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    font-family: fixedsys;
+}
+
+.note__header {
+    display: flex;
+    font-size: 18px;
+    height: 50px;
+    font-weight: bold;
+    align-items: flex-end;
+}
+
+.note__text {
+    font-size: 12px;
+    height: 85px;
+}
+
+.note__date-and-btns {
+    font-size: 12px;
+}
