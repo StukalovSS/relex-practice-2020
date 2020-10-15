@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-section',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./section.component.css']
 })
 export class SectionComponent implements OnInit {
+  faCogs = faCogs;
 
   constructor() { }
 

@@ -11,10 +11,15 @@
 .section__header {
     background-color: #add19a;
     height: 40px;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     font-size: 18px;
     color: white;
     align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.section__header__ellipsis {
+    transform: rotate(90deg);
 }
