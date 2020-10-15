@@ -1,0 +1,29 @@
+:host {
+    height: 100%;
+    width: 320px;
+    /* border: 4px solid black; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main-container {
+    width: 290px;
+    height: 90vh;
+    display: flex;
+    margin: 5px;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #3d3a2d;
+}
+.title-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: #add19a;
+    color: white;
+    font-family: 'Fixedsys', monospace;
+    font-size: 18pt;
+}
+.title-container_element{
+    margin: 6px;
+}

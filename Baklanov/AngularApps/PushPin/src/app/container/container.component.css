@@ -1,0 +1,9 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: space-between;
+    width: 100vw;
+    height: 95vh;
+}
