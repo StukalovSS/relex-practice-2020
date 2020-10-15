@@ -1,8 +1,4 @@
 <div class="container">
-  <div id="gallery">
-    <div class="main-image-container">
-      <img class="main-image" (click)="showFullImg()" [class.main-image--full]="fullImg" src={{pathMainImg}} alt="Главное изображение">
-    </div>
-    <app-preview (onChanged)="onChanged($event)" [class.preview--none]="preview"></app-preview>
-  </div>
+  <router-outlet></router-outlet>
 </div>
+

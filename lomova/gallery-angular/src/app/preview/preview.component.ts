@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-preview',
@@ -6,16 +7,16 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./preview.component.css']
 })
 export class PreviewComponent implements OnInit {
-  images: any = ['../../assets/img/1.jpg', '../../assets/img/2.jpg', '../../assets/img/3.jpg', '../../assets/img/4.jpg'];
-  imgActive: string = this.images[0];
+  @Input() images: any;
+  @Input() imgActive: string;
 
-  @Output() onChanged = new EventEmitter<string>();
-  changeMainImg(evt: any, item: any) {
-    this.onChanged.emit(evt.target.src);
+  constructor(private router: Router) { }
+  @Output() onChanged = new EventEmitter<object>();
+  changeMainImg(evt: any, item: any, ind: any) {
+    this.onChanged.emit({ path: evt.target.src, index: ind });
     this.imgActive = item;
+    this.router.navigate(['/gallery'], { queryParams: { val: ind } })
   }
 
-  constructor() { }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }
