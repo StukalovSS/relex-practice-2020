@@ -1,0 +1,23 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: space-between;
+    width: 100vw;
+    height: 95vh;
+}
+.new-section-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    height: 90vh;
+    border: 1px solid #3d3a2d;
+    margin: 5px;
+}
+.new-section-container_add-section{
+    color: #5f5f5f;
+    font-size: 36pt;
+}
