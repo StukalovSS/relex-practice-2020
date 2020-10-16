@@ -1,4 +1,6 @@
-<app-section></app-section>
+<app-section *ngFor="let item of arrayOfSection"[name] = "item.name" [arrayOfNotes] = "item. arrayOfNotes" >
+</app-section>
+
 
 
 
