@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-view',
@@ -7,18 +8,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
+  public srcCur;
 
   ngOnInit(): void {
+    this.srcCur = localStorage.getItem('curImg');
   }
 
-  @Input() viewImgSrc: string;
-
-  @Output() flagImg = new EventEmitter<boolean>();
- 
-  flag(e: any) {
-    this.flagImg.emit(true);
+  back(){
+    history.go(-1);
   }
-
 
 }

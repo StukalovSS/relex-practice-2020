@@ -1,0 +1,32 @@
+:host {
+    height: 175px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-family: fixedsys;
+}
+
+.note__header {
+    display: flex;
+    font-size: 18px;
+    height: 50px;
+    font-weight: bold;
+    align-items: flex-end;
+}
+
+.note__text {
+    font-size: 12px;
+    height: 85px;
+    color: #5f5f5f;
+}
+
+.note__date-and-btns {
+    font-size: 12px;
+    color: #5f5f5f;
+    display: flex;
+    justify-content: space-between;
+}
+
+.note__date-and-btns__icon {
+    margin-left: 3px;
+    margin-right: 3px;
+}

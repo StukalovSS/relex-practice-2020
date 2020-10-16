@@ -1,4 +1,6 @@
-import { Component, OnInit,  Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DataService } from '../data.service';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-preview',
@@ -7,16 +9,24 @@ import { Component, OnInit,  Input, Output, EventEmitter } from '@angular/core';
 })
 export class PreviewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dataService: DataService,private router: Router) { }
+  public items:any;
+
+  @Input() curId: number;
+
 
   ngOnInit(): void {
+    if(!this.curId){this.curId = 0;}
+    this.items = this.dataService.getData();
   }
 
-  @Input() previewImgSrc: string;
-
-  @Output() fullImg = new EventEmitter<string>();
- 
-  full(e: any) {
-    this.fullImg.emit(e.target.src);
+  fullScreen(){
+    localStorage.setItem('curImg', `${this.items[this.curId]}`);
+    this.router.navigate(['view'], {
+      queryParams: {
+        'id': `${this.curId}`
+      }
+    });
   }
+
 }
