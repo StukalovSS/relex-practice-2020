@@ -1,12 +1,24 @@
-.smallimg{
-    margin-top: 30%;
+.small__img{
     border-radius: 50%;
     width: 150px;
     height: 150px;
 }
-.forsmallimg{
+
+.for-small-img{
     position: absolute;
-    margin-left: 20%;
-    margin-top: 10%;
+    margin-left: 10%;
+    margin-top: 30%;
     z-index: 3;
+}
+
+.for-buttons{
+    position: absolute;
+    z-index: 4;
+    margin-left: 70%;
+    margin-top: 10%;
+    font-size: 30px;
+}
+
+.input__buttons{
+    font-size: 20px;
 }

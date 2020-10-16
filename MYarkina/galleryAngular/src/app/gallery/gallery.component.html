@@ -1,7 +1,9 @@
-<div class="forsmallimg">
-    <img class ="smallimg" src="../../assets/img/picture1.jpg" (click)="choose($event)" style="border:'3px solid #BDB76B';">
-    <img class ="smallimg" src="../../assets/img/picture2.jpg" (click)="choose($event)">
-    <img class ="smallimg" src="../../assets/img/picture3.jpg" (click)="choose($event)">
-    <img class ="smallimg" src="../../assets/img/picture4.jpg" (click)="choose($event)">
-    <img class ="smallimg" src="../../assets/img/picture5.jpg" (click)="choose($event)">
+<router-outlet></router-outlet>
+<div class="for-buttons">
+    <input class="input__buttons" id="new-img-input" type="file">
+    <input class="input__buttons" type="button" value="Добавить" (click)="addImg()">
+    <input class="input__buttons" type="button" value="Удалить" (click)="delImg()">
+</div>
+<div class="for-small-img">
+    <img *ngFor="let item of items;trackBy: trackByFunction ;let i = index;" id = {{i}}  src={{item}} class ="small__img" (click)="curShow($event)">
 </div>

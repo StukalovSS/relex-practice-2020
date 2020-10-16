@@ -4,7 +4,7 @@
     height: 100vh;
     z-index: 1;
 }
-.main-img{
+.main__img{
     margin-left: 30%;
     width: 500px;
     height: 300px;
