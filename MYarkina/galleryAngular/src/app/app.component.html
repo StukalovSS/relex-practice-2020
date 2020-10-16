@@ -1,5 +1,1 @@
-<div class="main">
-  <app-preview [previewImgSrc]="previewImgSrc" (fullImg)="full($event)"></app-preview>
-  <app-gallery (chooseImg)="choose($event)"></app-gallery>
-  <app-view id="appview" [viewImgSrc] = "viewImgSrc" style="visibility:hidden;" (flagImg)="(flag())"></app-view>
-</div>
+<router-outlet></router-outlet>
