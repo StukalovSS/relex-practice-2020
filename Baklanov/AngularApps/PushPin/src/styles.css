@@ -3,3 +3,7 @@
     margin: 0;
     padding: 0;
 }
+@font-face {
+    font-family: FixedSys;
+    src: url(assets/fonts/Fixedsys.ttf) format("truetype");
+  }

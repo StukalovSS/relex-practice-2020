@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.css']
 })
-export class GalleryComponent implements OnInit {
+export class GalleryComponent implements OnInit,OnDestroy {
   images:any =[];
   mainImageOut :any;
   previewOut : any;
@@ -27,15 +27,26 @@ export class GalleryComponent implements OnInit {
     }
 );
   }
-  public ChangedImageInPreview(image:any) {
+  ChangedImageInPreview(image:any) {
       this.mainImageOut = image;
   }
-  public addImage (newImg : string) {
+  addImg () {
+    let newImg: string = (document.querySelector('input') as HTMLInputElement).value;
     this.images.push(newImg);
-    console.log(this.images);
+  }
+   delete () {
+    for(let i =0; i<this.images.length; i++)
+    {
+      if(this.images[i] == this.mainImageOut) {
+        this.images.splice(i,1);
+      }
+    }
   }
 
   ngOnInit(): void {
+  }
+  ngOnDestroy () : void {
+    this.querySubscription;
   }
 
 }

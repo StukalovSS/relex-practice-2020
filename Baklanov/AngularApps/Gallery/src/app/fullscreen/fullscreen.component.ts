@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './fullscreen.component.html',
   styleUrls: ['./fullscreen.component.css']
 })
-export class FullscreenComponent implements OnInit {
+export class FullscreenComponent implements OnInit,OnDestroy {
   fullImg :any;
   commonScreen(): void {
     this.router.navigate(['/gallery'], 
@@ -28,5 +28,7 @@ export class FullscreenComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  ngOnDestroy():void {
+    this.querySubscription;
+  }
 }

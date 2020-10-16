@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, NgModule} from '@angular/core';
+import { Component, Input, OnInit, NgModule,OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './main-image.component.html',
   styleUrls: ['./main-image.component.css']
 })
-export class MainImageComponent implements OnInit {
+export class MainImageComponent implements OnInit, OnDestroy {
   private querySubscription: Subscription;
   constructor(private router: Router,private route: ActivatedRoute) {
     this.querySubscription = route.queryParams.subscribe(
@@ -25,5 +25,7 @@ export class MainImageComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-
+  ngOnDestroy():void{
+    this.querySubscription;
+  }
 }
