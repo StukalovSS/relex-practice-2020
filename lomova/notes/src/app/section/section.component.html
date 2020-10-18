@@ -2,15 +2,17 @@
     <button class="btn section__property" type="button" aria-label="свойства">
         <fa-icon class="icon icon__property" [icon]="iconProperty"></fa-icon>
     </button>
-    <h2 class="section__title">Секция 1</h2>
+    <h2 class="section__title">{{sectionTitle}}</h2>
     <button class="btn section__setting" type="button" aria-label="настройки">
         <fa-icon class="icon icon__setting" [icon]="iconCogs"></fa-icon>
     </button>
 </div>
 <div class="notes">
     <ul class="notes__list">
-        <app-note></app-note>
-        <app-note></app-note>
+        <app-note 
+            *ngFor="let n of notes" [note]="n"
+            (onRemoveNote)="removeNote($event)"
+        ></app-note>
     </ul>
     <button class="add-note" type="button" aria-label="добавить новую заметку">
         <fa-icon class="icon icon__plus" [icon]="iconPlus"></fa-icon>
