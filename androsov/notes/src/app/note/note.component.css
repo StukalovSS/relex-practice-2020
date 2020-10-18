@@ -33,6 +33,7 @@
     margin-left: 3px;
     margin-right: 3px;
     cursor: pointer;
+    font-size: 18px;
 }
 
 .note__date-and-btns__icon__delete-btn {

@@ -1,5 +1,5 @@
 :host {
-    width: 320px;
+    min-width: 320px;
     display: flex;
     flex-direction: column;
     border: 1px solid black;
@@ -22,6 +22,7 @@
 
 .section__header__ellipsis {
     transform: rotate(90deg);
+    cursor: pointer;
 }
 
 .section__notes {
@@ -30,4 +31,16 @@
     padding-left: 6.5px;
     padding-right: 6.5px;
     flex-direction: column;
+}
+
+.section__add-btn {
+    background-color: #f7f7f7;
+    margin-bottom: 10px;
+    border: 1px #b2b2b2 solid;
+    height: 40px;
+    cursor: pointer;
+}
+
+.section__add-btn__icon {
+    color: #5f5f5f;
 }

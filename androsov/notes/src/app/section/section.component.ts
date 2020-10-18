@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-section',
@@ -8,6 +9,7 @@ import { faCogs } from '@fortawesome/free-solid-svg-icons';
 })
 export class SectionComponent implements OnInit {
   faCogs = faCogs;
+  faPlus = faPlus;
 
   constructor() { }
 
