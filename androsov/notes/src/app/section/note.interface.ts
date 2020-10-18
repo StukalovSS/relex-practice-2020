@@ -1,5 +1,5 @@
 export interface INote {
-    noteContent:string;
-    noteCreationDate:string;
-    noteHeader: string;
+    header: string;
+    content: string;
+    date: string;
 }

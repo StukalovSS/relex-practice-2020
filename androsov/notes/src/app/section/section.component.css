@@ -8,7 +8,7 @@
     margin-right: 8px;
 }
 
-.section__header {
+.header {
     background-color: #add19a;
     height: 40px;
     display: flex;
@@ -20,12 +20,12 @@
     padding-right: 8px;
 }
 
-.section__header__ellipsis {
+.header__ellipsis {
     transform: rotate(90deg);
     cursor: pointer;
 }
 
-.section__notes {
+.notes {
     margin-top: 15px;
     display: flex;
     padding-left: 6.5px;
@@ -33,7 +33,7 @@
     flex-direction: column;
 }
 
-.section__add-btn {
+.add-btn {
     background-color: #f7f7f7;
     margin-bottom: 10px;
     border: 1px #b2b2b2 solid;
@@ -41,6 +41,6 @@
     cursor: pointer;
 }
 
-.section__add-btn__icon {
+.add-btn_icon {
     color: #5f5f5f;
 }
