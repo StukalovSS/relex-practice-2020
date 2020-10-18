@@ -11,11 +11,14 @@ export class NoteComponent implements OnInit, INote {
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
 
+  constructor() {
+    let now: Date = new Date();
+    this.date = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}
+     ${now.getHours()}:${now.getMinutes()}`;
+  }
 
-
-  constructor() { }
   @Input() header: string;
-  content: string;
+  @Input() content: string;
   date: string;
 
   ngOnInit(): void {
