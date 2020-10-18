@@ -1,11 +1,10 @@
 <div class="header">
     <span class="header__ellipsis">...</span>
-    <span>Секция 1</span>
+    <span>{{header}}</span>
     <span><fa-icon [icon]="faCogs"></fa-icon></span>
 </div>
 <div class="notes">
-    <app-note></app-note>
-    <app-note></app-note>
+    <app-note *ngFor="let note of notes" [header]="note.header"></app-note>
     <button class="add-btn">
         <fa-icon [icon]="faPlus" class="add-btn_icon"></fa-icon>
     </button>

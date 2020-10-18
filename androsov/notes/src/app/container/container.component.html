@@ -1,6 +1,4 @@
-<app-section></app-section>
-<app-section></app-section>
-<app-section></app-section>
+<app-section *ngFor="let section of sections" [header]="section.header" [notes]="section.notes"></app-section>
 <button class="add-btn">
     <fa-icon [icon]="faPlus" class="add-btn__icon"></fa-icon>
 </button>
