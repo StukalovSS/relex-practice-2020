@@ -23,3 +23,11 @@
 .section__header__ellipsis {
     transform: rotate(90deg);
 }
+
+.section__notes {
+    margin-top: 15px;
+    display: flex;
+    padding-left: 6.5px;
+    padding-right: 6.5px;
+    flex-direction: column;
+}

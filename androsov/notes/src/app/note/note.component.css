@@ -2,7 +2,10 @@
     height: 175px;
     padding-left: 15px;
     padding-right: 15px;
+    background-color: #f7f7f7;
     font-family: fixedsys;
+    margin-bottom: 10px;
+    border: 1px #b2b2b2 solid;
 }
 
 .note__header {
@@ -15,7 +18,7 @@
 
 .note__text {
     font-size: 12px;
-    height: 85px;
+    height: 100px;
     color: #5f5f5f;
 }
 
@@ -29,4 +32,13 @@
 .note__date-and-btns__icon {
     margin-left: 3px;
     margin-right: 3px;
+    cursor: pointer;
+}
+
+.note__date-and-btns__icon__delete-btn {
+    color: #ffc3c3;
+}
+
+.note__date-and-btns__icon__edit-btn {
+    color: #c3e8ff;
 }
