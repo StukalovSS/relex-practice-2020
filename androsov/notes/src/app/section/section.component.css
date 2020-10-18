@@ -6,11 +6,12 @@
     height: 100%;
     margin-left: 8px;
     margin-right: 8px;
+    overflow-y: auto;
 }
 
 .header {
     background-color: #add19a;
-    height: 40px;
+    min-height: 40px;
     display: flex;
     justify-content: space-between;
     font-size: 18px;
@@ -22,6 +23,10 @@
 
 .header__ellipsis {
     transform: rotate(90deg);
+    cursor: pointer;
+}
+
+.header__icon {
     cursor: pointer;
 }
 
@@ -37,11 +42,8 @@
     background-color: #f7f7f7;
     margin-bottom: 10px;
     border: 1px #b2b2b2 solid;
-    height: 40px;
-}
-
-.icon {
     cursor: pointer;
+    height: 40px;
 }
 
 .add-btn__icon {

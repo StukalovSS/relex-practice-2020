@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { INote } from '../section/note.interface';
 import { ISection } from './section.interface';
 
 @Component({
@@ -17,11 +16,13 @@ export class ContainerComponent implements OnInit {
     notes : [{
       header : 'Note 1',
       content : 'This is first note',
-      date : ''
+      date : '',
+      id : 0
     }, {
       header : 'Note 2',
       content : "It's second note",
-      date : ''
+      date : '',
+      id : 1
     }]
   }
 
@@ -30,7 +31,8 @@ export class ContainerComponent implements OnInit {
     notes : [{
       header : 'Smth',
       content : 'This is first note',
-      date : ''
+      date : '', 
+      id : 0
     }]
   }
 

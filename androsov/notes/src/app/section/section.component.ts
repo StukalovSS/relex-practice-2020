@@ -19,4 +19,12 @@ export class SectionComponent implements OnInit, ISection {
   ngOnInit(): void {
   }
 
+  deleteNote(id: number): void {
+    let deletingNoteIndex = this.notes.findIndex( note => note.id === id);
+    if (deletingNoteIndex === -1) {
+      return;
+    }
+
+    this.notes.splice(deletingNoteIndex, 1);
+  }
 }
