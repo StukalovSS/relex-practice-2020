@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
-  styleUrls: ['./section.component.css']
+  styleUrls: ['./section.component.scss']
 })
 export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
