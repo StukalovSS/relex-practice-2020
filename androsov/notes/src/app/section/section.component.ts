@@ -13,11 +13,7 @@ export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
   faPlus = faPlus;
 
-  constructor(fb: FormBuilder) {
-    this.addNoteForm = fb.group({
-      noteHeader : new FormControl(''),
-      noteText : new FormControl('')
-    });
+  constructor() {
   }
 
   @Input() header: string;
@@ -42,12 +38,12 @@ export class SectionComponent implements OnInit, ISection {
     this.invisibleForm = !this.invisibleForm;
   }
 
-  addNote() {
-    this.notes.push({
-      header : this.addNoteForm.value.noteHeader,
-      content : this.addNoteForm.value.noteText,
-      date : '',
-      id : this.notes.length
-    });
-  }
+  // addNote() {
+  //   this.notes.push({
+  //     header : this.addNoteForm.value.noteHeader,
+  //     content : this.addNoteForm.value.noteText,
+  //     date : '',
+  //     id : this.notes.length
+  //   });
+  // }
 }

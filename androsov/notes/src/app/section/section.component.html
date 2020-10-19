@@ -11,7 +11,7 @@
         <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
     </button>
     
-    <form [formGroup]="addNoteForm" [ngClass]="{'form_invisible': invisibleForm}" (ngSubmit)="addNote()">
+    <!-- <form [formGroup]="addNoteForm" [ngClass]="{'form_invisible': invisibleForm}" (ngSubmit)="addNote()">
         <div>
             <label>Заголовок</label>
             <input name="header" formControlName="noteHeader">
@@ -25,21 +25,6 @@
         <div>
             <button [disabled]="addNoteForm.invalid">Добавить заметку</button>
         </div>
-    </form>
-    <!-- <form #addNoteForm="ngForm" [ngClass]="{'form_invisible': invisibleForm}" (ngSubmit)="addNote(addNoteForm)">
-        <div>
-            <label>Заголовок</label>
-            <input name="header" ngModel>
-        </div>
-
-        <div>
-            <label>Текст</label>
-            <textarea name="text" cols="30" rows="20" ngModel></textarea>
-        </div>
-
-        <div>
-            <button [disabled]="addNoteForm.invalid">Добавить заметку</button>
-        </div>
-    </form> -->
-    
+    </form>     -->
 </div>
+<app-modal-input [ngClass]="{'form_invisible': invisibleForm}" ></app-modal-input>

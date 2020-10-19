@@ -1,0 +1,55 @@
+$dark_grey : #5f5f5f;
+$light_grey : #f7f7f7;
+
+:host {
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    height: 100%;
+    margin-left: 8px;
+    margin-right: 8px;
+    overflow-y: auto;
+}
+
+.header {
+    background-color: #add19a;
+    min-height: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    color: white;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    &__ellipsis {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
+    &__icon {
+        cursor: pointer;
+    }
+}
+
+.notes {
+    margin-top: 15px;
+    display: flex;
+    padding-left: 6.5px;
+    padding-right: 6.5px;
+    flex-direction: column;
+}
+
+.add-btn {
+    background-color: $light_grey;
+    margin-bottom: 10px;
+    border: 1px #b2b2b2 solid;
+    cursor: pointer;
+    height: 40px;
+    &__icon {
+        color: $dark_grey;
+    }
+}
+
+.form_invisible {
+    display: none;
+}

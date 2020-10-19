@@ -1,0 +1,36 @@
+<!-- <form [formGroup]="addNoteForm" [ngClass]="{'form_invisible': invisibleForm}" (ngSubmit)="addNote()">
+    <div>
+        <label>Заголовок</label>
+        <input name="header" formControlName="noteHeader">
+    </div>
+
+    <div>
+        <label>Текст</label>
+        <textarea name="text" cols="30" rows="20" formControlName="noteText"></textarea>
+    </div>
+
+    <div>
+        <button [disabled]="addNoteForm.invalid">Добавить заметку</button>
+    </div>
+</form> -->
+<div class="form-container">
+    <fa-icon [icon]="faTimesCircle" class="icon"></fa-icon>
+    <form [formGroup]="addNoteForm">
+        <div class="form-container__form-element">
+            <label class="form-container__head">Заголовок</label>
+            <input name="header" formControlName="noteHeader" class="form-container__input">
+        </div>
+    
+        <div class="form-container__form-element">
+            <label class="form-container__head">Текст</label>
+            <textarea name="text" cols="30" rows="20" 
+            formControlName="noteText" class="form-container__input"></textarea>
+        </div>
+    
+        <div>
+            <button [disabled]="addNoteForm.invalid" class="form-container__add-btn">
+                Добавить заметку
+            </button>
+        </div>
+    </form>
+</div>
