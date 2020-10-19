@@ -1,6 +1,6 @@
 import { Component, OnInit,Input, Output ,EventEmitter} from '@angular/core';
 import {faEdit,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { INote } from '../section/note.interface';
+import { INote } from '../container/note.interface';
 
 
 @Component({
@@ -13,21 +13,19 @@ export class NoteComponent implements OnInit,INote {
   
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
+  @Input() id;
   @Input() name;
-  nodeTxt:string;
-  date:string;
+  @Input() nodeTxt;
+  @Input() date;
   
-  constructor() {
-   /*  this.name = note.name;
-    this.date = note.date;
-    this.nodeTxt = note.nodeTxt; */
+  constructor(){
    }
 
   ngOnInit(): void {
   }
 
   @Output() doDelete = new EventEmitter<boolean>();
-  deleteNote(e){
-    this.doDelete.emit(true);
+  deleteNote(){
+    this.doDelete.emit(this.id);
   }
 }

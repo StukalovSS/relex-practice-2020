@@ -1,10 +1,10 @@
 <div class="note-header">
     <span class="note__name">{{name}}</span>
-    <span class="note__txt">Текст заметки</span>
+    <span class="note__txt">{{nodeTxt}}</span>
 </div>
 
 <div class="note-bottom">
-    <span class="note__date">16.10.2020 15:30</span> 
+    <span class="note__date">{{date}}</span> 
     <div>
         <fa-icon class="icon__faedit" [icon]="faEdit"></fa-icon>
         <fa-icon class="icon__fatrashalt" [icon]="faTrashAlt" (click)="deleteNote()"></fa-icon>

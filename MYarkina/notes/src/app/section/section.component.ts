@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output ,EventEmitter } from '@angular/core';
 import {faCogs,faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { ISection } from '../container/section.interface';
-import { INote } from './note.interface';
 
 @Component({
   selector: 'app-section',
@@ -10,8 +9,9 @@ import { INote } from './note.interface';
 })
 export class SectionComponent implements OnInit,ISection {
   
-  @Input() arrayOfNotes = [];
+  @Input()arrayOfNotes;
   @Input()name;
+  @Input()id;
 
   faCogs = faCogs;
   faEllipsisV = faEllipsisV;
@@ -23,4 +23,14 @@ export class SectionComponent implements OnInit,ISection {
   ngOnInit(): void {
   }
 
+  @Output() deleteNote = new EventEmitter<any>();
+  doDelete(e){
+    this.deleteNote.emit(e);
+  }
+
+  @Output() newNote = new EventEmitter<any>();
+  addNewNote(){
+    this.newNote.emit(this.id);
+  }
+  
 }
