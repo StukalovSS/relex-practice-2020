@@ -1,7 +1,7 @@
 import { Component,OnInit, OnChanges } from '@angular/core';
 import { ISection } from './section.interface';
 import '@angular/platform-browser-dynamic';
-
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-container',
@@ -9,49 +9,82 @@ import '@angular/platform-browser-dynamic';
   styleUrls: ['./container.component.css']
 })
 
-export class ContainerComponent implements OnInit,OnChanges {
-
+export class ContainerComponent implements OnInit {
+  
+  faPlus = faPlus;
+  idNote = 0;
+  idSection = 0;
   arrayOfSection = [];
   
-  section:ISection = {
-    name:"Test",
+  firstSection:ISection = {
+    id:this.idSection++,
+    name:"Расписание",
     arrayOfNotes:[{
-      delete:false,
-      name: "Test",
-      nodeTxt:"TestTxt",
-      date:"16.10.20"
+      id:this.idNote++,
+      name: "Понедельник",
+      nodeTxt:"Текст заметки",
+      date:"16.10.20 18:00"
     },
     {
-      delete:false,
-      name: "Test2222",
-      nodeTxt:"TestTxt",
-      date:"16.10.20"
+      id:this.idNote++,
+      name: "Вторник",
+      nodeTxt:"Текст заметки",
+      date:"16.10.20 18:30"
     }]
   }
 
-  section2:ISection = {
-    name:"Test2",
+  secondSection:ISection = {
+    id:this.idSection++,
+    name:"Покупки",
     arrayOfNotes:[{
-      delete:false,
-      name: "Test2",
-      nodeTxt:"TestTxt",
-      date:"16.10.20"
+      id:this.idNote++,
+      name: "Список",
+      nodeTxt:"Текст заметки",
+      date:"18.10.20 13:00"
     }]
   }
 
-constructor() {
-}
+  constructor() {}
+  ngOnInit(): void {
+    this.arrayOfSection.push(this.firstSection);
+    this.arrayOfSection.push(this.secondSection);
+  }
+  
+  deleteNote(e){
+    this.arrayOfSection.forEach(element => {
+      for(let j = 0;j < element.arrayOfNotes.length; j++ ) {
+        if(element.arrayOfNotes[j].id == e){
+          element.arrayOfNotes.splice(j,1);
+        }
+      }
+    });
+  } 
 
-ngOnInit(): void {
-    this.arrayOfSection.push(this.section);
-    this.arrayOfSection.push(this.section2);
+  newSection(){
+    this.arrayOfSection.push({
+      id:this.idSection++,
+      name:"Test",
+      arrayOfNotes:[{
+        id:this.idNote++,
+        name: "test",
+        nodeTxt:"test",
+        date:"99.99.99 99:99"
+      }]
+    })
   }
 
-ngOnChanges(): void{
-  for(let i = 0 ;i < this.arrayOfSection.length;i++){
-    for(let j = 0;j < this.arrayOfSection[i].arra)
-    this.arrayOfSection[i]
+  newNote(e){
+    this.arrayOfSection.forEach(element => {
+      if(element.id == e){
+        element.arrayOfNotes.push({
+          id:this.idNote++,
+          name: "Тест",
+          nodeTxt:"Тест",
+          date:"00.00.00 00:00"
+        })
+      }
+    });
   }
-}  
+
 
 }

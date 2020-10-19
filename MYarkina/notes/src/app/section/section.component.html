@@ -5,8 +5,8 @@
 </header>
 
 <div class="notes">
-    <app-note  *ngFor="let item of arrayOfNotes" (doDelete) = "item.delete" [name] = "item.name"></app-note>
-    <button class="button__section">
+    <app-note  *ngFor="let item of arrayOfNotes" (doDelete) = "doDelete($event)" [id] = "item.id" [name] = "item.name" [nodeTxt] = "item.nodeTxt" [date] = "item.date"></app-note>
+    <button class="button__newnode" (click)= "addNewNote()">
         <span class="button__txt">+</span>
     </button>
 </div>
