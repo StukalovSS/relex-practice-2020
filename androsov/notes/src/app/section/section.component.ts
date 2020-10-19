@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
-import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-section',
@@ -34,16 +34,13 @@ export class SectionComponent implements OnInit, ISection {
     this.notes.splice(deletingNoteIndex, 1);
   }
 
-  changeFormVisibillity() {
+  changeFormVisibillity(): void {
     this.invisibleForm = !this.invisibleForm;
   }
 
-  // addNote() {
-  //   this.notes.push({
-  //     header : this.addNoteForm.value.noteHeader,
-  //     content : this.addNoteForm.value.noteText,
-  //     date : '',
-  //     id : this.notes.length
-  //   });
-  // }
+  addNote(note): void {
+    this.changeFormVisibillity();
+    note.id = this.notes.length;
+    this.notes.push(note);
+  }
 }

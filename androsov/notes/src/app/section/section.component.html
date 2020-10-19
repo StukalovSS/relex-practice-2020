@@ -10,21 +10,6 @@
     <button class="add-btn" (click)="changeFormVisibillity()">
         <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
     </button>
-    
-    <!-- <form [formGroup]="addNoteForm" [ngClass]="{'form_invisible': invisibleForm}" (ngSubmit)="addNote()">
-        <div>
-            <label>Заголовок</label>
-            <input name="header" formControlName="noteHeader">
-        </div>
-
-        <div>
-            <label>Текст</label>
-            <textarea name="text" cols="30" rows="20" formControlName="noteText"></textarea>
-        </div>
-
-        <div>
-            <button [disabled]="addNoteForm.invalid">Добавить заметку</button>
-        </div>
-    </form>     -->
 </div>
-<app-modal-input [ngClass]="{'form_invisible': invisibleForm}" ></app-modal-input>
+<app-modal-input [ngClass]="{'form_invisible': invisibleForm}" 
+(onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote($event)"></app-modal-input>
