@@ -1,7 +1,13 @@
-<div class="section__header">
-    <span class="section__header__ellipsis">...</span>
-    <span>Секция 1</span>
-    <span><fa-icon [icon]="faCogs"></fa-icon></span>
+<div class="header">
+    <span class="header__ellipsis">...</span>
+    <span>{{header}}</span>
+    <span><fa-icon [icon]="faCogs" class="header__icon"></fa-icon></span>
 </div>
-<app-note></app-note>
-<app-note></app-note>
+<div class="notes">
+    <app-note *ngFor="let note of notes" [header]="note.header" 
+    [content]="note.content" [id]="note.id" (onClickTrash)="deleteNote($event)">
+    </app-note>
+    <button class="add-btn">
+        <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
+    </button>
+</div>

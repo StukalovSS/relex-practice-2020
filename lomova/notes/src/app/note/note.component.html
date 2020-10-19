@@ -1,15 +1,15 @@
 <li class="notes__item">
-    <h3 class="note__title">Заметка 1</h3>
-    <p class="note__content">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda reiciendis
-        eveniet reprehenderit officiis animi non deserunt nulla</p>
+    <h3 class="note__title">{{note.noteTitle}}</h3>
+    <p class="note__content">{{note.noteText}}</p>
     <div class="notes__bottom">
-        <p class="note__date">14.10.2020</p>
+        <p class="note__date">{{note.noteDate}}</p>
         <div class="note__nav">
             <button class="btn note__edit" type="button" aria-label="редактировать">
                 <fa-icon class="icon icon__edit" [icon]="iconEdit"></fa-icon>
             </button>
-            <button class="btn note__delete" type="button" aria-label="удалить">
-                <fa-icon class="icon icon__trash" [icon]="iconTrash" ></fa-icon>
+            <button class="btn note__delete" type="button" aria-label="удалить"
+                (click)="removeNote()"
+            ><fa-icon class="icon icon__trash" [icon]="iconTrash"></fa-icon>
             </button>
         </div>
     </div>

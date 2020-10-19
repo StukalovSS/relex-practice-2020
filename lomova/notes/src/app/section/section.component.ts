@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { INote } from '../note/inote';
+
 
 @Component({
   selector: 'app-section',
@@ -9,11 +11,18 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./section.component.css']
 })
 export class SectionComponent implements OnInit {
-  iconCogs = faCogs;
+  @Input() sectionTitle: string;
+  @Input() notes: INote[];
+
   iconProperty = faEllipsisV;
+  iconCogs = faCogs;
   iconPlus = faPlus;
-  constructor() { }
-  ngOnInit(): void {
+
+  removeNote(idNote: number) {
+    this.notes = this.notes.filter(k => k.noteId != idNote);
   }
+
+  constructor() { }
+  ngOnInit(): void {}
 
 }
