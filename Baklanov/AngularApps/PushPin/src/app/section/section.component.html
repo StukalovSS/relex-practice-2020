@@ -1,16 +1,25 @@
 <div class="main-container">
    <div class="title-container">
     <fa-icon [icon]="faEllipsisV" class="title-container_element"></fa-icon>
-      <div class="title-container_element">{{noteHeader}}</div>
+      <div class="title-container_element">{{section.sectionTitle}}</div>
     <fa-icon [icon]="faCogs" class="title-container_element"></fa-icon>
    </div>
  <div class="notes-container">
-     <app-note></app-note>
-     <app-note></app-note>
-     <app-note></app-note>
-     <app-note></app-note>
+     <app-note *ngFor="let note of section.notes"></app-note>
+ </div>
+ <div>
+   <form [formGroup] = "noteForm">
+        <div class="form-group">
+            <label>Заголовок заметки: </label>
+            <input class="form-control" name="noteHeader" formControlName ="noteHeader" />
+        </div>
+        <div class="form-group">
+            <label>Текст заметки: </label>
+            <input class="form-control" name="noteContent" formControlName = "noteContent"/>
+        </div>
+   </form>
  </div>
 <div class="add-container">
-  <fa-icon class="add-container_new-note" [icon]="faPlus"></fa-icon>
+  <fa-icon class="add-container_new-note" [icon]="faPlus" (click) = addNewNote() ></fa-icon>
 </div>
 </div>

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ContainerComponent } from './container/container.component';
 import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { NoteComponent } from './note/note.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
