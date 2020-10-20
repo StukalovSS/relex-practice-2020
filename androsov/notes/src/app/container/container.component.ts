@@ -16,32 +16,22 @@ export class ContainerComponent implements OnInit {
     notes : [{
       header : 'Note 1',
       content : 'This is first note',
-      date : '',
-      id : 0
-    }, {
-      header : 'Note 2',
-      content : "It's second note",
-      date : '',
-      id : 1
-    }]
-  }
-
-  section2: ISection = {
-    header : 'Section 2',
-    notes : [{
-      header : 'Smth',
-      content : 'This is first note',
-      date : '', 
+      date : null,
       id : 0
     }]
   }
 
   constructor() { 
     this.sections.push(this.section1);
-    this.sections.push(this.section2);
   }
 
   ngOnInit(): void {
   }
 
+  addSection(header: string): void {
+    this.sections.push({
+      'header': header,
+      notes: []
+    })
+  }
 }

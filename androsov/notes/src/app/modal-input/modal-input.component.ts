@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { INote } from '../section/note.interface'
 
@@ -17,7 +17,7 @@ export class ModalInputComponent implements OnInit {
 
   constructor(fb: FormBuilder) {
     this.addNoteForm = fb.group({
-      noteHeader : new FormControl(''),
+      noteHeader : new FormControl('', Validators.required ),
       noteText : new FormControl('')
     });
   }
@@ -33,7 +33,7 @@ export class ModalInputComponent implements OnInit {
     this.onSendNote.emit({
       header : this.addNoteForm.value.noteHeader,
       content : this.addNoteForm.value.noteText,
-      date : '',
+      date : null,
       id : -1
     })
   }

@@ -35,6 +35,8 @@
         background-color: #f7f7f7;
         width: 150px;
         height: 40px;
-        cursor: pointer;
+        &_abled {
+            cursor: pointer;
+        }
     }
 }

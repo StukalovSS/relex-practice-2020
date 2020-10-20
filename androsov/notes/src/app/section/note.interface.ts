@@ -1,6 +1,6 @@
 export interface INote {
     header: string;
     content: string;
-    date: string;
+    date: Date;
     id: number;
 }

@@ -12,20 +12,12 @@ export class NoteComponent implements OnInit, INote {
   faTrashAlt = faTrashAlt;
 
   constructor() {
-    let now: Date = new Date(),
-      date = [
-      '0' + now.getDate(),
-      '0' + (now.getMonth() + 1),
-      '0' + now.getHours(),
-      '0' + now.getMinutes()
-    ].map(component => component.slice(-2));
-
-    this.date = `${date.slice(0, 2).join('.')}.${now.getFullYear()} ${date.slice(2).join(':')}`;
+    this.date = new Date();
   }
 
   @Input() header: string;
   @Input() content: string;
-  date: string;
+  date: Date;
   @Input() id: number;
 
   @Output() onClickTrash = new EventEmitter<number>();
