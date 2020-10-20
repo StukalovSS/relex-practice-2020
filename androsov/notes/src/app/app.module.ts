@@ -7,18 +7,23 @@ import { AppComponent } from './app.component';
 import { ContainerComponent } from './container/container.component';
 import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalInputComponent } from './modal-input/modal-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContainerComponent,
     SectionComponent,
-    NoteComponent
+    NoteComponent,
+    ModalInputComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

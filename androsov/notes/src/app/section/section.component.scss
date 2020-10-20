@@ -1,3 +1,6 @@
+$dark_grey : #5f5f5f;
+$light_grey : #f7f7f7;
+
 :host {
     min-width: 320px;
     display: flex;
@@ -19,15 +22,13 @@
     align-items: center;
     padding-left: 8px;
     padding-right: 8px;
-}
-
-.header__ellipsis {
-    transform: rotate(90deg);
-    cursor: pointer;
-}
-
-.header__icon {
-    cursor: pointer;
+    &__ellipsis {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
+    &__icon {
+        cursor: pointer;
+    }
 }
 
 .notes {
@@ -39,13 +40,16 @@
 }
 
 .add-btn {
-    background-color: #f7f7f7;
+    background-color: $light_grey;
     margin-bottom: 10px;
     border: 1px #b2b2b2 solid;
     cursor: pointer;
     height: 40px;
+    &__icon {
+        color: $dark_grey;
+    }
 }
 
-.add-btn__icon {
-    color: #5f5f5f;
+.form_invisible {
+    display: none;
 }

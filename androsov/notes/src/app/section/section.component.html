@@ -7,7 +7,9 @@
     <app-note *ngFor="let note of notes" [header]="note.header" 
     [content]="note.content" [id]="note.id" (onClickTrash)="deleteNote($event)">
     </app-note>
-    <button class="add-btn">
+    <button class="add-btn" (click)="changeFormVisibillity()">
         <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
     </button>
 </div>
+<app-modal-input [ngClass]="{'form_invisible': invisibleForm}" 
+(onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote($event)"></app-modal-input>

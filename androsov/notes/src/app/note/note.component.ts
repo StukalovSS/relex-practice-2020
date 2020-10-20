@@ -5,7 +5,7 @@ import { INote } from './../section/note.interface';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.css']
+  styleUrls: ['./note.component.scss']
 })
 export class NoteComponent implements OnInit, INote {
   faEdit = faEdit;
