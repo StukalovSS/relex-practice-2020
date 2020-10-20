@@ -22,7 +22,8 @@ export class ContainerComponent implements OnInit {
       content : 'This is first note',
       date : null,
       id : 0
-    }]
+    }],
+    id: 0
   }
 
   constructor(fb: FormBuilder) { 
@@ -38,12 +39,17 @@ export class ContainerComponent implements OnInit {
   addSection(): void {
     this.sections.push({
       'header': this.sectionHeaderInput.value.sectionHeader,
-      notes: []
+      notes: [],
+      id: this.sections[this.sections.length - 1] ? this.sections[this.sections.length - 1].id + 1 : 0
     });
     this.changeVisibillity();
   }
 
   changeVisibillity(): void {
     this.invisible = !this.invisible;
+  }
+
+  removeSection(id: number) {
+    this.sections = this.sections.filter( s => s.id !== id );
   }
 }

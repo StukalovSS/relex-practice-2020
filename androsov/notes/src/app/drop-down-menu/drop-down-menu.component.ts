@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-drop-down-menu',
@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DropDownMenuComponent implements OnInit {
 
+  @Output() onDeleteClick = new EventEmitter;
+  @Output() onRenameClick = new EventEmitter;
+
   constructor() { }
 
   ngOnInit(): void {
+  } 
+
+  sendDelete() {
+    this.onDeleteClick.emit();
   }
 
+  sendRename() {
+    this.onRenameClick.emit();
+  }
 }

@@ -2,6 +2,7 @@ $dark_grey : #5f5f5f;
 $light_grey : #f7f7f7;
 
 :host {
+    position: relative;
     min-width: 320px;
     display: flex;
     flex-direction: column;
@@ -31,6 +32,12 @@ $light_grey : #f7f7f7;
     }
 }
 
+.drop-and-down-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+}
+
 .notes {
     margin-top: 15px;
     display: flex;
@@ -50,6 +57,6 @@ $light_grey : #f7f7f7;
     }
 }
 
-.form_invisible {
+.invisible {
     display: none;
 }
