@@ -2,11 +2,12 @@ import { Component,OnInit, OnChanges } from '@angular/core';
 import { ISection } from './section.interface';
 import '@angular/platform-browser-dynamic';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
-  styleUrls: ['./container.component.css']
+  styleUrls: ['./container.component.scss']
 })
 
 export class ContainerComponent implements OnInit {
@@ -15,7 +16,25 @@ export class ContainerComponent implements OnInit {
   idNote = 0;
   idSection = 0;
   arrayOfSection = [];
+  isDisplayed = true;
   
+  form:FormGroup;
+  private createForm() {
+    this.form = new FormGroup({
+      name: new FormControl("",Validators.required)
+    })
+  }
+
+
+  openForm(){
+    if(this.isDisplayed)
+    {
+        this.isDisplayed = false;
+    }else{
+        this.isDisplayed = true;
+    }
+  }
+
   firstSection:ISection = {
     id:this.idSection++,
     name:"Расписание",
@@ -44,7 +63,11 @@ export class ContainerComponent implements OnInit {
     }]
   }
 
-  constructor() {}
+  constructor() {
+    this.createForm();
+  }
+
+  
   ngOnInit(): void {
     this.arrayOfSection.push(this.firstSection);
     this.arrayOfSection.push(this.secondSection);
@@ -60,27 +83,24 @@ export class ContainerComponent implements OnInit {
     });
   } 
 
-  newSection(){
+  newSection(form){
     this.arrayOfSection.push({
       id:this.idSection++,
-      name:"Test",
-      arrayOfNotes:[{
-        id:this.idNote++,
-        name: "test",
-        nodeTxt:"test",
-        date:"99.99.99 99:99"
-      }]
-    })
+      name:form.value.name,
+      arrayOfNotes:[]
+    });
+    this.openForm();
   }
 
   newNote(e){
+    console.log(e);
     this.arrayOfSection.forEach(element => {
-      if(element.id == e){
+      if(element.id == e.id){
         element.arrayOfNotes.push({
           id:this.idNote++,
-          name: "Тест",
-          nodeTxt:"Тест",
-          date:"00.00.00 00:00"
+          name: e.name,
+          nodeTxt: e.nodeTxt,
+          date: e.date
         })
       }
     });

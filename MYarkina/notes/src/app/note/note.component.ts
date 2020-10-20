@@ -6,7 +6,7 @@ import { INote } from '../container/note.interface';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.css']
+  styleUrls: ['./note.component.scss']
 })
 
 export class NoteComponent implements OnInit,INote {
@@ -24,7 +24,7 @@ export class NoteComponent implements OnInit,INote {
   ngOnInit(): void {
   }
 
-  @Output() doDelete = new EventEmitter<boolean>();
+  @Output() doDelete = new EventEmitter<number>();
   deleteNote(){
     this.doDelete.emit(this.id);
   }

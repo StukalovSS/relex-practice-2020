@@ -1,0 +1,48 @@
+@import '../color';
+
+:host{
+    display: flex;
+    flex-grow: 1;
+}
+
+.button__newsection{
+    width: 300px; 
+    min-width: 300px;
+    background-color: $section-backgroung-color; 
+    border:1px solid $border-color;
+    
+    .icon__faplus{
+        color: $text-color;
+        font: {
+            family: fixedsys;
+            size: 30pt;
+            weight: normal;
+        }
+    }
+}
+
+.form-add-section{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    height: 100px;
+    width: 300px;
+    border: 1px solid $border-color;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: $background-color-form;
+    
+    .form-field{
+        width: 250px;
+        padding: 6px 10px;
+        margin: 4px 0;
+    }
+    
+    .btn-form{
+        margin-right: 20px;
+        margin-top: 10px;
+    }
+}
