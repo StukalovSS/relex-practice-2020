@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { ISection } from './section.interface';
 
 @Component({
@@ -9,7 +10,10 @@ import { ISection } from './section.interface';
 })
 export class ContainerComponent implements OnInit {
   faPlus = faPlus;
+  faTimesCircle = faTimesCircle;
+  invisible: boolean = true;
 
+  sectionHeaderInput: FormGroup;
   sections: ISection[] = [];
   section1: ISection = {
     header : 'Section1',
@@ -21,17 +25,25 @@ export class ContainerComponent implements OnInit {
     }]
   }
 
-  constructor() { 
+  constructor(fb: FormBuilder) { 
+    this.sectionHeaderInput = fb.group({
+      sectionHeader: new FormControl('', Validators.required )
+    });
     this.sections.push(this.section1);
   }
 
   ngOnInit(): void {
   }
 
-  addSection(header: string): void {
+  addSection(): void {
     this.sections.push({
-      'header': header,
+      'header': this.sectionHeaderInput.value.sectionHeader,
       notes: []
-    })
+    });
+    this.changeVisibillity();
+  }
+
+  changeVisibillity(): void {
+    this.invisible = !this.invisible;
   }
 }

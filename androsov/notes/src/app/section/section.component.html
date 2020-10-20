@@ -3,6 +3,7 @@
     <span>{{header}}</span>
     <span><fa-icon [icon]="faCogs" class="header__icon"></fa-icon></span>
 </div>
+<app-drop-down-menu></app-drop-down-menu>
 <div class="notes">
     <app-note *ngFor="let note of notes" [header]="note.header" 
     [content]="note.content" [id]="note.id" (onClickTrash)="deleteNote($event)">

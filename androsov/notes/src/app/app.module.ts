@@ -10,6 +10,7 @@ import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalInputComponent } from './modal-input/modal-input.component';
 import { TestPipe } from './test.pipe';
+import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TestPipe } from './test.pipe';
     SectionComponent,
     NoteComponent,
     ModalInputComponent,
-    TestPipe
+    TestPipe,
+    DropDownMenuComponent
   ],
   imports: [
     BrowserModule,
