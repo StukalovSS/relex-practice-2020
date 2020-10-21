@@ -6,8 +6,9 @@
         </fa-icon>
     </span>
 </div>
+<form></form>
 <app-drop-down-menu class="drop-and-down-menu" [ngClass]="{'invisible': invisibleDropAndDownMenu}"
-(onDeleteClick)="delete()">
+[sectionHeader]="header" (onDeleteClick)="delete()" (onRenameClick)="changeHead($event)">
 </app-drop-down-menu>
 <div class="notes">
     <app-note *ngFor="let note of notes" [header]="note.header" 

@@ -1,2 +1,12 @@
-<span class="btn" (click)="sendRename()">Переименовать</span>
+<span class="btn" (click)="changeInputSectinHeaderVisibillity()">Переименовать</span>
 <span class="btn btn__delete" (click)="sendDelete()">Удалить</span>
+<form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
+[ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
+    <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
+    </fa-icon>
+    <label class="form__head">Новый заголовок</label>
+    <input formControlName="sectionHeader" class="form__input">
+    <button [disabled]="inputSectionHeader.invalid" class="form__btn">
+        Поменять имя секции
+    </button>
+</form>

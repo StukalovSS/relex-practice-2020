@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-section',
@@ -25,9 +24,9 @@ export class SectionComponent implements OnInit, ISection {
   ngOnInit(): void {
   }
 
-  addNoteForm: FormGroup;
   invisibleForm: boolean = true;
   invisibleDropAndDownMenu: boolean = true;
+  invisibleChangeHeader: boolean = true;
 
   deleteNote(id: number): void {
     let deletingNoteIndex = this.notes.findIndex( note => note.id === id);
@@ -54,5 +53,10 @@ export class SectionComponent implements OnInit, ISection {
 
   delete() {
     this.onDelete.emit(this.id);
+  }
+
+  changeHead(newHead: string) {
+    this.changeDropAndDownMenuVisibillity();
+    this.header = newHead;
   }
 }
