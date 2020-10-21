@@ -101,7 +101,7 @@ class Player extends Circle {
 
     eat(other) {
         let d = this.distanceFromAnotherCircle(other);
-        if (other === this) {
+        if (other === this || this.r <= other.r) {
             return false;
         }
 

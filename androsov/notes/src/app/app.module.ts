@@ -20,7 +20,7 @@ import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component
     NoteComponent,
     ModalInputComponent,
     TestPipe,
-    DropDownMenuComponent
+    DropDownMenuComponent,
   ],
   imports: [
     BrowserModule,

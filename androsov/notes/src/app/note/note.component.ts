@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { SectionsDataService } from '../sections-data.service';
 import { INote } from './../section/note.interface';
 
 @Component({
@@ -11,7 +12,7 @@ export class NoteComponent implements OnInit, INote {
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
 
-  constructor() {
+  constructor(public sectServ: SectionsDataService) {
     this.date = new Date();
   }
 
@@ -19,13 +20,14 @@ export class NoteComponent implements OnInit, INote {
   @Input() content: string;
   date: Date;
   @Input() id: number;
+  @Input() sectionId: number;
 
   @Output() onClickTrash = new EventEmitter<number>();
 
   ngOnInit(): void {
   }
 
-  deleteNote() {
-    this.onClickTrash.emit( this.id );
+  delete() {
+    this.sectServ.deleteNote(this.sectionId, this.id);
   }
 }

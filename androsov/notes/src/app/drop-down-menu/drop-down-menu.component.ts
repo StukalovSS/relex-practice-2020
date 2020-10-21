@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { SectionsDataService } from '../sections-data.service';
 
 @Component({
   selector: 'app-drop-down-menu',
@@ -11,6 +12,7 @@ export class DropDownMenuComponent implements OnInit {
   faTimesCircle = faTimesCircle;
 
   @Input() sectionHeader: string;
+  @Input() sectionId: number;
 
   @Output() onDeleteClick = new EventEmitter();
   @Output() onRenameClick = new EventEmitter<string>();
@@ -18,9 +20,9 @@ export class DropDownMenuComponent implements OnInit {
   inputSectionHeader: FormGroup;
   invisibleInputSectionHeader: boolean = true;
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
     this.inputSectionHeader = fb.group({
-      sectionHeader: new FormControl('', Validators.required)
+      sectionHeader: new FormControl(this.sectionHeader, Validators.required)
     });
    }
 
@@ -33,8 +35,8 @@ export class DropDownMenuComponent implements OnInit {
 
   sendRename() {
     this.changeInputSectinHeaderVisibillity();
-    this.sectionHeader = this.inputSectionHeader.value.sectionHeader;
-    this.onRenameClick.emit(this.inputSectionHeader.value.sectionHeader);
+    this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
+    this.onRenameClick.emit();
   }
 
   changeInputSectinHeaderVisibillity() {

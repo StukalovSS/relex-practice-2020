@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
+import { SectionsDataService } from '../sections-data.service';
 
 @Component({
   selector: 'app-section',
@@ -12,11 +13,11 @@ export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
   faPlus = faPlus;
 
-  constructor() {
+  constructor(public data: SectionsDataService) {
   }
 
   @Input() header: string;
-  @Input() notes: INote[];
+  @Input() notes: Map<number, INote>;
   @Input() id: number;
 
   @Output() onDelete = new EventEmitter<number>();
@@ -28,15 +29,6 @@ export class SectionComponent implements OnInit, ISection {
   invisibleDropAndDownMenu: boolean = true;
   invisibleChangeHeader: boolean = true;
 
-  deleteNote(id: number): void {
-    let deletingNoteIndex = this.notes.findIndex( note => note.id === id);
-    if (deletingNoteIndex === -1) {
-      return;
-    }
-
-    this.notes.splice(deletingNoteIndex, 1);
-  }
-
   changeFormVisibillity(): void {
     this.invisibleForm = !this.invisibleForm;
   }
@@ -45,18 +37,15 @@ export class SectionComponent implements OnInit, ISection {
     this.invisibleDropAndDownMenu = !this.invisibleDropAndDownMenu;
   }
 
-  addNote(note): void {
+  addNote(): void {
     this.changeFormVisibillity();
-    note.id = this.notes[this.notes.length - 1] ? this.notes[this.notes.length - 1].id + 1 : 0;
-    this.notes.push(note);
   }
 
   delete() {
     this.onDelete.emit(this.id);
   }
 
-  changeHead(newHead: string) {
+  changeHead() {
     this.changeDropAndDownMenuVisibillity();
-    this.header = newHead;
   }
 }

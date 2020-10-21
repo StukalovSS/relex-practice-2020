@@ -1,7 +1,7 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { INote } from '../section/note.interface'
+import { SectionsDataService } from '../sections-data.service';
 
 @Component({
   selector: 'app-modal-input',
@@ -12,10 +12,11 @@ export class ModalInputComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   addNoteForm: FormGroup;
 
+  @Input() sectionId: number;
   @Output() onCloseClick = new EventEmitter();
-  @Output() onSendNote = new EventEmitter<INote>();
+  @Output() onSendNote = new EventEmitter();
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, public data: SectionsDataService) {
     this.addNoteForm = fb.group({
       noteHeader : new FormControl('', Validators.required ),
       noteText : new FormControl('')
@@ -30,11 +31,12 @@ export class ModalInputComponent implements OnInit {
   }
 
   addNote() {
-    this.onSendNote.emit({
+    this.data.addNote(this.sectionId, {
       header : this.addNoteForm.value.noteHeader,
       content : this.addNoteForm.value.noteText,
       date : null,
       id : -1
-    })
+    });
+    this.onSendNote.emit()
   }
 }

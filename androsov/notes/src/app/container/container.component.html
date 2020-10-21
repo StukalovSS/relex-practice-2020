@@ -1,5 +1,5 @@
-<app-section *ngFor="let section of sections" [header]="section.header" [notes]="section.notes"
-[id]="section.id" (onDelete)="removeSection($event)">
+<app-section *ngFor="let section of data.getSections()" [header]="section.header" [notes]="section.notes"
+[id]="section.id" (onDelete)="data.removeSection($event)">
 </app-section>
 <button class="add-btn">
     <form [formGroup]="sectionHeaderInput" class="form" [ngClass]="{'invisible': invisible}"
