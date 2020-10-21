@@ -51,7 +51,6 @@ function drawField(s: any, player: Circle, circles: Circle []): void {
         y: s.mouseY - s.height / 2,
         id: id
     }, (obj: any) => {
-        console.log('Ex')
         const circles: Circle[] = [];
 
         for (let el of obj.players) {
