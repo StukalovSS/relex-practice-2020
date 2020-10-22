@@ -25,7 +25,8 @@ export class SectionsDataService {
     this.sections.set(id, {
       header: name,
       notes: this.notesMapFromArr(notes),
-      id: id
+      id: id,
+      headerColor: '#add19a'
     });
   }
 
@@ -44,6 +45,10 @@ export class SectionsDataService {
 
   deleteNote(sectionId: number, noteId: number) {
     this.sections.get(sectionId).notes.delete(noteId);
+  }
+
+  changeSectionHeadColor(sectionId: number, newColor: string): void {
+    this.sections.get(sectionId).headerColor = newColor;
   }
 
   private notesMapFromArr(notes: INote[]): Map<number, INote> {

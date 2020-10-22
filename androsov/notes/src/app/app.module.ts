@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalInputComponent } from './modal-input/modal-input.component';
 import { TestPipe } from './test.pipe';
 import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component';
+import { MapValuesPipe } from './map-values.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component
     ModalInputComponent,
     TestPipe,
     DropDownMenuComponent,
+    MapValuesPipe,
   ],
   imports: [
     BrowserModule,

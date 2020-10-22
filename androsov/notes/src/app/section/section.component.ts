@@ -19,6 +19,7 @@ export class SectionComponent implements OnInit, ISection {
   @Input() header: string;
   @Input() notes: Map<number, INote>;
   @Input() id: number;
+  @Input() headerColor: string;
 
   @Output() onDelete = new EventEmitter<number>();
 
@@ -41,11 +42,7 @@ export class SectionComponent implements OnInit, ISection {
     this.changeFormVisibillity();
   }
 
-  delete() {
-    this.onDelete.emit(this.id);
-  }
-
-  changeHead() {
-    this.changeDropAndDownMenuVisibillity();
-  }
+  // delete() {
+  //   this.onDelete.emit(this.id);
+  // }
 }

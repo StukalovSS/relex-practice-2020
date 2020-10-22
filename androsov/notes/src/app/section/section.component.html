@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" [ngStyle]="{'background-color': headerColor}">
     <span class="header__ellipsis">...</span>
     <span>{{header}}</span>
     <span>
@@ -8,7 +8,7 @@
 </div>
 <form></form>
 <app-drop-down-menu class="drop-and-down-menu" [ngClass]="{'invisible': invisibleDropAndDownMenu}"
-[sectionHeader]="header" (onDeleteClick)="delete()" (onRenameClick)="changeHead()">
+[sectionHeader]="header" [sectionId]="id" (onClose)="changeDropAndDownMenuVisibillity() ">
 </app-drop-down-menu>
 <div class="notes">
     <app-note *ngFor="let note of data.getNotes(id)" [header]="note.header" [sectionId]="id"

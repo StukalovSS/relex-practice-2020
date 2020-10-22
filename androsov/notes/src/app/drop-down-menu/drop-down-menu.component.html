@@ -1,5 +1,9 @@
 <span class="btn" (click)="changeInputSectinHeaderVisibillity()">Переименовать</span>
 <span class="btn btn__delete" (click)="sendDelete()">Удалить</span>
+<p class="color-picker" (change)="changeSectionHeaderColor($event)">
+    <span>Изменить цвет</span>
+    <input type="color" class="color-picker__input">
+</p>
 <form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
 [ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
     <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">

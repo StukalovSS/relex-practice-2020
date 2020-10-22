@@ -14,10 +14,10 @@ export class DropDownMenuComponent implements OnInit {
   @Input() sectionHeader: string;
   @Input() sectionId: number;
 
-  @Output() onDeleteClick = new EventEmitter();
-  @Output() onRenameClick = new EventEmitter<string>();
+  @Output() onClose = new EventEmitter();
 
   inputSectionHeader: FormGroup;
+
   invisibleInputSectionHeader: boolean = true;
 
   constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
@@ -30,13 +30,17 @@ export class DropDownMenuComponent implements OnInit {
   } 
 
   sendDelete() {
-    this.onDeleteClick.emit();
+    this.sectServ.removeSection(this.sectionId);
   }
 
   sendRename() {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
-    this.onRenameClick.emit();
+    this.onClose.emit();
+  }
+
+  changeSectionHeaderColor(e: any) {
+    this.sectServ.changeSectionHeadColor(this.sectionId, e.target.value);
   }
 
   changeInputSectinHeaderVisibillity() {
