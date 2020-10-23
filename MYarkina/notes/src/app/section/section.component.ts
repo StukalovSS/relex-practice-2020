@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, Output ,EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output ,EventEmitter, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ɵComponentFactory, ComponentRef } from '@angular/core';
 import {faCogs,faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { ISection } from '../container/section.interface';
-import { FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { ModalwindownoteComponent } from '../modalwindownote/modalwindownote.component';
+import '../_color.scss';
 
 @Component({
   selector: 'app-section',
@@ -10,33 +10,25 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./section.component.scss']
 })
 export class SectionComponent implements OnInit,ISection {
-  
-  isDisplayed = true;
+
+  @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
+  color =  `$header-background-color`;
 
   @Input()arrayOfNotes;
   @Input()name;
   @Input()id;
-
+  idDropSort;
+  idDropFiltr;
   faCogs = faCogs;
   faEllipsisV = faEllipsisV;
 
-
-  constructor() {
-    this.createForm();
-  }
-
-  myForm:FormGroup;
-  private createForm() {
-    var today: string | null = new DatePipe("en-US").transform(new Date(), "dd.MM.yyyy");
-    this.myForm = new FormGroup({
-      name: new FormControl("",Validators.required),
-      text: new FormControl("",Validators.required),
-
-      date: new FormControl(today,Validators.required)
-    })
+  componentRef: ComponentRef<any>;
+  constructor(private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit(): void {
+    this.idDropSort = "i"+this.id;
+    this.idDropFiltr = "q"+this.id;
   }
 
   @Output() deleteNote = new EventEmitter<any>();
@@ -44,25 +36,47 @@ export class SectionComponent implements OnInit,ISection {
     this.deleteNote.emit(e);
   }
 
+ 
   openForm(){
-    if(this.isDisplayed)
-    {
-        this.isDisplayed = false;
-    }else{
-        this.isDisplayed = true;
-    }
+    this.container.clear(); 
+    const factory = this.resolver.resolveComponentFactory(ModalwindownoteComponent);
+    this.componentRef = this.container.createComponent(factory);
+    this.componentRef.instance.output.subscribe(event => this.addNewNote(event));
   }
+
 
   @Output() newNote = new EventEmitter<any>();
   addNewNote(form){
-    let obj = {
-      id:this.id,
-      name:form.value.name,
-      nodeTxt:form.value.text,
-      date:form.value.date
+    if(form !=false){
+      let obj = {
+        id: this.id,
+        name: form.value.name,
+        nodeTxt: form.value.text,
+        date: form.value.date
+      }
+      this.newNote.emit(obj);
     }
-    this.newNote.emit(obj);
-    this.openForm();
+    this.componentRef.destroy();
   }
   
+  openMenu(id:string){
+    if(document.getElementById(id).style.display == "block"){
+      document.getElementById(id).style.display = "none"
+    }
+    else{
+      document.getElementById(id).style.display = "block";
+    }
+  }
+
+  @Output() delSection = new EventEmitter<any>();
+  deleteSection(){
+    this.delSection.emit(this.id);
+  }
+
+  @Output() changeNameSection = new EventEmitter<number>();
+  changeName(){
+    this.changeNameSection.emit(this.id);
+    this.openMenu(this.id);
+  }
+
 }

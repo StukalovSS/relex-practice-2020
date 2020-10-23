@@ -17,9 +17,7 @@ export class NoteComponent implements OnInit,INote {
   @Input() name;
   @Input() nodeTxt;
   @Input() date;
-  
-  constructor(){
-   }
+
 
   ngOnInit(): void {
   }

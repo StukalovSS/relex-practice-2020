@@ -6,6 +6,9 @@ import { ContainerComponent } from './container/container.component';
 import {  SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataService } from './data.service';
+import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
+import { ModalwindownoteComponent } from './modalwindownote/modalwindownote.component';
 
 
 @NgModule({
@@ -13,15 +16,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     ContainerComponent,
     SectionComponent,
-    NoteComponent 
+    NoteComponent,
+    ModalwindownoteComponent
   ],
   imports: [
     BrowserModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ColorPickerModule
   ],
-  providers: [],
+  entryComponents:[ModalwindownoteComponent],
+  providers: [DataService, ColorPickerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
