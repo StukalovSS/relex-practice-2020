@@ -1,29 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import {ISection} from "../section/section.interface";
-import {DataService} from '../services/data.service'
+import { ISection } from "../section/section.interface";
+import { DataService } from '../services/data.service';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.css'],
 })
-export class ContainerComponent implements OnInit{
-  arrayOfSections:any[]=[];
+export class ContainerComponent implements OnInit, OnDestroy {
+  arrayOfSections: any[] = [];
   faPlus = faPlus;
-  count : number = 0;
-  constructor(private service : DataService ) { }
-  
-  addNewSection() : void {
-    let section : ISection ={
-        sectionTitle : "Секция " + (this.arrayOfSections.length +1),
-        notes : [],
-        id : this.count
-    }
-    this.service.addSection(section);
-    this.count++;
-    this.arrayOfSections = this.service.getData();
-  }
-  ngOnInit(): void {
+  public modalHide: boolean = false;
+  constructor(private service: DataService, private router: Router) {
+    this.router.navigate(['/']);
   }
 
+  addNewSection(): void {
+    this.router.navigate(['modal'],
+      {
+        queryParams: { 'type': 'section' }
+      });
+  }
+  ngOnInit(): void {
+    this.arrayOfSections = this.service.getData();
+  }
+  ngOnDestroy(): void {
+  }
 }

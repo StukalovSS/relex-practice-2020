@@ -1,11 +1,13 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { INote } from '../note/note.interface';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from '../services/data.service';
 import { ISection } from './section.interface';
-import { FormGroup, FormControl, Validators, FormArray, FormBuilder} from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
@@ -13,36 +15,48 @@ import { FormGroup, FormControl, Validators, FormArray, FormBuilder} from '@angu
 })
 export class SectionComponent implements OnInit {
   faEllipsisV = faEllipsisV;
+  faArrowUp = faArrowUp;
+  faArrowDown = faArrowDown;
   faCogs = faCogs;
   faPlus = faPlus;
-  section : ISection;
-  noteForm : FormGroup;
-  constructor( private service : DataService, private formBuilder: FormBuilder) {
-    this.noteForm = formBuilder.group ({
-      "noteHeader" : ['Название вашей заметки', [Validators.required]],
-      "noteContent" : [''],
-    })
+  section: ISection;
+  noteForm: FormGroup;
+  isVisible: boolean = false;
+  sectionForm: FormGroup;
+  color : string = "#9786bd";
+  constructor(private service: DataService, private formBuilder: FormBuilder, private router: Router) {
   }
-  addNewNote () : void {
-    let fullDate = new Date();
-    let date : string;
-    date = String(
-      fullDate.getDate() + "."+
-      fullDate.getMonth() + "."+
-      fullDate.getFullYear() +" "+
-      fullDate.getHours() + ":"+
-      fullDate.getSeconds()
-    )
-    let note : INote  = {
-      noteHeader : this.noteForm.value.noteHeader,
-      noteCreationDate :date,
-      noteContent : this.noteForm.value.noteContent,
-      id : (this.section.notes.length-1),
-      sectionId : this.section.id
+  addNewNote(): void {
+    this.isVisible = false;
+    this.router.navigate(['modal'],
+      {
+        queryParams: {
+          'type': 'note',
+          'sectionId': this.section.id
+        }
+      });
+  }
+  openSectionMenu(): void {
+    this.sectionForm = this.formBuilder.group({
+      "sectionHeader": [this.section.sectionTitle, [Validators.required]],
+      "sectionColor" : [this.section.color,[Validators.required]]
+    });
+    if (this.isVisible) {
+      this.isVisible = false;
     }
-    this.service.addNoteBySectionId (this.section.id, note);
+    else {
+      this.isVisible = true;
+    }
+  }
+  editSection(): void {
+    this.section.sectionTitle = this.sectionForm.value.sectionHeader;
+    this.section.color = this.sectionForm.value.sectionColor;
+    this.service.editSection(this.section.id, this.section); 
+  }
+  deleteSection(): void {
+    this.service.deleteSectionById(this.section.id);
     this.section = this.service.getSectionById(this.section.id);
-    }
+  }
   ngOnInit(): void {
     this.section = this.service.getLastSection();
   }

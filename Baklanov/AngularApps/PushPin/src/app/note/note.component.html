@@ -4,7 +4,7 @@
         <p class="content-container_note-text">{{note.noteContent}}</p>
     </div>
     <div class="info-managing-container">
-        <p class="info-managing-container_date">{{note.noteCreationDate}}</p>
+        <p class="info-managing-container_date">{{note.noteCreationDate | date: "dd.MM.yyyy HH:mm"}}</p>
         <fa-icon class="info-managing-container_edit" [icon]="faEdit"></fa-icon>
         <fa-icon class="info-managing-container_delete" [icon]="faTrashAlt" (click) = deleteNote()></fa-icon>
     </div>

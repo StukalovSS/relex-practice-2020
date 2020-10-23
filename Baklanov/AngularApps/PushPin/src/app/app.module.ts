@@ -7,13 +7,15 @@ import { ContainerComponent } from './container/container.component';
 import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContainerComponent,
     SectionComponent,
-    NoteComponent
+    NoteComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
