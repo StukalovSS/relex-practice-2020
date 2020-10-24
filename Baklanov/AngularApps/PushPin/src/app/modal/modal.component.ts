@@ -60,7 +60,8 @@ export class ModalComponent implements OnInit {
       sectionTitle: this.sectionForm.value.sectionHeader,
       notes: [],
       id: 0,
-      color : this.sectionForm.value.sectionColor
+      color : this.sectionForm.value.sectionColor,
+      filtrationType : "none"
     }
     this.service.addSection(section);
     this.router.navigate(['/']);

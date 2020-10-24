@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { element } from 'protractor';
 import { INote } from '../note/note.interface';
 import { ISection } from '../section/section.interface';
 @Injectable({
@@ -61,5 +62,32 @@ export class DataService {
   editSection(id: number, section: ISection) {
     let index = this.sections.findIndex(section => section.id == id)
     this.sections[index] = section;
+  }
+  notesFiltration (section : ISection) : ISection {
+    let tempSection : ISection = {
+      sectionTitle : section.sectionTitle,
+      id : section.id,
+      filtrationType : section.filtrationType,
+      notes : section.notes,
+      color : section.color
+    };
+    switch (tempSection.filtrationType) {
+      case "even" :
+        tempSection.notes = tempSection.notes.filter(note => 
+          note.noteCreationDate.getMinutes() % 2 ==0);
+          section.filtrationType = 'none';
+      return tempSection;
+      case "odd" :
+        tempSection.notes = tempSection.notes.filter(note => 
+          note.noteCreationDate.getMinutes() % 2 !=0);
+          section.filtrationType = 'none';
+      return tempSection;
+      case "none" : 
+      let index = this.sections.findIndex(sec => tempSection.id == sec.id);
+      console.log(this.sections[index]);
+      tempSection.notes = this.sections[index].notes;
+      console.log(tempSection);
+      return tempSection;
+    }
   }
 }

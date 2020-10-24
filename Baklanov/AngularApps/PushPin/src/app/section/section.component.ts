@@ -57,6 +57,17 @@ export class SectionComponent implements OnInit {
     this.service.deleteSectionById(this.section.id);
     this.section = this.service.getSectionById(this.section.id);
   }
+  notesFilter(event, type : string) : void {
+    if(!event.target.checked) {
+      this.section.filtrationType = 'none';
+      this. section = this.service.notesFiltration(this.section);
+      console.log(this.section);
+    }
+    else {
+      this.section.filtrationType = type;
+       this.section = this.service.notesFiltration(this.section);
+    }
+  }
   ngOnInit(): void {
     this.section = this.service.getLastSection();
   }

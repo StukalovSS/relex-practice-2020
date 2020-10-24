@@ -6,14 +6,14 @@
         <input class="form-control" name="sectionHeader" formControlName="sectionHeader" />
         <label>Цвет секции: </label>
         <input class="color-input" type="color" list="colors"  formControlName="sectionColor" />
-        <br><label>По дате:</label> 
+        <br> <label>Фильтрация:</label>
+        <br><label>По дате </label> 
         <fa-icon [icon]="faArrowUp"></fa-icon>
         <input type ="radio" name="sort"/> 
         <fa-icon [icon]="faArrowDown"></fa-icon>
         <input type ="radio" name="sort"/>
-        <br> <label>Фильтрация:</label>
-        <input type ="checkbox" name="sort"/>
-        <input type ="checkbox" name="sort"/>
+        <br> <label>Четные числа </label><input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')"/>
+        <br> <label>Нечетные числа </label><input type ="checkbox" name="sort"(change) = "notesFilter($event, 'odd')"/>
       </div>
     </form>
     <datalist id="colors">
