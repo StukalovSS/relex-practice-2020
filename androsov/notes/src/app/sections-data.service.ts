@@ -16,9 +16,12 @@ export class SectionsDataService {
     return this.sections.values();
   }
 
-  getNotes(sectionId: number): INote[] {
-    return Array.from( this.sections.get(sectionId).notes.values() );
-  }
+  getNotes(sectionId: number, even: boolean, notEven: boolean): INote[] {
+    const notes = Array.from( this.sections.get(sectionId).notes.values() );
+    return notes.filter( note => 
+      (even && note.date.getDate() % 2 === 0) || (notEven && note.date.getDate() % 2 === 1)
+    );
+  }  
 
   addSection(name: string, notes: INote[]): void {
     const id = this.createId();
@@ -26,7 +29,7 @@ export class SectionsDataService {
       header: name,
       notes: this.notesMapFromArr(notes),
       id: id,
-      headerColor: '#add19a'
+      headerColor: '#add19a',
     });
   }
 

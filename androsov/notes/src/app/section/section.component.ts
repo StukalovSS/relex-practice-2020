@@ -15,13 +15,13 @@ export class SectionComponent implements OnInit, ISection {
 
   constructor(public data: SectionsDataService) {
   }
+  showEven: boolean = true;
+  showNotEven: boolean = true;
 
   @Input() header: string;
   @Input() notes: Map<number, INote>;
   @Input() id: number;
   @Input() headerColor: string;
-
-  @Output() onDelete = new EventEmitter<number>();
 
   ngOnInit(): void {
   }
@@ -42,7 +42,11 @@ export class SectionComponent implements OnInit, ISection {
     this.changeFormVisibillity();
   }
 
-  // delete() {
-  //   this.onDelete.emit(this.id);
-  // }
+  filterNotes(e: any) {
+    const map: Map<number, INote> = new Map<number, INote>();
+    this.data.getNotes(this.id, e.even, e.notEven).forEach( note => {
+      map.set(note.id, note);
+    });
+    this.notes = map;
+  }
 }

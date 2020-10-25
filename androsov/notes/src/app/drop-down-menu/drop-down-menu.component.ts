@@ -15,6 +15,7 @@ export class DropDownMenuComponent implements OnInit {
   @Input() sectionId: number;
 
   @Output() onClose = new EventEmitter();
+  @Output() onSelectCheckbox = new EventEmitter<any>();
 
   inputSectionHeader: FormGroup;
 
@@ -37,6 +38,13 @@ export class DropDownMenuComponent implements OnInit {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
     this.onClose.emit();
+  }
+
+  sendFilter() {
+    this.onSelectCheckbox.emit({
+      even: (document.getElementById( 'even' ) as any).checked,
+      notEven: (document.getElementById( 'not-even' ) as any).checked
+    });
   }
 
   changeSectionHeaderColor(e: any) {

@@ -19,7 +19,8 @@ export class ModalInputComponent implements OnInit {
   constructor(fb: FormBuilder, public data: SectionsDataService) {
     this.addNoteForm = fb.group({
       noteHeader : new FormControl('', Validators.required ),
-      noteText : new FormControl('')
+      noteText : new FormControl(''),
+      noteDate : new FormControl('')
     });
   }
 
@@ -31,10 +32,12 @@ export class ModalInputComponent implements OnInit {
   }
 
   addNote() {
+    let date = this.addNoteForm.value.noteDate.split('-');
+    date = `${date[0]}-${date[1]}-${date[2]}`;
     this.data.addNote(this.sectionId, {
       header : this.addNoteForm.value.noteHeader,
       content : this.addNoteForm.value.noteText,
-      date : null,
+      date : new Date(date),
       id : -1
     });
     this.onSendNote.emit()

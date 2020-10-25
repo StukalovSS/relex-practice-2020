@@ -13,12 +13,12 @@ export class NoteComponent implements OnInit, INote {
   faTrashAlt = faTrashAlt;
 
   constructor(public sectServ: SectionsDataService) {
-    this.date = new Date();
+    // this.date = new Date();
   }
 
   @Input() header: string;
   @Input() content: string;
-  date: Date;
+  @Input() date: Date;
   @Input() id: number;
   @Input() sectionId: number;
 

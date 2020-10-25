@@ -4,6 +4,12 @@
     <span>Изменить цвет</span>
     <input type="color" class="color-picker__input">
 </p>
+<input type="radio" name="radio">
+<input type="radio" name="radio">
+<span>Четное число</span>
+<input type="checkbox" name="isEven" (change)="sendFilter()" id="even">
+<span>Нечетное число</span>
+<input type="checkbox" name="isNotEven" (change)="sendFilter()" id="not-even">
 <form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
 [ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
     <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
