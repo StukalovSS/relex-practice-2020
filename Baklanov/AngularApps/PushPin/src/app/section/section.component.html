@@ -1,5 +1,5 @@
 <div class="main-container">
-  <div class="dropdown-container" *ngIf='isVisible'>
+  <div class="dropdown-container" [ngStyle] = "{display: isVisible ? 'flex' : 'none'}">
     <form [formGroup]="sectionForm" novalidate>
       <div class="form-group">
         <label>Заголовок секции: </label>
@@ -12,8 +12,10 @@
         <input type ="radio" name="sort"/> 
         <fa-icon [icon]="faArrowDown"></fa-icon>
         <input type ="radio" name="sort"/>
-        <br> <label>Четные числа </label><input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')"/>
-        <br> <label>Нечетные числа </label><input type ="checkbox" name="sort"(change) = "notesFilter($event, 'odd')"/>
+        <br> <label>Четные числа </label>
+        <input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')" id='even' />
+        <br> <label>Нечетные числа </label>
+        <input type ="checkbox" name="sort"(change) = "notesFilter($event, 'odd')" id='odd'/>
       </div>
     </form>
     <datalist id="colors">
@@ -38,7 +40,10 @@
     <fa-icon [icon]="faCogs" class="title-container_element" (click)=" openSectionMenu()"></fa-icon>
   </div>
   <div class="notes-container">
-    <app-note *ngFor="let note of section.notes"></app-note>
+    <app-note 
+    *ngFor="let note of section.notes; let i =index" 
+    [(sectionId)]='section.id' [(noteId)]='section.notes[i].id'>
+  </app-note>
   </div>
   <div class="add-container">
     <fa-icon class="add-container_new-note" [icon]="faPlus" (click)=addNewNote()></fa-icon>

@@ -20,10 +20,8 @@ export class SectionComponent implements OnInit {
   faCogs = faCogs;
   faPlus = faPlus;
   section: ISection;
-  noteForm: FormGroup;
   isVisible: boolean = false;
   sectionForm: FormGroup;
-  color : string = "#9786bd";
   constructor(private service: DataService, private formBuilder: FormBuilder, private router: Router) {
   }
   addNewNote(): void {
@@ -37,10 +35,6 @@ export class SectionComponent implements OnInit {
       });
   }
   openSectionMenu(): void {
-    this.sectionForm = this.formBuilder.group({
-      "sectionHeader": [this.section.sectionTitle, [Validators.required]],
-      "sectionColor" : [this.section.color,[Validators.required]]
-    });
     if (this.isVisible) {
       this.isVisible = false;
     }
@@ -51,25 +45,28 @@ export class SectionComponent implements OnInit {
   editSection(): void {
     this.section.sectionTitle = this.sectionForm.value.sectionHeader;
     this.section.color = this.sectionForm.value.sectionColor;
-    this.service.editSection(this.section.id, this.section); 
+    this.service.editSection(this.section.id, this.section);
   }
   deleteSection(): void {
     this.service.deleteSectionById(this.section.id);
     this.section = this.service.getSectionById(this.section.id);
   }
-  notesFilter(event, type : string) : void {
-    if(!event.target.checked) {
+  notesFilter(event, type: string): void {
+    if (!event.target.checked) {
       this.section.filtrationType = 'none';
-      this. section = this.service.notesFiltration(this.section);
-      console.log(this.section);
+      this.section = this.service.notesFiltration(this.section);
     }
     else {
       this.section.filtrationType = type;
-       this.section = this.service.notesFiltration(this.section);
+      this.section = this.service.notesFiltration(this.section);
     }
   }
   ngOnInit(): void {
     this.section = this.service.getLastSection();
+    this.sectionForm = this.formBuilder.group({
+      "sectionHeader": [this.section.sectionTitle, [Validators.required]],
+      "sectionColor": [this.section.color, [Validators.required]]
+    });
   }
 
 }

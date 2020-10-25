@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { element } from 'protractor';
 import { INote } from '../note/note.interface';
 import { ISection } from '../section/section.interface';
 @Injectable({
@@ -10,35 +9,47 @@ export class DataService {
   private sectionId: number = 0;
   private noteId: number = 0;
   private currentSection: number;
+  private ShellSort(A : INote[]) : INote[]{
+    let n = A.length, i = Math.floor(n / 2);
+    while (i > 0) {
+      for (let j = 0; j < n; j++) {
+        let k = j, t = A[j].noteCreationDate.getDay();
+        while (k >= i && A[k - i].noteCreationDate.getDay() > t) {
+          A[k].noteCreationDate.setDate(A[k - i].noteCreationDate.getDay());
+        }
+        A[k].noteCreationDate.setDate(t);
+      }
+      i = (i == 2) ? 1 : Math.floor(i * 5 / 11);
+    }
+    return A;
+  }
   getData(): ISection[] {
     return this.sections;
   }
   addSection(section: ISection) {
     section.id = this.sectionId++;
     this.sections.push(section);
-    this.currentSection = (this.sections.length - 1);
+    // this.currentSection = (this.sections.length - 1);
   }
   getLastSection(): ISection {
     return this.sections[this.sections.length - 1];
   }
-  getNote(): INote {
-    return this.sections[this.currentSection].notes[this.sections[this.currentSection].notes.length - 1];
+  getNote(sectionId: number, noteId: number): INote {
+    let section: ISection = this.getSectionById(sectionId);
+    return section.notes.find(note => note.id == noteId);
+
   }
   addNoteBySectionId(id: number, note: INote) {
     for (let i = 0; i < this.sections.length; i++) {
       if (this.sections[i].id == id) {
-        this.currentSection = i;
+        // this.currentSection = i;
         note.id = this.noteId++;
         this.sections[i].notes.push(note);
       }
     }
   }
   getSectionById(id: number): ISection {
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].id == id) {
-        return this.sections[i];
-      }
-    }
+    return this.sections.find(section => section.id == id);
   }
   deleteNote(sectionId: number, noteId: number): void {
     for (let i = 0; i < this.sections.length; i++) {
@@ -55,7 +66,7 @@ export class DataService {
     for (let i = 0; i < this.sections.length; i++) {
       if (this.sections[i].id == sectionId) {
         this.sections.splice(i, 1);
-        this.currentSection = i - 1;
+        // this.currentSection = i - 1;
       }
     }
   }
@@ -63,31 +74,31 @@ export class DataService {
     let index = this.sections.findIndex(section => section.id == id)
     this.sections[index] = section;
   }
-  notesFiltration (section : ISection) : ISection {
-    let tempSection : ISection = {
-      sectionTitle : section.sectionTitle,
-      id : section.id,
-      filtrationType : section.filtrationType,
-      notes : section.notes,
-      color : section.color
-    };
+  notesFiltration(section: ISection): ISection {
+    let tempSection: ISection = { ...section };
     switch (tempSection.filtrationType) {
-      case "even" :
-        tempSection.notes = tempSection.notes.filter(note => 
-          note.noteCreationDate.getMinutes() % 2 ==0);
-          section.filtrationType = 'none';
+      case "even":
+        tempSection.notes = tempSection.notes.filter(note =>
+          note.noteCreationDate.getMinutes() % 2 == 0);
+        tempSection.filtrationType = 'none';
+        return tempSection;
+      case "odd":
+        tempSection.notes = tempSection.notes.filter(note =>
+          note.noteCreationDate.getMinutes() % 2 != 0);
+        tempSection.filtrationType = 'none';
+        return tempSection;
+      case "none":
+        tempSection = this.getSectionById(tempSection.id);
+        return tempSection;
+    }
+  }
+  notesSorting(section: ISection): ISection {
+    let tempSection: ISection = { ...section };
+    switch (tempSection.sortingType) {
+      case 'early':
+      tempSection.notes = this.ShellSort(tempSection.notes); 
       return tempSection;
-      case "odd" :
-        tempSection.notes = tempSection.notes.filter(note => 
-          note.noteCreationDate.getMinutes() % 2 !=0);
-          section.filtrationType = 'none';
-      return tempSection;
-      case "none" : 
-      let index = this.sections.findIndex(sec => tempSection.id == sec.id);
-      console.log(this.sections[index]);
-      tempSection.notes = this.sections[index].notes;
-      console.log(tempSection);
-      return tempSection;
+      case 'later': return tempSection;
     }
   }
 }

@@ -61,7 +61,8 @@ export class ModalComponent implements OnInit {
       notes: [],
       id: 0,
       color : this.sectionForm.value.sectionColor,
-      filtrationType : "none"
+      filtrationType : "none",
+      sortingType : 'none'
     }
     this.service.addSection(section);
     this.router.navigate(['/']);

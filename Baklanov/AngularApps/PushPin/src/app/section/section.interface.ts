@@ -5,4 +5,5 @@ export interface ISection {
     notes: INote[];
     color : string
     filtrationType : string;
+    sortingType : string;
 }

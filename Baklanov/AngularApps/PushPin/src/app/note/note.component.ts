@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from '../services/data.service';
@@ -10,9 +9,10 @@ import { INote } from './note.interface';
   styleUrls: ['./note.component.css'],
 })
 export class NoteComponent implements OnInit {
+  @Input() sectionId : number;
+  @Input() noteId : number;
   faTrashAlt = faTrashAlt;
   faEdit = faEdit;
-  notes: INote[] = [];
   note: INote;
   constructor(private service: DataService) { }
   deleteNote(): void {
@@ -20,6 +20,6 @@ export class NoteComponent implements OnInit {
     console.log()
   }
   ngOnInit(): void {
-    this.note = this.service.getNote();
+    this.note = this.service.getNote(this.sectionId, this.noteId);
   }
 }

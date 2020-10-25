@@ -52,7 +52,7 @@
     font-size: 20pt;
 }
 .dropdown-container {
-    display: flex;
+    display: none;
     position: absolute;
     bottom: 65.6%;
     flex-direction: column;
