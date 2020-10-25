@@ -20,6 +20,9 @@ export class DropDownMenuComponent implements OnInit {
   inputSectionHeader: FormGroup;
 
   invisibleInputSectionHeader: boolean = true;
+  showEven: boolean = true;
+  showNotEven: boolean = true;
+  sortAscending: boolean = true;
 
   constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
     this.inputSectionHeader = fb.group({
@@ -41,9 +44,14 @@ export class DropDownMenuComponent implements OnInit {
   }
 
   sendFilter() {
+    this.showEven = (document.getElementById( 'even' ) as any).checked;
+    this.showNotEven = (document.getElementById( 'not-even' ) as any).checked;
+    this.sortAscending = (document.getElementById( 'sortAscending' ) as any).checked;
+
     this.onSelectCheckbox.emit({
-      even: (document.getElementById( 'even' ) as any).checked,
-      notEven: (document.getElementById( 'not-even' ) as any).checked
+      even: this.showEven,
+      notEven: this.showNotEven,
+      sortAscending: this.sortAscending
     });
   }
 

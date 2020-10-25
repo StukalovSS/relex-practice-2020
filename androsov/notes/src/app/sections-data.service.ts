@@ -16,11 +16,8 @@ export class SectionsDataService {
     return this.sections.values();
   }
 
-  getNotes(sectionId: number, even: boolean, notEven: boolean): INote[] {
-    const notes = Array.from( this.sections.get(sectionId).notes.values() );
-    return notes.filter( note => 
-      (even && note.date.getDate() % 2 === 0) || (notEven && note.date.getDate() % 2 === 1)
-    );
+  getNotes(sectionId: number, consumer: (notes: INote[]) => INote[]): INote[] {
+    return consumer( Array.from( this.sections.get(sectionId).notes.values() ) );
   }  
 
   addSection(name: string, notes: INote[]): void {

@@ -3,6 +3,7 @@ import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
+import { quickSort } from '../not-angular-solutions/sorts';
 
 @Component({
   selector: 'app-section',
@@ -44,9 +45,19 @@ export class SectionComponent implements OnInit, ISection {
 
   filterNotes(e: any) {
     const map: Map<number, INote> = new Map<number, INote>();
-    this.data.getNotes(this.id, e.even, e.notEven).forEach( note => {
-      map.set(note.id, note);
-    });
+    
+
+    this.data.getNotes(this.id, function(notes) {
+      notes = notes.filter( note => 
+        (e.even && note.date.getDate() % 2 === 0) || (e.notEven && note.date.getDate() % 2 === 1)
+      );
+      
+      notes = quickSort(notes, (a, b) => {
+        return  (a.date.getTime() - b.date.getTime()) * (e.sortAscending ? 1 : -1);
+      });
+      return notes;
+    }).forEach( note =>  map.set(note.id, note) );
+
     this.notes = map;
   }
 }
