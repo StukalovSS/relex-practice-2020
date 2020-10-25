@@ -20,7 +20,7 @@
         <div>
             <button [disabled]="addNoteForm.invalid" class="form-container__add-btn"
              [ngClass]="{'form-container__add-btn_abled': !addNoteForm.invalid}">
-                Добавить заметку
+                {{textOnButton}}
             </button>
         </div>
     </form>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
@@ -16,13 +16,14 @@ export class SectionComponent implements OnInit, ISection {
 
   constructor(public data: SectionsDataService) {
   }
-  showEven: boolean = true;
-  showNotEven: boolean = true;
 
   @Input() header: string;
   @Input() notes: Map<number, INote>;
   @Input() id: number;
   @Input() headerColor: string;
+  showEven: boolean = true;
+  showNotEven: boolean = true;
+  sortAscending: boolean = true;
 
   ngOnInit(): void {
   }
@@ -41,11 +42,18 @@ export class SectionComponent implements OnInit, ISection {
 
   addNote(): void {
     this.changeFormVisibillity();
+    this.filterNotes( {
+      even: this.showEven, 
+      notEven: this.showNotEven, 
+      sortAscending: this.sortAscending
+    }); 
   }
 
   filterNotes(e: any) {
     const map: Map<number, INote> = new Map<number, INote>();
-    
+    this.showEven = e.even;
+    this.showNotEven = e.notEven;
+    this.sortAscending = e.sortAscending;
 
     this.data.getNotes(this.id, function(notes) {
       notes = notes.filter( note => 
@@ -59,5 +67,9 @@ export class SectionComponent implements OnInit, ISection {
     }).forEach( note =>  map.set(note.id, note) );
 
     this.notes = map;
+  }
+
+  deleteNote(id: number): void {
+    this.notes.delete(id);
   }
 }

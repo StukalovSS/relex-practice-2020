@@ -29,5 +29,6 @@ export class NoteComponent implements OnInit, INote {
 
   delete() {
     this.sectServ.deleteNote(this.sectionId, this.id);
+    this.onClickTrash.emit(this.id);
   }
 }

@@ -12,6 +12,7 @@ export class ModalInputComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   addNoteForm: FormGroup;
 
+  @Input() textOnButton: string = 'Добавить заметку';
   @Input() sectionId: number;
   @Output() onCloseClick = new EventEmitter();
   @Output() onSendNote = new EventEmitter();
