@@ -40,16 +40,17 @@ export class SectionComponent implements OnInit, ISection {
     this.invisibleDropAndDownMenu = !this.invisibleDropAndDownMenu;
   }
 
-  addNote(): void {
+  addNote(note: INote): void {
+    this.data.addNote(this.id, note);
     this.changeFormVisibillity();
-    this.filterNotes( {
-      even: this.showEven, 
-      notEven: this.showNotEven, 
-      sortAscending: this.sortAscending
-    }); 
+    this.filterNotes(); 
   }
 
-  filterNotes(e: any) {
+  filterNotes(e: any = {
+    even: this.showEven, 
+    notEven: this.showNotEven, 
+    sortAscending: this.sortAscending
+  }) {
     const map: Map<number, INote> = new Map<number, INote>();
     this.showEven = e.even;
     this.showNotEven = e.notEven;

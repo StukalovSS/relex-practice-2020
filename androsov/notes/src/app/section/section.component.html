@@ -20,5 +20,5 @@
     </button>
 </div>
 <app-modal-input [ngClass]="{'invisible': invisibleForm}" [sectionId]="id"
-    (onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote()">
+    (onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote($event)">
 </app-modal-input>

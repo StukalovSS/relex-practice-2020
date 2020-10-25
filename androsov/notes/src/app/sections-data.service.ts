@@ -51,6 +51,11 @@ export class SectionsDataService {
     this.sections.get(sectionId).headerColor = newColor;
   }
 
+  changeNoteContent(sectionId: number, noteId: number, newNote: INote) {
+    newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
+    this.sections.get(sectionId).notes.set(noteId, newNote);
+  }
+
   private notesMapFromArr(notes: INote[]): Map<number, INote> {
     const map: Map<number, INote> = new Map<number, INote>();
     notes.forEach( n => {

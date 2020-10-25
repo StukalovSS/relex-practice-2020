@@ -24,11 +24,25 @@ export class NoteComponent implements OnInit, INote {
 
   @Output() onClickTrash = new EventEmitter<number>();
 
+  invisibleForm: boolean = true;
+
   ngOnInit(): void {
   }
 
   delete() {
     this.sectServ.deleteNote(this.sectionId, this.id);
     this.onClickTrash.emit(this.id);
+  }
+
+  changeFormVisibillity(): void {
+    this.invisibleForm = !this.invisibleForm;
+  }
+
+  changeNote(e: INote) {
+    this.changeFormVisibillity();
+    this.sectServ.changeNoteContent(this.sectionId, this.id, e);
+    this.header = e.header;
+    this.content = e.content;
+    this.date = e.date;
   }
 }
