@@ -1,43 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, ComponentFactoryResolver, ViewChild } from '@angular/core';
+
+import { ModalSectionComponent } from '../modal-section/modal-section.component';
+import { DataService } from '../data.service';
 import { ISection } from '../section/isection';
+
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
-  styleUrls: ['./container.component.css']
+  styleUrls: ['./container.component.scss']
 })
 export class ContainerComponent implements OnInit {
+  iconPlus = faPlus;
+
   sections: ISection[] = [];
+  sectionId: number = 0;
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.sections.push(
-      {
-        sectionTitle: "Секция 1", notes: [
-          {
-            noteTitle: "Заметка 1",
-            noteText: "Текст заметки 1 секции 1",
-            noteDate: "14.10.20",
-            noteId: 1
-          },
-          {
-            noteTitle: "Заметка 2",
-            noteText: "Текст заметки 2 секции 1",
-            noteDate: "14.10.20",
-            noteId: 2
-          }
-        ]
-      },
-      {
-        sectionTitle: "Секция 2", notes: [
-          {
-            noteTitle: "Заметка 1",
-            noteText: "Текст заметки 1 секции 2",
-            noteDate: "14.10.20",
-            noteId: 3
-          }
-        ]
-      });
+  @ViewChild("modalForSection", { read: ViewContainerRef }) container;
+  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) {
   }
+  ngOnInit(): void {
+    this.sections = this.dataService.sections;
+  }
+
+  addSection() {
+    this.container.clear();
+    const modalFactory = this.resolver.resolveComponentFactory(ModalSectionComponent);
+    const component = this.container.createComponent(modalFactory);
+
+    component.instance.idSection = this.sectionId++;
+    component.instance.rename = false;
+    component.instance.close.subscribe( () => {
+      this.container.clear();
+    });
+    component.instance.submit.subscribe( () => {
+      this.container.clear();
+    });
+  }
+
+  removeSection(id: number) {
+    this.dataService.removeSection(id);
+  }
+
+  // trackByFn(index, item) {
+  //   return item.id;
+  // }
 }
