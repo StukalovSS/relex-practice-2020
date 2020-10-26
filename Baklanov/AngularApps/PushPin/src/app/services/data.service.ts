@@ -101,4 +101,10 @@ export class DataService {
       case 'later': return tempSection;
     }
   }
+  editNote(note : INote) : void {
+    console.log(this.getSectionById(note.sectionId));
+    let tempNote = this.getNote(note.sectionId,note.id);
+    tempNote = note;
+    console.log(this.getSectionById(note.sectionId));
+  }
 }

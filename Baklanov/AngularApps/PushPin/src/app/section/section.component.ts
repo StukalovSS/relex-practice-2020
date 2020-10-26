@@ -34,14 +34,6 @@ export class SectionComponent implements OnInit {
         }
       });
   }
-  openSectionMenu(): void {
-    if (this.isVisible) {
-      this.isVisible = false;
-    }
-    else {
-      this.isVisible = true;
-    }
-  }
   editSection(): void {
     this.section.sectionTitle = this.sectionForm.value.sectionHeader;
     this.section.color = this.sectionForm.value.sectionColor;

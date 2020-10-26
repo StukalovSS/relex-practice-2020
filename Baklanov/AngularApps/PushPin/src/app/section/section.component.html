@@ -37,7 +37,7 @@
   <div class="title-container" [style.background-color] = 'section.color'>
     <fa-icon [icon]="faEllipsisV" class="title-container_element"></fa-icon>
     <div class="title-container_element">{{section.sectionTitle}}</div>
-    <fa-icon [icon]="faCogs" class="title-container_element" (click)=" openSectionMenu()"></fa-icon>
+    <fa-icon [icon]="faCogs" class="title-container_element" (click)="isVisible = isVisible?false : true"></fa-icon>
   </div>
   <div class="notes-container">
     <app-note 
