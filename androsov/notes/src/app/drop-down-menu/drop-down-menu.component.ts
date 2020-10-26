@@ -15,10 +15,14 @@ export class DropDownMenuComponent implements OnInit {
   @Input() sectionId: number;
 
   @Output() onClose = new EventEmitter();
+  @Output() onSelectCheckbox = new EventEmitter<any>();
 
   inputSectionHeader: FormGroup;
 
   invisibleInputSectionHeader: boolean = true;
+  showEven: boolean = true;
+  showNotEven: boolean = true;
+  sortAscending: boolean = true;
 
   constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
     this.inputSectionHeader = fb.group({
@@ -37,6 +41,18 @@ export class DropDownMenuComponent implements OnInit {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
     this.onClose.emit();
+  }
+
+  sendFilter() {
+    this.showEven = (document.getElementById( 'even' ) as any).checked;
+    this.showNotEven = (document.getElementById( 'not-even' ) as any).checked;
+    this.sortAscending = (document.getElementById( 'sortAscending' ) as any).checked;
+
+    this.onSelectCheckbox.emit({
+      even: this.showEven,
+      notEven: this.showNotEven,
+      sortAscending: this.sortAscending
+    });
   }
 
   changeSectionHeaderColor(e: any) {

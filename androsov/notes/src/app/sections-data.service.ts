@@ -16,9 +16,9 @@ export class SectionsDataService {
     return this.sections.values();
   }
 
-  getNotes(sectionId: number): INote[] {
-    return Array.from( this.sections.get(sectionId).notes.values() );
-  }
+  getNotes(sectionId: number, consumer: (notes: INote[]) => INote[]): INote[] {
+    return consumer( Array.from( this.sections.get(sectionId).notes.values() ) );
+  }  
 
   addSection(name: string, notes: INote[]): void {
     const id = this.createId();
@@ -26,7 +26,7 @@ export class SectionsDataService {
       header: name,
       notes: this.notesMapFromArr(notes),
       id: id,
-      headerColor: '#add19a'
+      headerColor: '#add19a',
     });
   }
 
@@ -49,6 +49,11 @@ export class SectionsDataService {
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
     this.sections.get(sectionId).headerColor = newColor;
+  }
+
+  changeNoteContent(sectionId: number, noteId: number, newNote: INote) {
+    newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
+    this.sections.get(sectionId).notes.set(noteId, newNote);
   }
 
   private notesMapFromArr(notes: INote[]): Map<number, INote> {

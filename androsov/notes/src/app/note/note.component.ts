@@ -13,21 +13,36 @@ export class NoteComponent implements OnInit, INote {
   faTrashAlt = faTrashAlt;
 
   constructor(public sectServ: SectionsDataService) {
-    this.date = new Date();
+    // this.date = new Date();
   }
 
   @Input() header: string;
   @Input() content: string;
-  date: Date;
+  @Input() date: Date;
   @Input() id: number;
   @Input() sectionId: number;
 
   @Output() onClickTrash = new EventEmitter<number>();
+
+  invisibleForm: boolean = true;
 
   ngOnInit(): void {
   }
 
   delete() {
     this.sectServ.deleteNote(this.sectionId, this.id);
+    this.onClickTrash.emit(this.id);
+  }
+
+  changeFormVisibillity(): void {
+    this.invisibleForm = !this.invisibleForm;
+  }
+
+  changeNote(e: INote) {
+    this.changeFormVisibillity();
+    this.sectServ.changeNoteContent(this.sectionId, this.id, e);
+    this.header = e.header;
+    this.content = e.content;
+    this.date = e.date;
   }
 }

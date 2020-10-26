@@ -11,11 +11,16 @@
             <textarea name="text" cols="30" rows="20" 
             formControlName="noteText" class="form-container__input"></textarea>
         </div>
+
+        <div class="form-container__form-element">
+            <label class="form-container__head">Дата</label>
+            <input type="date" name="date " formControlName="noteDate" class="form-container__input">
+        </div>
     
         <div>
             <button [disabled]="addNoteForm.invalid" class="form-container__add-btn"
              [ngClass]="{'form-container__add-btn_abled': !addNoteForm.invalid}">
-                Добавить заметку
+                {{textOnButton}}
             </button>
         </div>
     </form>

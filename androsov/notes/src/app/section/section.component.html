@@ -8,16 +8,17 @@
 </div>
 <form></form>
 <app-drop-down-menu class="drop-and-down-menu" [ngClass]="{'invisible': invisibleDropAndDownMenu}"
-[sectionHeader]="header" [sectionId]="id" (onClose)="changeDropAndDownMenuVisibillity() ">
+[sectionHeader]="header" [sectionId]="id" (onClose)="changeDropAndDownMenuVisibillity() " 
+(onSelectCheckbox)="filterNotes($event)">
 </app-drop-down-menu>
 <div class="notes">
-    <app-note *ngFor="let note of data.getNotes(id)" [header]="note.header" [sectionId]="id"
-    [content]="note.content" [id]="note.id">
+    <app-note *ngFor="let note of notes | mapValues" [header]="note.header" [sectionId]="id"
+    [date]="note.date"  [content]="note.content" [id]="note.id" (onClickTrash)="deleteNote($event)">
     </app-note>
     <button class="add-btn" (click)="changeFormVisibillity()">
         <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
     </button>
 </div>
 <app-modal-input [ngClass]="{'invisible': invisibleForm}" [sectionId]="id"
-    (onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote()">
+    (onCloseClick)="changeFormVisibillity()" (onSendNote)="addNote($event)">
 </app-modal-input>

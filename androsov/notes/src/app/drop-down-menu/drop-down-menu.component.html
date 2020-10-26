@@ -4,6 +4,14 @@
     <span>Изменить цвет</span>
     <input type="color" class="color-picker__input">
 </p>
+<span>Сортировать начиная с самых ранних</span>
+<input type="radio" name="radio"  id="sortAscending" (change)="sendFilter()" checked>
+<span>Сортировать начиная с самых поздних</span>
+<input type="radio" name="radio" id="sortInvesion" (change)="sendFilter()">
+<span>Четное число</span>
+<input type="checkbox" name="isEven" (change)="sendFilter()" id="even" checked>
+<span>Нечетное число</span>
+<input type="checkbox" name="isNotEven" (change)="sendFilter()" id="not-even" checked>
 <form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
 [ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
     <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
