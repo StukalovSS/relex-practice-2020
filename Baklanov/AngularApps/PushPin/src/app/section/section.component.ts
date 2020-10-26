@@ -53,6 +53,9 @@ export class SectionComponent implements OnInit {
       this.section = this.service.notesFiltration(this.section);
     }
   }
+  notesSorting(earlier:boolean) : void {
+    this.section = this.service.notesSorting(this.section,earlier);
+  }
   ngOnInit(): void {
     this.section = this.service.getLastSection();
     this.sectionForm = this.formBuilder.group({

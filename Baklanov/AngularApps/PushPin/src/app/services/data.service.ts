@@ -8,20 +8,26 @@ export class DataService {
   private sections: ISection[] = [];
   private sectionId: number = 0;
   private noteId: number = 0;
-  private currentSection: number;
-  private ShellSort(A : INote[]) : INote[]{
-    let n = A.length, i = Math.floor(n / 2);
+  private ShellSort(array : INote[], earlier:boolean) : INote[]{
+    let n = array.length, i = Math.floor(n / 2);
     while (i > 0) {
       for (let j = 0; j < n; j++) {
-        let k = j, t = A[j].noteCreationDate.getDay();
-        while (k >= i && A[k - i].noteCreationDate.getDay() > t) {
-          A[k].noteCreationDate.setDate(A[k - i].noteCreationDate.getDay());
+        let k = j, t = array[j];
+        if(earlier) {
+        while (k >= i && array[k - i].noteCreationDate.getDay() < t.noteCreationDate.getDay()) {
+          array[k] = array[k-i]; k -= i;
         }
-        A[k].noteCreationDate.setDate(t);
+      } 
+      else {
+        while ((k >= i) && array[k - i].noteCreationDate.getDay() > t.noteCreationDate.getDay()) {
+          array[k] = array[k-i]; k -= i;
+        }
+      }
+      array[k] = t;
       }
       i = (i == 2) ? 1 : Math.floor(i * 5 / 11);
     }
-    return A;
+    return array;
   }
   getData(): ISection[] {
     return this.sections;
@@ -29,7 +35,6 @@ export class DataService {
   addSection(section: ISection) {
     section.id = this.sectionId++;
     this.sections.push(section);
-    // this.currentSection = (this.sections.length - 1);
   }
   getLastSection(): ISection {
     return this.sections[this.sections.length - 1];
@@ -42,7 +47,6 @@ export class DataService {
   addNoteBySectionId(id: number, note: INote) {
     for (let i = 0; i < this.sections.length; i++) {
       if (this.sections[i].id == id) {
-        // this.currentSection = i;
         note.id = this.noteId++;
         this.sections[i].notes.push(note);
       }
@@ -66,7 +70,6 @@ export class DataService {
     for (let i = 0; i < this.sections.length; i++) {
       if (this.sections[i].id == sectionId) {
         this.sections.splice(i, 1);
-        // this.currentSection = i - 1;
       }
     }
   }
@@ -79,12 +82,12 @@ export class DataService {
     switch (tempSection.filtrationType) {
       case "even":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getMinutes() % 2 == 0);
+          note.noteCreationDate.getDay() % 2 == 0);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "odd":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getMinutes() % 2 != 0);
+          note.noteCreationDate.getDay() % 2 != 0);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "none":
@@ -92,14 +95,11 @@ export class DataService {
         return tempSection;
     }
   }
-  notesSorting(section: ISection): ISection {
+  notesSorting(section: ISection, earlier:boolean): ISection {
     let tempSection: ISection = { ...section };
-    switch (tempSection.sortingType) {
-      case 'early':
-      tempSection.notes = this.ShellSort(tempSection.notes); 
-      return tempSection;
-      case 'later': return tempSection;
-    }
+    tempSection.notes  = this.ShellSort(tempSection.notes, earlier);
+    console.log(this.ShellSort(tempSection.notes, earlier));
+    return tempSection;
   }
   editNote(note : INote) : void {
     console.log(this.getSectionById(note.sectionId));
