@@ -1,8 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SectionsDataService } from '../../sections-data.service';
+import { INote } from '../../section/note.interface';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { SectionsDataService } from '../sections-data.service';
-import { INote } from '../section/note.interface'
 
 @Component({
   selector: 'app-modal-input',
@@ -36,12 +36,6 @@ export class ModalInputComponent implements OnInit {
   addNote() {
     let date = this.addNoteForm.value.noteDate.split('-');
     date = `${date[0]}-${date[1]}-${date[2]}`;
-    // this.data.addNote(this.sectionId, {
-    //   header : this.addNoteForm.value.noteHeader,
-    //   content : this.addNoteForm.value.noteText,
-    //   date : new Date(date),
-    //   id : -1
-    // });
     this.onSendNote.emit({
       header : this.addNoteForm.value.noteHeader,
       content : this.addNoteForm.value.noteText,

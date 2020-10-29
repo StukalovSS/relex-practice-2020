@@ -8,10 +8,9 @@ import { ContainerComponent } from './container/container.component';
 import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalInputComponent } from './modal-input/modal-input.component';
 import { TestPipe } from './test.pipe';
-import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component';
 import { MapValuesPipe } from './map-values.pipe';
+import { SetingsComponentsModule } from './setings-components/setings-components.module'
 
 @NgModule({
   declarations: [
@@ -19,9 +18,7 @@ import { MapValuesPipe } from './map-values.pipe';
     ContainerComponent,
     SectionComponent,
     NoteComponent,
-    ModalInputComponent,
     TestPipe,
-    DropDownMenuComponent,
     MapValuesPipe,
   ],
   imports: [
@@ -29,7 +26,8 @@ import { MapValuesPipe } from './map-values.pipe';
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SetingsComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
