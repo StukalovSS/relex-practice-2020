@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { SectionsDataService } from '../../sections-data.service';
-import { INote } from '../../section/note.interface';
+import { SectionsDataService } from '../../sections/sections-data.service';
+import { INote } from '../../sections/section/note.interface';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

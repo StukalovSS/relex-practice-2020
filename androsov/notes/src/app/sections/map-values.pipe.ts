@@ -4,6 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'mapValues',
   pure: false
 })
+
 export class MapValuesPipe implements PipeTransform {
 
   transform(map: Map<any, any>, ...args: unknown[]): unknown {

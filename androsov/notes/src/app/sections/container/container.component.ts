@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { SectionsDataService } from '../sections-data.service';
+import { SectionsDataService } from './../sections-data.service';
 
 @Component({
   selector: 'app-container',

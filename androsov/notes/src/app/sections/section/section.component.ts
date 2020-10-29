@@ -3,7 +3,7 @@ import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
-import { quickSort } from '../not-angular-solutions/sorts';
+import { quickSort } from '../../not-angular-solutions/sorts';
 
 @Component({
   selector: 'app-section',
