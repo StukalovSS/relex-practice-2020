@@ -14,7 +14,7 @@
 
 .note-section-header{
     height: 45px;
-    background-color:$header-background-color;
+    background-color: $header-background-color;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,9 +45,11 @@
         padding: 10px;
         background-color:white;           
         .drop__sec{
-            
             padding-bottom: 20px;
             cursor: pointer;
+        }
+        #delete__span{
+            color: red;
         }
     }
 

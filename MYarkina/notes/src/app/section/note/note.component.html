@@ -6,7 +6,7 @@
 <div class="note-bottom">
     <span class="note__date">{{date}}</span> 
     <div>
-        <fa-icon class="icon__faedit" [icon]="faEdit"></fa-icon>
+        <fa-icon class="icon__faedit" [icon]="faEdit" (click)="editNote()"></fa-icon>
         <fa-icon class="icon__fatrashalt" [icon]="faTrashAlt" (click)="deleteNote()"></fa-icon>
     </div>  
 </div>

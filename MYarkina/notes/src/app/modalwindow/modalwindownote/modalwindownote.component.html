@@ -1,17 +1,17 @@
-<form [formGroup]="myForm" novalidate>
+<form [formGroup]="myForm">
     <div class="form-group">
         <label>Название  </label><br>
-        <input class="form-field" formControlName="name" />
+        <input id ="modal__name" class="form-field" formControlName="name" />
     </div>
 
     <div class="form-group">
         <label>Содержание заметки</label><br>
-        <input class="form-field" formControlName="text"/>
+        <input id ="modal__text" class="form-field" formControlName="text"/>
     </div>
 
     <div class="form-group">
         <label>Дата</label><br>
-        <input class="form-field" formControlName="date"/>
+        <input id ="modal__date" class="form-field" formControlName="date"/>
     </div>
 
     <div class="form-group">          

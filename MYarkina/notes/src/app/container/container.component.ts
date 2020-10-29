@@ -1,9 +1,9 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,ComponentFactoryResolver,ComponentRef,OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import '@angular/platform-browser-dynamic';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../data.service';
-import { EventEmitter } from 'events';
+import { ModalwindowsectionComponent } from '../modalwindow/modalwindowsection/modalwindowsection.component';
+import { INote } from './note.interface';
 
 @Component({
   selector: 'app-container',
@@ -13,43 +13,47 @@ import { EventEmitter } from 'events';
 
 export class ContainerComponent implements OnInit {
   
+  array;
   faPlus = faPlus;
-  isDisplayed = true;
-  formStatus:string;
-  changeNameSectionId:number;
+  constructor(private resolver: ComponentFactoryResolver,public dataService: DataService) {}
 
-  form:FormGroup;
-  private createForm() {
-    this.form = new FormGroup({
-      name: new FormControl("",Validators.required)
-    })
+  ngOnInit(): void {
+    this.update();
   }
-  
-  openCloseForm(e:number,str:string){
-    this.formStatus = str;
-    this.changeNameSectionId = e;
-    if(e==0 || e){
-      (<HTMLInputElement>document.getElementById("nameId")).value = this.dataService.arrayOfSection[this.dataService.findSectionPosById(e)].name;
+
+  @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
+  componentRef: ComponentRef<any>;
+  openForm(idSection,formStatus){
+    this.container.clear(); 
+    const factory = this.resolver.resolveComponentFactory(ModalwindowsectionComponent);
+    this.componentRef = this.container.createComponent(factory);
+    if(idSection){
+      this.componentRef.instance.nameSection = this.array[idSection].name;
     }
-    else{
-      (<HTMLInputElement>document.getElementById("nameId")).value = '';
-    }
-    this.isDisplayed = !this.isDisplayed;
+    this.componentRef.instance.formStatus = formStatus;
+    this.componentRef.instance.output.subscribe(event => {
+      if(event != false){
+        if(idSection == null){
+          this.dataService.addNewSection(event);
+        }
+        else{
+          this.dataService.changeNameSection(idSection,event);
+        }
+      }
+      this.componentRef.destroy();
+    });
   }
 
-  clickOnFormStatus(form){
-    if(this.formStatus == 'Изменить'){
-      this.dataService.changeNameSection(this.changeNameSectionId,form.value.name)
-    }else{
-      this.dataService.addNewSection(form);
-    }
-    this.openCloseForm(null,null);
+  addNewNote(note:INote){
+    this.dataService.addNewNote(note);
+    this.update();
   }
-
-  constructor(public dataService: DataService) {
-    this.createForm();
+ 
+  update(){
+    this.dataService.observable$.subscribe(
+      (vl) => {
+        this.array = vl
+      })
   }
-
-  ngOnInit(): void {}
   
 }
