@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ISection } from './section.interface';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { SectionsDataService } from '../sections-data.service';
 
 @Component({
   selector: 'app-container',
@@ -9,39 +10,26 @@ import { ISection } from './section.interface';
 })
 export class ContainerComponent implements OnInit {
   faPlus = faPlus;
+  faTimesCircle = faTimesCircle;
+  invisible: boolean = true;
 
-  sections: ISection[] = [];
-  section1: ISection = {
-    header : 'Section1',
-    notes : [{
-      header : 'Note 1',
-      content : 'This is first note',
-      date : '',
-      id : 0
-    }, {
-      header : 'Note 2',
-      content : "It's second note",
-      date : '',
-      id : 1
-    }]
-  }
+  sectionHeaderInput: FormGroup;
 
-  section2: ISection = {
-    header : 'Section 2',
-    notes : [{
-      header : 'Smth',
-      content : 'This is first note',
-      date : '', 
-      id : 0
-    }]
-  }
-
-  constructor() { 
-    this.sections.push(this.section1);
-    this.sections.push(this.section2);
+  constructor(fb: FormBuilder, public data: SectionsDataService) { 
+    this.sectionHeaderInput = fb.group({
+      sectionHeader: new FormControl('', Validators.required )
+    });
   }
 
   ngOnInit(): void {
   }
 
+  addSection(): void {
+    this.data.addSection(this.sectionHeaderInput.value.sectionHeader, []);
+    this.changeVisibillity();
+  }
+
+  changeVisibillity(): void {
+    this.invisible = !this.invisible;
+  }
 }

@@ -1,0 +1,108 @@
+@import '../styles/colors.scss';
+
+:host {
+    width: 320px;
+    border: 1px solid $black;
+}
+
+:host:not(:last-child) {
+    margin-right: 15px;
+}
+
+.section__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 45px;
+    background-color: $section-header;
+}
+
+.section__property {
+    margin-left: 2px;
+}
+
+.section__title {
+    font-size: 18px;
+    color: $white;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 36px;
+    z-index: 10;
+    
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    background-color: $white;
+    border: 1px solid $section-header;
+    border-right: none;
+    font-size: 15px;
+
+    &__item {
+        padding: 5px 8px;
+        &:hover {
+            background-color: $dropdown-hover;
+        }
+    }
+}
+
+.distribution {
+    &__group {
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+    &__title {
+        padding-top: 5px;
+    }
+    &__fields {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.section__setting {
+    margin-right: 4px;
+    margin-bottom: -1px;
+    &:hover .dropdown{
+        display: block;
+    }
+}
+
+.icon__setting, .icon__property {
+    stroke: $white;
+    color: $white;
+    font-size: 21px;
+}
+
+.notes {
+    padding: 13px 6px 6px 6px;
+
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__bottom {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.add-note {
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    height: 40px;
+}
+
+.icon__plus, .icon__close {
+    stroke: $main-text;
+    color: $main-text;
+    font-size: 21px;
+}

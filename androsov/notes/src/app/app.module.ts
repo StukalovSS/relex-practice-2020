@@ -9,6 +9,9 @@ import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalInputComponent } from './modal-input/modal-input.component';
+import { TestPipe } from './test.pipe';
+import { DropDownMenuComponent } from './drop-down-menu/drop-down-menu.component';
+import { MapValuesPipe } from './map-values.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { ModalInputComponent } from './modal-input/modal-input.component';
     ContainerComponent,
     SectionComponent,
     NoteComponent,
-    ModalInputComponent
+    ModalInputComponent,
+    TestPipe,
+    DropDownMenuComponent,
+    MapValuesPipe,
   ],
   imports: [
     BrowserModule,

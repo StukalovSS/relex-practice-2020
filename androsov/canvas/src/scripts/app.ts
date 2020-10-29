@@ -27,43 +27,16 @@ async function sendResponse(path: string, args: object, callback: (req: object) 
 }
 
 function drawField(s: any, player: Circle, circles: Circle []): void {
-    s.background(197, 227, 200);
     const newZoom = 36 / player.r;
     zoom = s.lerp(zoom, newZoom, 0.1);
 
-    for (let i = -2000; i <= 2000; i += s.width / 15) {
-        s.line(i, -2000, i, 2000);
-    }
-
-    for (let i = -2000; i <= 2000; i += s.width / 15) {
-        s.line(- 2000, i, 2000, i);
-    }
-
+    s.translate(s.width / 2, s.height / 2);
     s.translate(-player.pos.x, -player.pos.y);
 
     player.show();
-    for (let el of circles) {
-        el.show();
+    for (let i = circles.length - 1; i >= 0; i --) {
+
     }
-
-    sendResponse('get_state', {
-        x: s.mouseX - s.width / 2, 
-        y: s.mouseY - s.height / 2,
-        id: id
-    }, (obj: any) => {
-        console.log('Ex')
-        const circles: Circle[] = [];
-
-        for (let el of obj.players) {
-            circles.push(new Circle(el.x, el.y, el.r, s));
-        }
-
-        for (let el of obj.food) {
-            circles.push(new Circle(el.x, el.y, el.r, s));
-        }
-
-        drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
-    } );
 }
 
 let zoom: number = 1,
@@ -74,8 +47,17 @@ const sketch = (s: typeof p5) => {
     s.setup = () => {
         s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
         s.translate(s.width / 2, s.height / 2);
+        s.background(197, 227, 200);
+
+        for (let i = -2000; i <= 2000; i += s.width / 15) {
+            s.line(i, -2000, i, 2000);
+        }
+
+        for (let i = -2000; i <= 2000; i += s.width / 15) {
+            s.line(- 2000, i, 2000, i);
+        }
+
         sendResponse('new_player', {}, (obj: any) => {
-            console.log(obj);
             const player = new Circle(obj.player.x, obj.player.y, obj.player.r, s),
             food: Circle[] = [];
             for (let el of obj.food) {
@@ -83,33 +65,28 @@ const sketch = (s: typeof p5) => {
             }
             id = obj.player.id;
 
-            drawField(s, player, food);
+            // drawField(s, player, food);
         } );
     }
 
-    s.draw = () => {    
-        s.translate(s.width / 2, s.height / 2);
-        // if (responseForbiden) {
-            // sendResponse('get_state', {
-            //     x: s.mouseX - s.width / 2, 
-            //     y: s.mouseY - s.height / 2,
-            //     id: id
-            // }, (obj: any) => {
-            //     const circles: Circle[] = [];
-
-            //     for (let el of obj.players) {
-            //             circles.push(new Circle(el.x, el.y, el.r, s));
-            //     }
-
-            //     for (let el of obj.food) {
-            //         circles.push(new Circle(el.x, el.y, el.r, s));
-            //     }
-                
-            //     responseForbiden = false;
-            //     drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
-                
-            // } );
-        // }
+    s.draw = async () => {    
+        await sendResponse('get_state', {
+            x: s.mouseX - s.width / 2, 
+            y: s.mouseY - s.height / 2,
+            id: id
+        }, (obj: any) => {
+            const circles: Circle[] = [];
+    
+            for (let el of obj.players) {
+                circles.push(new Circle(el.x, el.y, el.r, s));
+            }
+    
+            for (let el of obj.food) {
+                circles.push(new Circle(el.x, el.y, el.r, s));
+            }
+    
+            drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
+        });
     }
 }
 

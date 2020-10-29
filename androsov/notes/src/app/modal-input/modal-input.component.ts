@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { SectionsDataService } from '../sections-data.service';
 import { INote } from '../section/note.interface'
 
 @Component({
@@ -12,13 +13,16 @@ export class ModalInputComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   addNoteForm: FormGroup;
 
+  @Input() textOnButton: string = 'Добавить заметку';
+  @Input() sectionId: number;
   @Output() onCloseClick = new EventEmitter();
   @Output() onSendNote = new EventEmitter<INote>();
 
-  constructor(fb: FormBuilder) {
+  constructor(fb: FormBuilder, public data: SectionsDataService) {
     this.addNoteForm = fb.group({
-      noteHeader : new FormControl(''),
-      noteText : new FormControl('')
+      noteHeader : new FormControl('', Validators.required ),
+      noteText : new FormControl(''),
+      noteDate : new FormControl('')
     });
   }
 
@@ -30,11 +34,19 @@ export class ModalInputComponent implements OnInit {
   }
 
   addNote() {
+    let date = this.addNoteForm.value.noteDate.split('-');
+    date = `${date[0]}-${date[1]}-${date[2]}`;
+    // this.data.addNote(this.sectionId, {
+    //   header : this.addNoteForm.value.noteHeader,
+    //   content : this.addNoteForm.value.noteText,
+    //   date : new Date(date),
+    //   id : -1
+    // });
     this.onSendNote.emit({
       header : this.addNoteForm.value.noteHeader,
       content : this.addNoteForm.value.noteText,
-      date : '',
+      date : new Date(date),
       id : -1
-    })
+    });
   }
 }

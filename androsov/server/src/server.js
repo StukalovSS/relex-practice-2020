@@ -78,9 +78,9 @@ class Vector {
 }
 
 class Player extends Circle {
-    __prevVect = new Vector(0, 0);
     id;
-    
+    prevResponceTime = Date.now();
+
     constructor(x, y, id) {
         super(x, y, 36);
         this.id = id;
@@ -91,15 +91,17 @@ class Player extends Circle {
     }
 
     update(dx, dy) {
-        const vect = new Vector(dx, dy);
-        vect.length = 3;
+        const vect = new Vector(dx, dy),
+            dist = (Date.now() - this.prevResponceTime) * 0.1;
+        this.prevResponceTime = Date.now();
+        vect.length = dist;
         this.x += vect.x;
         this.y += vect.y;
     }
 
     eat(other) {
         let d = this.distanceFromAnotherCircle(other);
-        if (other === this) {
+        if (other === this || this.r <= other.r) {
             return false;
         }
 
@@ -203,7 +205,9 @@ app.get("/new_player", (request, response) => {
                 obj.id = undefined;
                 return obj;
             } ),
-            food: food
+            food: food.filter( obj =>  
+                Math.sqrt( (obj.x - player.x) ** 2 + (obj.y - player.y) ** 2 ) < 600 
+            )
         }) );
 });
 
