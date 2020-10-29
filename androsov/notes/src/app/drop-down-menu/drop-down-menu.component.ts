@@ -44,9 +44,9 @@ export class DropDownMenuComponent implements OnInit {
   }
 
   sendFilter() {
-    this.showEven = (document.getElementById( 'even' ) as any).checked;
-    this.showNotEven = (document.getElementById( 'not-even' ) as any).checked;
-    this.sortAscending = (document.getElementById( 'sortAscending' ) as any).checked;
+    this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
+    this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;
+    this.sortAscending = (document.getElementById('sort-ascending' + this.sectionId) as HTMLInputElement).checked;
 
     this.onSelectCheckbox.emit({
       even: this.showEven,

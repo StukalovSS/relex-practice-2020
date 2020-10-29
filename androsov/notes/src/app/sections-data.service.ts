@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ISection } from './container/section.interface';
 import { INote } from './section/note.interface';
 
@@ -7,9 +8,12 @@ import { INote } from './section/note.interface';
 })
 export class SectionsDataService {
   sections: Map<number, ISection> = new Map<number, ISection>();
+  sectionsObserver$: Observable<Map<number, ISection>>;
 
   constructor() {
-    
+    this.sectionsObserver$ = new Observable<Map<number, ISection>>( observer => {
+      observer.next( this.sections );
+    });
   }
 
   getSections() {
@@ -21,39 +25,53 @@ export class SectionsDataService {
   }  
 
   addSection(name: string, notes: INote[]): void {
-    const id = this.createId();
-    this.sections.set(id, {
-      header: name,
-      notes: this.notesMapFromArr(notes),
-      id: id,
-      headerColor: '#add19a',
-    });
+    this.sectionsObserver$.subscribe( sections => {
+      const id = this.createId();
+      sections.set(id, {
+        header: name,
+        notes: this.notesMapFromArr(notes),
+        id: id,
+        headerColor: '#add19a',
+      });
+    } );
   }
 
   removeSection(id: number) {
-    this.sections.delete(id);
+    this.sectionsObserver$.subscribe( sections => {
+      sections.delete(id);
+    } );
   }
 
   changeSectionName(id: number, newName: string) {
-    this.sections.get(id).header = newName;
+    this.sectionsObserver$.subscribe( sections => {
+      sections.get(id).header = newName;
+    } );
   }
   
   addNote(sectionId: number, note: INote) {
-    note.id = this.createId();
-    this.sections.get(sectionId).notes.set(note.id, note);
+    this.sectionsObserver$.subscribe( sections => {
+      note.id = this.createId();
+      this.sections.get(sectionId).notes.set(note.id, note);
+    } )
   }
 
   deleteNote(sectionId: number, noteId: number) {
-    this.sections.get(sectionId).notes.delete(noteId);
+    this.sectionsObserver$.subscribe( sections => {
+      this.sections.get(sectionId).notes.delete(noteId);
+    });
   }
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
-    this.sections.get(sectionId).headerColor = newColor;
+    this.sectionsObserver$.subscribe( sections => {
+      this.sections.get(sectionId).headerColor = newColor;
+    } );
   }
 
   changeNoteContent(sectionId: number, noteId: number, newNote: INote) {
-    newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
-    this.sections.get(sectionId).notes.set(noteId, newNote);
+    this.sectionsObserver$.subscribe( sections => {
+      newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
+      this.sections.get(sectionId).notes.set(noteId, newNote);
+    });
   }
 
   private notesMapFromArr(notes: INote[]): Map<number, INote> {
