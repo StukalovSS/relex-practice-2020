@@ -8,12 +8,15 @@ import { INote } from './../section/note.interface';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss']
 })
+
+/**
+ * Класс отвечает за хранение данных в заметке.
+ */
 export class NoteComponent implements OnInit, INote {
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
 
   constructor(public sectServ: SectionsDataService) {
-    // this.date = new Date();
   }
 
   @Input() header: string;
@@ -29,6 +32,9 @@ export class NoteComponent implements OnInit, INote {
   ngOnInit(): void {
   }
 
+  /**
+   * В процессе удаления происходит отправка информации о своем удалении родительскому компоненту.
+   */
   delete() {
     this.sectServ.deleteNote(this.sectionId, this.id);
     this.onClickTrash.emit(this.id);
@@ -37,6 +43,7 @@ export class NoteComponent implements OnInit, INote {
   changeFormVisibillity(): void {
     this.invisibleForm = !this.invisibleForm;
   }
+
 
   changeNote(e: INote) {
     this.changeFormVisibillity();
