@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { DataService } from '../data.service';
+import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal-section.component.html',
-  styleUrls: ['./modal-section.component.scss']
+  styleUrls: ['../modal.scss']
 })
 export class ModalSectionComponent implements OnInit {
   iconClose = faTimes;
@@ -15,13 +15,14 @@ export class ModalSectionComponent implements OnInit {
   currTitle: string;
 
   @Output() close = new EventEmitter<void>();
-  @Output () submit =  new EventEmitter<void>();
+  @Output() submit =  new EventEmitter<void>();
 
   form: FormGroup;
   constructor(private formBuilder: FormBuilder, private dataService: DataService) {
     this.form = formBuilder.group({
       "sectionTitle": new FormControl("", Validators.required)
     })
+   
   }
 
   onSection() {
@@ -44,5 +45,6 @@ export class ModalSectionComponent implements OnInit {
         "sectionTitle": this.currTitle
       })
     }
+
   }
 }

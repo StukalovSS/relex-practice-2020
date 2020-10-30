@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { DataService } from '../data.service';
-import { DatePipe } from '@angular/common';
-import { INote } from '../note/inote';
+import { DataService } from '../../../services/data.service';
+import { INote } from '../../section/note/inote';
 
 @Component({
   selector: 'app-modal-note',
@@ -24,7 +23,7 @@ export class ModalNoteComponent implements OnInit {
   @Output() submit = new EventEmitter<void>();
 
   form: FormGroup;
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private datePipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
     this.form = formBuilder.group({
       "noteTitle": new FormControl("", Validators.required),
       "noteText": new FormControl("", Validators.required),

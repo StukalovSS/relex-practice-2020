@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewContainerRef, ComponentFactoryResolver, ViewChild } from '@angular/core';
-
-import { ModalSectionComponent } from '../modal-section/modal-section.component';
-import { DataService } from '../data.service';
-import { ISection } from '../section/isection';
-
+import { ModalSectionComponent } from '../../modules/modal/modal-section/modal-section.component';
+import { DataService } from '../../services/data.service';
+import { ISection } from '../../modules/section/section/isection';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -19,10 +17,16 @@ export class ContainerComponent implements OnInit {
   sectionId: number = 0;
 
   @ViewChild("modalForSection", { read: ViewContainerRef }) container;
+
   constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) {
+    this.dataService.getAllSections().subscribe(value => {
+      this.sections = value;
+      console.log(this.sections);
+    })
   }
+
   ngOnInit(): void {
-    this.sections = this.dataService.sections;
+    //this.sections = this.dataService.sections;
   }
 
   addSection() {
@@ -37,14 +41,12 @@ export class ContainerComponent implements OnInit {
     });
     component.instance.submit.subscribe( () => {
       this.container.clear();
+      console.log(this.sections);
     });
   }
 
   removeSection(id: number) {
     this.dataService.removeSection(id);
+    console.log(this.sections);
   }
-
-  // trackByFn(index, item) {
-  //   return item.id;
-  // }
 }

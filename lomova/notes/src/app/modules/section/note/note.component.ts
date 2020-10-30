@@ -1,9 +1,9 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
-import { DataService } from '../data.service';
+import { DataService } from '../../../services/data.service';
 import { INote } from './inote';
-import { ModalNoteComponent } from '../modal-note/modal-note.component';
+import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component';
 
 @Component({
   selector: 'app-note',

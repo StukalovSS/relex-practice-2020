@@ -13,33 +13,33 @@
                 [cpPosition]="'bottom'"
                 [cpOKButton]="true"
             >Изменить цвет</li>
-            <li class="dropdown__item filter distribution">
+            <li class="dropdown__item sort distribution">
                 Сортировка
                 <fieldset class="distribution__group" >
                     <legend class="distribution__title">По дате и времени:</legend>
                     <div class="distribution__fields">
                         <label>
-                            <input type="radio" name="date" value="old" (change)="sort($event)">
+                            <input id={{idInputs.sortOld}} type="radio" name="date" value="old" checked>
                             Сначала старые
                         </label>
                         <label>
-                            <input type="radio" name="date" value="new" (change)="sort($event)">
+                            <input id={{idInputs.sortNew}} type="radio" name="date" value="new">
                             Сначала новые
                         </label>
                     </div>
                 </fieldset>
             </li>
-            <li class="dropdown__item sort distribution" >
+            <li class="dropdown__item filter distribution" >
                 Фильтр
                 <fieldset class="distribution__group">
                     <legend class="distribution__title">По дате:</legend>
                     <div class="distribution__fields">
                         <label>
-                            <input type="checkbox" name="date-even" (change)="filter($event)">
+                            <input id={{idInputs.filterEven}} class="filter__checkbox" type="checkbox" name="date-even" >
                             Чётные
                         </label>
                         <label>
-                            <input type="checkbox" name="date-uneven" (change)="filter($event)">
+                            <input id={{idInputs.filterUneven}} class="filter__checkbox" type="checkbox" name="date-uneven" >
                             Нечётные
                         </label>
                     </div>
