@@ -1,8 +1,9 @@
-import { Component,OnInit, OnChanges } from '@angular/core';
-import { ISection } from './section.interface';
+import { Component,ComponentFactoryResolver,ComponentRef,OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import '@angular/platform-browser-dynamic';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DataService } from '../data.service';
+import { ModalwindowsectionComponent } from '../modalwindow/modalwindowsection/modalwindowsection.component';
+import { INote } from './note.interface';
 
 @Component({
   selector: 'app-container',
@@ -12,99 +13,47 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export class ContainerComponent implements OnInit {
   
+  array;
   faPlus = faPlus;
-  idNote = 0;
-  idSection = 0;
-  arrayOfSection = [];
-  isDisplayed = true;
-  
-  form:FormGroup;
-  private createForm() {
-    this.form = new FormGroup({
-      name: new FormControl("",Validators.required)
-    })
-  }
+  constructor(private resolver: ComponentFactoryResolver,public dataService: DataService) {}
 
-
-  openForm(){
-    if(this.isDisplayed)
-    {
-        this.isDisplayed = false;
-    }else{
-        this.isDisplayed = true;
-    }
-  }
-
-  firstSection:ISection = {
-    id:this.idSection++,
-    name:"Расписание",
-    arrayOfNotes:[{
-      id:this.idNote++,
-      name: "Понедельник",
-      nodeTxt:"Текст заметки",
-      date:"16.10.20 18:00"
-    },
-    {
-      id:this.idNote++,
-      name: "Вторник",
-      nodeTxt:"Текст заметки",
-      date:"16.10.20 18:30"
-    }]
-  }
-
-  secondSection:ISection = {
-    id:this.idSection++,
-    name:"Покупки",
-    arrayOfNotes:[{
-      id:this.idNote++,
-      name: "Список",
-      nodeTxt:"Текст заметки",
-      date:"18.10.20 13:00"
-    }]
-  }
-
-  constructor() {
-    this.createForm();
-  }
-
-  
   ngOnInit(): void {
-    this.arrayOfSection.push(this.firstSection);
-    this.arrayOfSection.push(this.secondSection);
+    this.update();
   }
-  
-  deleteNote(e){
-    this.arrayOfSection.forEach(element => {
-      for(let j = 0;j < element.arrayOfNotes.length; j++ ) {
-        if(element.arrayOfNotes[j].id == e){
-          element.arrayOfNotes.splice(j,1);
+
+  @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
+  componentRef: ComponentRef<any>;
+  openForm(idSection,formStatus){
+    this.container.clear(); 
+    const factory = this.resolver.resolveComponentFactory(ModalwindowsectionComponent);
+    this.componentRef = this.container.createComponent(factory);
+    if(idSection){
+      this.componentRef.instance.nameSection = this.array[idSection].name;
+    }
+    this.componentRef.instance.formStatus = formStatus;
+    this.componentRef.instance.output.subscribe(event => {
+      if(event != false){
+        if(idSection == null){
+          this.dataService.addNewSection(event);
+        }
+        else{
+          this.dataService.changeNameSection(idSection,event);
         }
       }
-    });
-  } 
-
-  newSection(form){
-    this.arrayOfSection.push({
-      id:this.idSection++,
-      name:form.value.name,
-      arrayOfNotes:[]
-    });
-    this.openForm();
-  }
-
-  newNote(e){
-    console.log(e);
-    this.arrayOfSection.forEach(element => {
-      if(element.id == e.id){
-        element.arrayOfNotes.push({
-          id:this.idNote++,
-          name: e.name,
-          nodeTxt: e.nodeTxt,
-          date: e.date
-        })
-      }
+      this.componentRef.destroy();
     });
   }
 
-
+  addNewNote(note:INote){
+    this.dataService.addNewNote(note);
+    this.update();
+  }
+ 
+  update(){
+    this.dataService.observable$.subscribe(
+      (vl) => {
+        this.array = vl
+      })
+  }
+  
 }

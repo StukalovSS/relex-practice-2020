@@ -3,25 +3,23 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ContainerComponent } from './container/container.component';
-import {  SectionComponent } from './section/section.component';
-import { NoteComponent } from './note/note.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataService } from './data.service';
+import { ModalwindowModule } from './modalwindow/modalwindow.module';
+import { SectionModule } from './section/section.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContainerComponent,
-    SectionComponent,
-    NoteComponent 
+    ContainerComponent
   ],
   imports: [
     BrowserModule,
     FontAwesomeModule,
-    FormsModule,
-    ReactiveFormsModule
+    ModalwindowModule,
+    SectionModule 
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

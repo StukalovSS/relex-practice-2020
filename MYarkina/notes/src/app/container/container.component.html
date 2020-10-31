@@ -1,23 +1,11 @@
-<app-section *ngFor="let item of arrayOfSection" (newNote) = "newNote($event)" (deleteNote) = "deleteNote($event)" [id] = "item.id" [name] = "item.name" [arrayOfNotes] = "item.arrayOfNotes" >
+<app-section *ngFor="let item of array" (changeNameSection)= "openForm($event,'Изменить')" (newNote) = "addNewNote($event)" [id] = "item.id" [name] = "item.name">
 </app-section>
 
-<button class = "button__newsection" (click)= "openForm()">
+<button class = "button__newsection" (click)= "openForm(null,'Добавить')">
     <fa-icon class="icon__faplus"  [icon]="faPlus"></fa-icon>
 </button>
 
-<div class="form-add-section" [hidden]="isDisplayed"> 
-    <form [formGroup]="form" novalidate>
-        <div class="form-group">
-            <label>Название  </label><br>
-            <input class="form-field" formControlName="name" />
-        </div>
-        <div class="form-group">          
-            <button [disabled]="form.invalid" class="btn-form" (click)="newSection(form)">Добавить</button>
-            <button class="btn-form" (click)= "openForm()">Закрыть</button>
-        </div>
-    </form>
-</div>
-
+<template #modalWindowContainer></template>
 
 
 

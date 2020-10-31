@@ -1,33 +1,35 @@
-<header class="note-section-header">
+<header class="note-section-header" [style.background] = "color">
     <fa-icon class="icon__faellipse" [icon]="faEllipsisV"></fa-icon>
     <span class="name__section">{{name}}</span>
-    <fa-icon class="icon__facogs" [icon]="faCogs"></fa-icon>
+    
+    <fa-icon class="icon__facogs" [icon]="faCogs" (click)="openMenu(id)"></fa-icon>
+    <div id = {{id}} class="dropdown-content">
+        <span class="drop__sec" (click)="changeName()">Переименовать</span><br>
+        <span class="drop__sec" [(colorPicker)] = "color">Изменить цвет</span><br>
+
+        <span class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">Сортировать</span><br>    
+        <div id = {{idOfElements.idDropSort}} class = "drop-sort">
+            <input type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
+            <label for="sortrise">По возврастанию</label>
+
+            <input type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
+            <label for="sortlow">По убыванию</label>
+        </div>
+
+        <span class="drop__sec" (click)="openMenu(idOfElements.idDropFiltr)">Фильтровать</span><br>
+        <div id = {{idOfElements.idDropFiltr}} class = "drop-filter">
+            <input id = {{idOfElements.idFilterEven}} type="checkbox" value="even">Четные даты<Br>
+            <input id = {{idOfElements.idFilterOdd}} type="checkbox" value="odd">Нечетные даты<Br> 
+        </div>
+        
+        <span id ="delete__span" class="drop__sec" (click)="dataService.deleteSection(id)">Удалить</span><br>
+    </div>
 </header>
 
 <div class="notes">
-    <app-note  *ngFor="let item of arrayOfNotes" (doDelete) = "doDelete($event)" [id] = "item.id" [name] = "item.name" [nodeTxt] = "item.nodeTxt" [date] = "item.date"></app-note>
-    <button class="button__newnode" (click)= "openForm()">
+    <app-note  *ngFor="let item of arrayOfNotes" (doEdit) = "openForm($event)" (doDelete) = "doDelete($event)" [id] = "item.id" [name] = "item.name" [nodeTxt] = "item.nodeTxt" [date] = "item.date"></app-note>
+    <button class="button__newnode" (click)= "openForm(null)">
         <span class="button__txt">+</span>
     </button>
 </div>
-
-<div class="form-add-note" [hidden]="isDisplayed"> 
-    <form [formGroup]="myForm" novalidate>
-        <div class="form-group">
-            <label>Название  </label><br>
-            <input class="form-field" formControlName="name" />
-        </div>
-        <div class="form-group">
-            <label>Содержание заметки</label><br>
-            <input class="form-field" formControlName="text"/>
-        </div>
-        <div class="form-group">
-            <label>Дата</label><br>
-            <input class="form-field" formControlName="date"/>
-        </div>
-        <div class="form-group">          
-            <button [disabled]="myForm.invalid" class="btn-form" (click)="addNewNote(myForm)">Добавить</button>
-            <button class="btn-form" (click)= "openForm()">Закрыть</button>
-        </div>
-    </form>
-</div>
+<template #modalWindowContainer></template>
