@@ -82,12 +82,12 @@ export class DataService {
     switch (tempSection.filtrationType) {
       case "even":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 == 0);
+          note.noteCreationDate.getDay() % 2 === 1);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "odd":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 != 0);
+          note.noteCreationDate.getDay() % 2 !=  1);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "none":

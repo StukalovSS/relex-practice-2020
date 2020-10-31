@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ISection } from '../section/section.interface';
@@ -10,7 +10,7 @@ import { INote } from '../note/note.interface';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
   sectionForm: FormGroup;
