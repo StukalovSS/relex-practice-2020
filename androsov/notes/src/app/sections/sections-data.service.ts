@@ -6,6 +6,10 @@ import { INote } from './section/note.interface';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Класс отвечает за работу с секциями.
+ */
 export class SectionsDataService {
   sections: Map<number, ISection> = new Map<number, ISection>();
   sectionsObserver$: Observable<Map<number, ISection>>;
@@ -20,7 +24,14 @@ export class SectionsDataService {
     return this.sections.values();
   }
 
-  getNotes(sectionId: number, consumer: (notes: INote[]) => INote[]): INote[] {
+  /**
+   * Метод может отформатировать массив заметок, перед тем как его выдать.
+   * 
+   * @param sectionId 
+   * @param consumer 
+   *    Функция, которая форматирует массив заметок.
+   */
+  getNotes(sectionId: number, consumer: (notes: INote[]) => INote[] = notes => notes): INote[] {
     return consumer( Array.from( this.sections.get(sectionId).notes.values() ) );
   }  
 
@@ -51,29 +62,34 @@ export class SectionsDataService {
   addNote(sectionId: number, note: INote) {
     this.sectionsObserver$.subscribe( sections => {
       note.id = this.createId();
-      this.sections.get(sectionId).notes.set(note.id, note);
+      sections.get(sectionId).notes.set(note.id, note);
     } )
   }
 
   deleteNote(sectionId: number, noteId: number) {
     this.sectionsObserver$.subscribe( sections => {
-      this.sections.get(sectionId).notes.delete(noteId);
+      sections.get(sectionId).notes.delete(noteId);
     });
   }
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
     this.sectionsObserver$.subscribe( sections => {
-      this.sections.get(sectionId).headerColor = newColor;
+      sections.get(sectionId).headerColor = newColor;
     } );
   }
 
   changeNoteContent(sectionId: number, noteId: number, newNote: INote) {
     this.sectionsObserver$.subscribe( sections => {
       newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
-      this.sections.get(sectionId).notes.set(noteId, newNote);
+      sections.get(sectionId).notes.set(noteId, newNote);
     });
   }
 
+  /**
+   * Метод возвращает Map заметок с уникальным id, который создается внутри метода
+   * 
+   * @param notes 
+   */
   private notesMapFromArr(notes: INote[]): Map<number, INote> {
     const map: Map<number, INote> = new Map<number, INote>();
     notes.forEach( n => {
