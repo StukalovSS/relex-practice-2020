@@ -8,7 +8,7 @@ export class DataService {
   private sections: ISection[] = [];
   private sectionId: number = 0;
   private noteId: number = 0;
-  private ShellSort(array : INote[], earlier:boolean) : INote[]{
+  private ShellSort(array : INote[], earlier:boolean) : INote[]{//https://en.wikipedia.org/wiki/Shellsort
     let n = array.length, i = Math.floor(n / 2);
     while (i > 0) {
       for (let j = 0; j < n; j++) {
@@ -77,6 +77,7 @@ export class DataService {
     let index = this.sections.findIndex(section => section.id == id)
     this.sections[index] = section;
   }
+  //фильтрация заметок по четным и нечетным числам месяца
   notesFiltration(section: ISection): ISection {
     let tempSection: ISection = { ...section };
     switch (tempSection.filtrationType) {

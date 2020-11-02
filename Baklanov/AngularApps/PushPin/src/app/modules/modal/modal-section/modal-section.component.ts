@@ -25,6 +25,7 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.querySubscription = route.queryParams.subscribe();
+    //заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.sectionForm = formBuilder.group({
       "sectionHeader": ['Название секции', [Validators.required]],
       "sectionColor" : ['#add19a', [Validators.required]]
@@ -49,6 +50,7 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
   ngOnDestroy () : void {
+    //отписываемся от Observable чтобы не произошло учетчки памяти
     this.querySubscription.unsubscribe();
   }
 

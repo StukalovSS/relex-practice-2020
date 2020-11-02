@@ -28,6 +28,7 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
             this.sectionId = queryParam['sectionId'];
         }
     );
+    //заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.noteForm = formBuilder.group({
       "noteHeader": ['Введите название', [Validators.required]],
       "noteContent": ['Напишите текст заметки'],
@@ -52,6 +53,7 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
   ngOnDestroy () : void {
+    //отписываемся от Observable чтобы не произошло учетчки памяти
     this.querySubscription.unsubscribe();
   }
 }

@@ -10,7 +10,9 @@ import { INote } from './note.interface';
   styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-  @Input() sectionId: number;
+  /*получаем Id секции и Id заметки чтобы при инициализации получить
+    конкретную заметку из конкретной секции*/
+  @Input() sectionId: number; 
   @Input() noteId: number;
   faTrashAlt = faTrashAlt;
   faEdit = faEdit;
@@ -30,8 +32,12 @@ export class NoteComponent implements OnInit {
   }
   ngOnInit(): void {
     this.note = this.service.getNote(this.sectionId, this.noteId);
-    let str : string=this.note.noteCreationDate.toISOString();
+    //преобразуем время в формат ISO строки, чтобы потом заполнить поле поумолчанию в форме редактирования заметки 
+    let str : string=this.note.noteCreationDate.toISOString(); 
+    /*тк при преобразовании к iso строке время становится utc+0 то нам нужно убрать последние 13 симоволов
+    чтобы заменить их на время локального часового пояса.*/ 
     str = str.substring(0,str.length-13);
+    // замена на локальное время
     str = str + this.note.noteCreationDate.toLocaleString('ru', {hour : 'numeric', minute:'numeric'});
     this.noteForm = this.formBuilder.group({
       "noteHeader": [this.note.noteHeader, [Validators.required]],
