@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { INote } from '../note/note.interface';
-import { ISection } from '../section/section.interface';
+import { INote } from '../modules/section/note/note.interface';
+import { ISection } from '../modules/section/section/section.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +8,7 @@ export class DataService {
   private sections: ISection[] = [];
   private sectionId: number = 0;
   private noteId: number = 0;
-  private ShellSort(array : INote[], earlier:boolean) : INote[]{
+  private ShellSort(array : INote[], earlier:boolean) : INote[]{//https://en.wikipedia.org/wiki/Shellsort
     let n = array.length, i = Math.floor(n / 2);
     while (i > 0) {
       for (let j = 0; j < n; j++) {
@@ -77,17 +77,18 @@ export class DataService {
     let index = this.sections.findIndex(section => section.id == id)
     this.sections[index] = section;
   }
+  //фильтрация заметок по четным и нечетным числам месяца
   notesFiltration(section: ISection): ISection {
     let tempSection: ISection = { ...section };
     switch (tempSection.filtrationType) {
       case "even":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 == 0);
+          note.noteCreationDate.getDay() % 2 === 1);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "odd":
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 != 0);
+          note.noteCreationDate.getDay() % 2 !=  1);
         tempSection.filtrationType = 'none';
         return tempSection;
       case "none":

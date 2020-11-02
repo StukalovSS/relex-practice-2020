@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ModalComponent } from './modal/modal.component';
+import { ModalNoteComponent } from './modules/modal/modal-note/modal-note.component';
+import { ModalSectionComponent } from './modules/modal/modal-section/modal-section.component';
 const routes: Routes = [
-  { path: 'modal', component: ModalComponent },
+  { path: 'modal-note', component: ModalNoteComponent },
+  { path: 'modal-section', component: ModalSectionComponent },
 ];
 
 @NgModule({

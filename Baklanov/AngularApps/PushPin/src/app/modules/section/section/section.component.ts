@@ -4,14 +4,14 @@ import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { DataService } from '../services/data.service';
+import { DataService } from '../../../services/data.service';
 import { ISection } from './section.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
-  styleUrls: ['./section.component.css'],
+  styleUrls: ['./section.component.scss'],
 })
 export class SectionComponent implements OnInit {
   faEllipsisV = faEllipsisV;
@@ -26,10 +26,9 @@ export class SectionComponent implements OnInit {
   }
   addNewNote(): void {
     this.isVisible = false;
-    this.router.navigate(['modal'],
+    this.router.navigate(['modal-note'],
       {
         queryParams: {
-          'type': 'note',
           'sectionId': this.section.id
         }
       });
