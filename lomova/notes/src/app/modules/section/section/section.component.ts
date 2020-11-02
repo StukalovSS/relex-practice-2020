@@ -15,7 +15,11 @@ import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component'
 import { Observable, fromEvent, merge } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 
-
+/**
+ * Класс компонента секции.
+ * 
+ * Реализует переименование и удаление секции, добавление и удалении заметки.
+ */
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
@@ -87,6 +91,9 @@ export class SectionComponent implements OnInit {
     this.idInputs.sortNew = 'sort-new-' + this.sectionId;
   }
 
+  /**
+   * Метод создает динамический компонент модального окна для редактирования секции.
+   */
   renameSection() {
     this.containerSection.clear();
     const modalFactorySection = this.resolver.resolveComponentFactory(ModalSectionComponent);
@@ -108,6 +115,9 @@ export class SectionComponent implements OnInit {
     this.onRemoveSection.emit(this.currSection.sectionId);
   }
 
+  /**
+  * Метод создает динамический компонент модального окна для добавления заметки.
+  */
   addNote() {
     this.containerNote.clear();
     const modalFactoryNote = this.resolver.resolveComponentFactory(ModalNoteComponent);

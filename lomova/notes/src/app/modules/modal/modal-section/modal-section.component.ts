@@ -8,6 +8,9 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './modal-section.component.html',
   styleUrls: ['../modal.scss']
 })
+/**
+ * Класс компонента модального окна для секции.
+ */
 export class ModalSectionComponent implements OnInit {
   iconClose = faTimes;
   idSection: number;
@@ -15,16 +18,18 @@ export class ModalSectionComponent implements OnInit {
   currTitle: string;
 
   @Output() close = new EventEmitter<void>();
-  @Output() submit =  new EventEmitter<void>();
-
+  @Output() submit = new EventEmitter<void>();
   form: FormGroup;
+
   constructor(private formBuilder: FormBuilder, private dataService: DataService) {
     this.form = formBuilder.group({
       "sectionTitle": new FormControl("", Validators.required)
     })
-   
   }
-
+  
+  /**
+    * Метод отправки формы в случае добавления секции и её редактирования.
+    */
   onSection() {
     if (!this.rename) {
       this.dataService.addSection({
@@ -45,6 +50,5 @@ export class ModalSectionComponent implements OnInit {
         "sectionTitle": this.currTitle
       })
     }
-
   }
 }

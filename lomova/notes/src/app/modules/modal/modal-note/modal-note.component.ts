@@ -9,6 +9,9 @@ import { INote } from '../../section/note/inote';
   templateUrl: './modal-note.component.html',
   styleUrls: ['./modal-note.component.scss']
 })
+/**
+ * Класс компонента модального окна для заметки.
+ */
 export class ModalNoteComponent implements OnInit {
   iconClose = faTimes;
 
@@ -46,6 +49,9 @@ export class ModalNoteComponent implements OnInit {
     }
   }
 
+  /**
+   * Метод отправки формы в случае добавления заметки и её редактирования.
+   */
   onNote() {
     if (!this.edit) {
       this.dataService.addNote(this.sectionId, {

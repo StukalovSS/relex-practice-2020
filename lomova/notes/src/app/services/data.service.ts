@@ -4,6 +4,9 @@ import { INote } from '../modules/section/note/inote';
 import { ISection } from '../modules/section/section/isection';
 
 @Injectable({ providedIn: 'root' })
+/**
+ * Класс сервиса заметок и секций.
+ */
 export class DataService {
     private sections: ISection[] = [];
 
@@ -63,6 +66,9 @@ export class DataService {
         //return notes.sort(function(a,b){return a.noteDate.getTime() - b.noteDate.getTime()});
     }
 
+    /**
+     * Метод, возвращающий позицию разбиения для сортировки.
+     */
     private partition(arr: INote[], left: number, right: number) {
         let p: number = arr[left].noteDate.getTime();
         let i: number = left;
@@ -85,11 +91,17 @@ export class DataService {
         return i;
     }
 
+    /**
+    * Метод быстрой сортировки.
+    *
+    * Принимает массив заметок и диапазон сортируемых данных.
+    * Возвращает отсортированный массив.
+    */
     private quickSort(arr: INote[], left: number, right: number) {
-        let p: number;
+        let p: number; // позиция разбиения
         if (left < right) {
             p = this.partition(arr, left, right);
-            this.quickSort(arr, left, p - 1);
+            this.quickSort(arr, left, p - 1); 
             this.quickSort(arr, p, right);
         }
         return arr;

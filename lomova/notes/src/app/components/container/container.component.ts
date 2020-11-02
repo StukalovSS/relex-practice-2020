@@ -10,6 +10,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
+/**
+ * Класс компонента контейнера.
+ */
 export class ContainerComponent implements OnInit {
   iconPlus = faPlus;
 
@@ -29,6 +32,9 @@ export class ContainerComponent implements OnInit {
     //this.sections = this.dataService.sections;
   }
 
+   /**
+   * Метод создает динамический компонент модального окна для добавления секции.
+   */
   addSection() {
     this.container.clear();
     const modalFactory = this.resolver.resolveComponentFactory(ModalSectionComponent);
