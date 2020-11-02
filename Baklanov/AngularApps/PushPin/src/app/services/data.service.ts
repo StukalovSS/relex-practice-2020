@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { INote } from '../note/note.interface';
-import { ISection } from '../section/section.interface';
+import { INote } from '../modules/section/note/note.interface';
+import { ISection } from '../modules/section/section/section.interface';
 @Injectable({
   providedIn: 'root'
 })

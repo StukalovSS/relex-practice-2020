@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { DataService } from '../services/data.service';
+import { DataService } from '../../../services/data.service';
 import { INote } from './note.interface';
 @Component({
   selector: 'app-note',
@@ -40,3 +40,4 @@ export class NoteComponent implements OnInit {
     });
   }
 }
+
