@@ -3,19 +3,15 @@ import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ContainerComponent } from './container/container.component';
-import { SectionComponent } from './section/section.component';
-import { NoteComponent } from './note/note.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalComponent } from './modal/modal.component';
+import { ContainerComponent } from './components/container/container.component';
+import { SectionModule } from './modules/section/section.module';
+import { ModalModule } from './modules/modal/modal.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContainerComponent,
-    SectionComponent,
-    NoteComponent,
-    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,8 +19,10 @@ import { ModalComponent } from './modal/modal.component';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    SectionModule,
+    ModalModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

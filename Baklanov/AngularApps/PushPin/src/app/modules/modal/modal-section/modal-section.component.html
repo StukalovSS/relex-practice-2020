@@ -3,7 +3,7 @@
         {{title}}
         <fa-icon [icon]="faWindowClose" class="modal-window_close-btn" (click)="closeModalWindow()"></fa-icon>
     </h2>
-    <form [formGroup]="sectionForm" novalidate *ngIf="isSectionForm">
+    <form [formGroup]="sectionForm" novalidate>
         <div class="form-group">
             <label>Заголовок секции: </label>
             <input class="form-control" name="sectionHeader" formControlName="sectionHeader" />
@@ -23,16 +23,4 @@
         <option value="#e296bf">
 
     </datalist>
-    <form [formGroup]="noteForm" *ngIf="!isSectionForm">
-        <div class="form-group">
-            <label>Заголовок заметки: </label>
-            <input class="form-control" name="noteHeader" formControlName="noteHeader" />
-        </div>
-        <div class="form-group">
-            <label>Текст заметки: </label>
-            <p><input class="input-note-content" name="noteContent" formControlName="noteContent" />
-            </p>
-        </div>
-        <button type="button" class="modal-window_add-btn" (click)="addNewNote()">Добавить</button>
-    </form>
 </div>

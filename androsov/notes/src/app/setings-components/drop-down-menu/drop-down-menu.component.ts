@@ -8,21 +8,25 @@ import { SectionsDataService } from '../../sections/sections-data.service';
   templateUrl: './drop-down-menu.component.html',
   styleUrls: ['./drop-down-menu.component.scss']
 })
+
+/**
+ * Класс нужен для обработки событий, происходящих в выпадающем меню.
+ */
 export class DropDownMenuComponent implements OnInit {
   faTimesCircle = faTimesCircle;
 
   @Input() sectionHeader: string;
   @Input() sectionId: number;
 
-  @Output() onClose = new EventEmitter();
-  @Output() onSelectCheckbox = new EventEmitter<any>();
+  @Output() clickOnClose = new EventEmitter();
+  @Output() selectFlag = new EventEmitter<any>();
 
   inputSectionHeader: FormGroup;
 
-  invisibleInputSectionHeader: boolean = true;
-  showEven: boolean = true;
-  showNotEven: boolean = true;
-  sortAscending: boolean = true;
+  invisibleInputSectionHeader = true;
+  showEven = true;
+  showNotEven = true;
+  sortAscending = true;
 
   constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
     this.inputSectionHeader = fb.group({
@@ -31,35 +35,44 @@ export class DropDownMenuComponent implements OnInit {
    }
 
   ngOnInit(): void {
-  } 
+  }
 
-  sendDelete() {
+  /**
+   * Метод удаляет родительский компонент.
+   */
+  sendDelete(): void {
     this.sectServ.removeSection(this.sectionId);
   }
 
-  sendRename() {
+  /**
+   * Метод переименовывает родительский компонент.
+   */
+  sendRename(): void {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
-    this.onClose.emit();
+    this.clickOnClose.emit();
   }
 
-  sendFilter() {
+  /**
+   * Метод отправляет родительскому компоненту информацию о выбранных пользователем флагах.
+   */
+  sendFilter(): void {
     this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
     this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;
     this.sortAscending = (document.getElementById('sort-ascending' + this.sectionId) as HTMLInputElement).checked;
 
-    this.onSelectCheckbox.emit({
+    this.selectFlag.emit({
       even: this.showEven,
       notEven: this.showNotEven,
       sortAscending: this.sortAscending
     });
   }
 
-  changeSectionHeaderColor(e: any) {
+  changeSectionHeaderColor(e: any): void {
     this.sectServ.changeSectionHeadColor(this.sectionId, e.target.value);
   }
 
-  changeInputSectinHeaderVisibillity() {
+  changeInputSectinHeaderVisibillity(): void {
     this.invisibleInputSectionHeader = !this.invisibleInputSectionHeader;
   }
 }

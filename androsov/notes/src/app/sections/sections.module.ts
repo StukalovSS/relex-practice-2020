@@ -7,7 +7,7 @@ import { SetingsComponentsModule } from './../setings-components/setings-compone
 import { MapValuesPipe } from './map-values.pipe';
 import { ContainerComponent } from './container/container.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TestPipe } from './test.pipe'
+import { TestPipe } from './test.pipe';
 
 @NgModule({
   declarations: [

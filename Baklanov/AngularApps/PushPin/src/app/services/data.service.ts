@@ -1,38 +1,41 @@
 import { Injectable } from '@angular/core';
-import { INote } from '../note/note.interface';
-import { ISection } from '../section/section.interface';
+import { INote } from '../modules/section/note/note.interface';
+import { ISection } from '../modules/section/section/section.interface';
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   private sections: ISection[] = [];
-  private sectionId: number = 0;
-  private noteId: number = 0;
-  private ShellSort(array : INote[], earlier:boolean) : INote[]{
-    let n = array.length, i = Math.floor(n / 2);
+  private sectionId = 0;
+  private noteId = 0;
+  // https://en.wikipedia.org/wiki/Shellsort
+  private ShellSort(array: INote[], earlier: boolean): INote[] {
+    const n = array.length;
+    let i = Math.floor(n / 2);
     while (i > 0) {
       for (let j = 0; j < n; j++) {
-        let k = j, t = array[j];
-        if(earlier) {
-        while (k >= i && array[k - i].noteCreationDate.getDay() < t.noteCreationDate.getDay()) {
-          array[k] = array[k-i]; k -= i;
+        let k = j;
+        const t = array[j];
+        if (earlier) {
+          while (k >= i && array[k - i].noteCreationDate < t.noteCreationDate) {
+            array[k] = array[k - i]; k -= i;
+          }
         }
-      } 
-      else {
-        while ((k >= i) && array[k - i].noteCreationDate.getDay() > t.noteCreationDate.getDay()) {
-          array[k] = array[k-i]; k -= i;
+        else {
+          while ((k >= i) && array[k - i].noteCreationDate > t.noteCreationDate) {
+            array[k] = array[k - i]; k -= i;
+          }
         }
+        array[k] = t;
       }
-      array[k] = t;
-      }
-      i = (i == 2) ? 1 : Math.floor(i * 5 / 11);
+      i = (i === 2) ? 1 : Math.floor(i * 5 / 11);
     }
     return array;
   }
   getData(): ISection[] {
     return this.sections;
   }
-  addSection(section: ISection) {
+  addSection(section: ISection): void {
     section.id = this.sectionId++;
     this.sections.push(section);
   }
@@ -40,71 +43,57 @@ export class DataService {
     return this.sections[this.sections.length - 1];
   }
   getNote(sectionId: number, noteId: number): INote {
-    let section: ISection = this.getSectionById(sectionId);
-    return section.notes.find(note => note.id == noteId);
+    const section: ISection = this.getSectionById(sectionId);
+    return section.notes.find(note => note.id === noteId);
 
   }
-  addNoteBySectionId(id: number, note: INote) {
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].id == id) {
-        note.id = this.noteId++;
-        this.sections[i].notes.push(note);
-      }
-    }
+  addNoteBySectionId(sectionId: number, note: INote): void {
+    const index = this.sections.findIndex(section => section.id == sectionId);
+    note.id = this.noteId++;
+    this.sections[index].notes.push(note);
   }
   getSectionById(id: number): ISection {
-    return this.sections.find(section => section.id == id);
+    return this.sections.find(section => section.id === id);
   }
   deleteNote(sectionId: number, noteId: number): void {
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].id == sectionId) {
-        for (let j = 0; j < this.sections[i].notes.length; j++) {
-          if (this.sections[i].notes[j].id == noteId) {
-            this.sections[i].notes.splice(j, 1);
-          }
-        }
-      }
-    }
+    const section: ISection = this.sections.find(section => section.id == sectionId);
+    const indexOfDeletingNote: number = section.notes.findIndex(note => note.id == noteId);
+    section.notes.splice(indexOfDeletingNote, 1);
   }
   deleteSectionById(sectionId: number): void {
-    for (let i = 0; i < this.sections.length; i++) {
-      if (this.sections[i].id == sectionId) {
-        this.sections.splice(i, 1);
-      }
-    }
+    const index = this.sections.findIndex(section => section.id == sectionId);
+    this.sections.splice(index, 1);
   }
-  editSection(id: number, section: ISection) {
-    let index = this.sections.findIndex(section => section.id == id)
+  editSection(id: number, section: ISection): void {
+    const index = this.sections.findIndex(section => section.id == id);
     this.sections[index] = section;
   }
+  // фильтрация заметок по четным и нечетным числам месяца
   notesFiltration(section: ISection): ISection {
     let tempSection: ISection = { ...section };
     switch (tempSection.filtrationType) {
-      case "even":
+      case 'even':
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 == 0);
+          note.noteCreationDate.getDay() % 2 === 1);
         tempSection.filtrationType = 'none';
         return tempSection;
-      case "odd":
+      case 'odd':
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 != 0);
+          note.noteCreationDate.getDay() % 2 != 1);
         tempSection.filtrationType = 'none';
         return tempSection;
-      case "none":
+      case 'none':
         tempSection = this.getSectionById(tempSection.id);
         return tempSection;
     }
   }
-  notesSorting(section: ISection, earlier:boolean): ISection {
-    let tempSection: ISection = { ...section };
-    tempSection.notes  = this.ShellSort(tempSection.notes, earlier);
-    console.log(this.ShellSort(tempSection.notes, earlier));
+  notesSorting(section: ISection, earlier: boolean): ISection {
+    const tempSection: ISection = { ...section };
+    tempSection.notes = this.ShellSort(tempSection.notes, earlier);
     return tempSection;
   }
-  editNote(note : INote) : void {
-    console.log(this.getSectionById(note.sectionId));
-    let tempNote = this.getNote(note.sectionId,note.id);
+  editNote(note: INote): void {
+    let tempNote = this.getNote(note.sectionId, note.id);
     tempNote = note;
-    console.log(this.getSectionById(note.sectionId));
   }
 }

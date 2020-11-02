@@ -8,14 +8,18 @@ import { SectionsDataService } from './../sections-data.service';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
+
+/**
+ * Класс отвечает за хранение секций.
+ */
 export class ContainerComponent implements OnInit {
   faPlus = faPlus;
   faTimesCircle = faTimesCircle;
-  invisible: boolean = true;
+  invisible = true;
 
   sectionHeaderInput: FormGroup;
 
-  constructor(fb: FormBuilder, public data: SectionsDataService) { 
+  constructor( fb: FormBuilder, public data: SectionsDataService ) {
     this.sectionHeaderInput = fb.group({
       sectionHeader: new FormControl('', Validators.required )
     });
@@ -29,6 +33,9 @@ export class ContainerComponent implements OnInit {
     this.changeVisibillity();
   }
 
+  /**
+   * Изменение видимости формы.
+   */
   changeVisibillity(): void {
     this.invisible = !this.invisible;
   }
