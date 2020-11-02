@@ -20,20 +20,21 @@ export class SectionsDataService {
     });
   }
 
-  getSections() {
+  getSections(): IterableIterator<ISection> {
     return this.sections.values();
   }
 
   /**
    * Метод может отформатировать массив заметок, перед тем как его выдать.
-   * 
-   * @param sectionId 
-   * @param consumer 
+   *
+   * @param sectionId
+   *    ID секции
+   * @param consumer
    *    Функция, которая форматирует массив заметок.
    */
   getNotes(sectionId: number, consumer: (notes: INote[]) => INote[] = notes => notes): INote[] {
     return consumer( Array.from( this.sections.get(sectionId).notes.values() ) );
-  }  
+  }
 
   addSection(name: string, notes: INote[]): void {
     this.sectionsObserver$.subscribe( sections => {
@@ -41,32 +42,32 @@ export class SectionsDataService {
       sections.set(id, {
         header: name,
         notes: this.notesMapFromArr(notes),
-        id: id,
+        id,
         headerColor: '#add19a',
       });
     } );
   }
 
-  removeSection(id: number) {
+  removeSection(id: number): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.delete(id);
     } );
   }
 
-  changeSectionName(id: number, newName: string) {
+  changeSectionName(id: number, newName: string): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.get(id).header = newName;
     } );
   }
-  
-  addNote(sectionId: number, note: INote) {
+
+  addNote(sectionId: number, note: INote): void {
     this.sectionsObserver$.subscribe( sections => {
       note.id = this.createId();
       sections.get(sectionId).notes.set(note.id, note);
-    } )
+    } );
   }
 
-  deleteNote(sectionId: number, noteId: number) {
+  deleteNote(sectionId: number, noteId: number): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.get(sectionId).notes.delete(noteId);
     });
@@ -78,7 +79,7 @@ export class SectionsDataService {
     } );
   }
 
-  changeNoteContent(sectionId: number, noteId: number, newNote: INote) {
+  changeNoteContent(sectionId: number, noteId: number, newNote: INote): void {
     this.sectionsObserver$.subscribe( sections => {
       newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
       sections.get(sectionId).notes.set(noteId, newNote);
@@ -87,8 +88,6 @@ export class SectionsDataService {
 
   /**
    * Метод возвращает Map заметок с уникальным id, который создается внутри метода
-   * 
-   * @param notes 
    */
   private notesMapFromArr(notes: INote[]): Map<number, INote> {
     const map: Map<number, INote> = new Map<number, INote>();
@@ -96,11 +95,12 @@ export class SectionsDataService {
       const id = this.createId();
       n.id = id;
       map.set(id, n);
-    })
+    });
     return map;
   }
 
-  private id: number = 0;
+  // tslint:disable-next-line: member-ordering
+  private id = 0;
   private createId(): number {
     this.id++;
     return this.id;

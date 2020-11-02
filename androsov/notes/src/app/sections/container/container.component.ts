@@ -15,11 +15,11 @@ import { SectionsDataService } from './../sections-data.service';
 export class ContainerComponent implements OnInit {
   faPlus = faPlus;
   faTimesCircle = faTimesCircle;
-  invisible: boolean = true;
+  invisible = true;
 
   sectionHeaderInput: FormGroup;
 
-  constructor(fb: FormBuilder, public data: SectionsDataService) { 
+  constructor( fb: FormBuilder, public data: SectionsDataService ) {
     this.sectionHeaderInput = fb.group({
       sectionHeader: new FormControl('', Validators.required )
     });
