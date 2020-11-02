@@ -50,7 +50,7 @@
 </div>
 <div class="notes">
     <ul class="notes__list">
-        <app-note *ngFor="let n of notes" [sectionId]="sectionId" [noteId]="n.noteId" (onRemoveNote)="removeNote($event)"></app-note>
+        <app-note *ngFor="let n of notes" [sectionId]="sectionId" [noteId]="n.noteId" (outRemoveNote)="removeNote($event)"></app-note>
     </ul>
     <button (click)="addNote()" class="add-note" type="button" aria-label="Добавить новую заметку">
         <fa-icon class="icon icon__plus" [icon]="iconPlus"></fa-icon>

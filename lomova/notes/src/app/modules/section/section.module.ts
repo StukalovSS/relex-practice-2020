@@ -17,7 +17,7 @@ import { NoteComponent } from '../section/note/note.component';
     ColorPickerModule
   ],
   exports: [
-    SectionComponent, 
+    SectionComponent,
     NoteComponent
   ]
 })

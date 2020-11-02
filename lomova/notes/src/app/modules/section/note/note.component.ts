@@ -10,35 +10,34 @@ import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component'
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss']
 })
-
 /**
  * Класс комнопента заметки.
- * 
- * Реализует удаление и редактирование заметки.
  */
 export class NoteComponent implements OnInit {
   iconTrash = faTrashAlt;
   iconEdit = faEdit;
+
   note: INote;
   @Input() sectionId: number;
   @Input() noteId: number;
 
+  @ViewChild('modalForNote', { read: ViewContainerRef }) containerModal;
+  @Output() outRemoveNote = new EventEmitter<any>();
+
   constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) { }
+
   ngOnInit(): void {
     this.note = this.dataService.getNote(this.sectionId, this.noteId);
   }
 
-  @ViewChild("modalForNote", { read: ViewContainerRef }) containerModal;
-  @Output() onRemoveNote = new EventEmitter<any>();
-
-  removeNote() {
-    this.onRemoveNote.emit(this.note.noteId);
+  removeNote(): void {
+    this.outRemoveNote.emit(this.note.noteId);
   }
 
   /**
-   * Метод создает динамический компонент модального окна для редактирования заметки.
+   * Создание динамического компонента модального окна для редактирования заметки.
    */
-  editNote() {
+  editNote(): void {
     this.containerModal.clear();
     const modalFactoryNote = this.resolver.resolveComponentFactory(ModalNoteComponent);
     const modal = this.containerModal.createComponent(modalFactoryNote);
@@ -48,13 +47,11 @@ export class NoteComponent implements OnInit {
     modal.instance.edit = true;
     modal.instance.currNote = this.note;
 
-    modal.instance.close.subscribe(() => {
+    modal.instance.closeModal.subscribe(() => {
       this.containerModal.clear();
     });
-    modal.instance.submit.subscribe(() => {
+    modal.instance.submitForm.subscribe(() => {
       this.containerModal.clear();
     });
   }
-
-
 }
