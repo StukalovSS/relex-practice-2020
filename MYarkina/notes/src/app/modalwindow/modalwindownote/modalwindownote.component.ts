@@ -8,16 +8,9 @@ import { INote } from '../../container/note.interface';
   templateUrl: './modalwindownote.component.html',
   styleUrls: ['./modalwindownote.component.scss']
 })
-/**
- * Класс модальное окно для создания новой заметки
- */
 export class ModalwindownoteComponent implements OnInit{
 
   @Input() note:INote;
-
-  /**
-   * Форма для создания новой заметки.
-   */
   myForm:FormGroup;
   private createForm(name,text) {
     var today = new DatePipe("en-US").transform(new Date(), "dd.MM.yyyy HH:mm");

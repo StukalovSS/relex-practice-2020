@@ -13,9 +13,6 @@ import '../_color.scss';
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })
-/**
- * Класс секций 
- */
 export class SectionComponent implements OnInit,ISection,AfterViewInit {
 
   @Input()id;
@@ -39,7 +36,7 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   filteringSortLow$:Observable<Event>;
   observable$:Observable<any>;
 
-
+  data;
   ngOnInit(): void {
     this.dataList$ = this.dataService.getArrayOfNotes(this.id).pipe(
       map(value => {
@@ -52,8 +49,6 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
 
   ngAfterViewInit(): void {
     (<HTMLInputElement>document.getElementById(`${this.idOfElements.idSortLow}`)).checked = true;
-    
-    //Подписка на действия с фильтрации и сортировки заметок
     this.filteringEven$ = fromEvent(document.getElementById(`${this.idOfElements.idFilterEven}`),'click').pipe(tap(() => this.flags.filterEven = !this.flags.filterEven));
     this.filteringOdd$ = fromEvent(document.getElementById(`${this.idOfElements.idFilterOdd}`),'click').pipe(tap(() => this.flags.filterOdd = !this.flags.filterOdd));
     this.filteringSortRise$ = fromEvent(document.getElementById(`${this.idOfElements.idSortRise}`),'click').pipe(tap(() => { this.flags.sortMinToMax = true }));
@@ -79,9 +74,6 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     );
   }
 
-  /**
-   * Метод, реализующий подписку на данные с массивом заметок.
-   */
   update(){
     this.dataList$.subscribe(
       (value) => {
@@ -95,9 +87,6 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.update();
   }
 
-  /**
-   * Метод, создающий динамический компонент - форму для добавления новой заметки.
-   */
   @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
   componentRef: ComponentRef<any>;
   openForm(idNote){
@@ -119,7 +108,7 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   }
 
   editNote(idNote,event){
-    this.dataService.editNote(idNote,this.id,event);
+    this.dataService.editNote(idNote,this.id,event,event.value.date);
     this.update();
   }
 
@@ -135,9 +124,6 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.update();
   }
   
-  /**
-   * Метод, открывающий меню сортировки или фильтрации по переданному id.
-   */
   openMenu(id:string){
     if(document.getElementById(id).style.display == "block"){
       document.getElementById(id).style.display = "none"
@@ -153,9 +139,6 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.openMenu(this.id);
   } 
   
-  /**
-   * Метод, создающий уникальные id для элементов разметки.
-   */
   setIdElements(){
     this.idOfElements.idDropSort = "menusort" + this.id;
     this.idOfElements.idDropFiltr = "menufilter" + this.id;
