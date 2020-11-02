@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 export class ContainerComponent implements OnInit, OnDestroy {
   arrayOfSections: any[] = [];
   faPlus = faPlus;
-  public modalHide: boolean = false;
   constructor(private service: DataService, private router: Router) {
     this.router.navigate(['/']);
   }

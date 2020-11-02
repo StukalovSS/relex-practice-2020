@@ -4,7 +4,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-//import { ModalComponent } from './modal/modal.component';
 import { ContainerComponent } from './components/container/container.component';
 import { SectionModule } from './modules/section/section.module';
 import { ModalModule } from './modules/modal/modal.module';

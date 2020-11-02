@@ -1,5 +1,3 @@
-import { NoteComponent } from './note.component';
-
 export interface INote {
     noteHeader: string;
     noteContent: string;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ISection } from '../../../modules/section/section/section.interface';
@@ -25,32 +25,32 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.querySubscription = route.queryParams.subscribe();
-    //заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
+    // заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.sectionForm = formBuilder.group({
-      "sectionHeader": ['Название секции', [Validators.required]],
-      "sectionColor" : ['#add19a', [Validators.required]]
+      sectionHeader: ['Название секции', [Validators.required]],
+      sectionColor: ['#add19a', [Validators.required]]
     });
-    this.title = "Создание секции"
+    this.title = 'Создание секции';
   }
   closeModalWindow(): void {
     this.router.navigate(['/']);
   }
   addSection(): void {
-    let section: ISection = {
+    const section: ISection = {
       sectionTitle: this.sectionForm.value.sectionHeader,
       notes: [],
       id: 0,
-      color : this.sectionForm.value.sectionColor,
-      filtrationType : "none",
-      sortingType : 'none'
-    }
+      color: this.sectionForm.value.sectionColor,
+      filtrationType: 'none',
+      sortingType: 'none'
+    };
     this.service.addSection(section);
     this.router.navigate(['/']);
   }
   ngOnInit(): void {
   }
-  ngOnDestroy () : void {
-    //отписываемся от Observable чтобы не произошло учетчки памяти
+  ngOnDestroy(): void {
+    // отписываемся от Observable чтобы не произошло учетчки памяти
     this.querySubscription.unsubscribe();
   }
 

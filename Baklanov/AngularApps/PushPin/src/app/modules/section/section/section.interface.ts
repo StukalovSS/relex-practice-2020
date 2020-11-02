@@ -3,7 +3,7 @@ export interface ISection {
     id: number;
     sectionTitle: string;
     notes: INote[];
-    color : string
-    filtrationType : string;
-    sortingType : string;
+    color: string;
+    filtrationType: string;
+    sortingType: string;
 }
