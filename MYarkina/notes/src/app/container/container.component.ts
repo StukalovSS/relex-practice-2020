@@ -10,7 +10,9 @@ import { INote } from './note.interface';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
-
+/**
+ * Класс контейнер, содержащий секции
+ */
 export class ContainerComponent implements OnInit {
   
   array;
@@ -21,6 +23,9 @@ export class ContainerComponent implements OnInit {
     this.update();
   }
 
+  /**
+   * Метод, создающий динамический компонент - форму для добавления новой секции.
+  */
   @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
   componentRef: ComponentRef<any>;
   openForm(idSection,formStatus){
@@ -32,6 +37,7 @@ export class ContainerComponent implements OnInit {
     }
     this.componentRef.instance.formStatus = formStatus;
     this.componentRef.instance.output.subscribe(event => {
+      //если false - нажата кнопка закрытия формы
       if(event != false){
         if(idSection == null){
           this.dataService.addNewSection(event);
@@ -49,6 +55,9 @@ export class ContainerComponent implements OnInit {
     this.update();
   }
  
+  /**
+   * Метод, реализующий подписку на данные с массивом секций.
+   */
   update(){
     this.dataService.observable$.subscribe(
       (vl) => {
