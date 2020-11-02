@@ -8,6 +8,10 @@ import { SectionsDataService } from '../../sections/sections-data.service';
   templateUrl: './drop-down-menu.component.html',
   styleUrls: ['./drop-down-menu.component.scss']
 })
+
+/**
+ * Класс нужен для обработки событий, происходящих в выпадающем меню.
+ */
 export class DropDownMenuComponent implements OnInit {
   faTimesCircle = faTimesCircle;
 
@@ -33,16 +37,25 @@ export class DropDownMenuComponent implements OnInit {
   ngOnInit(): void {
   } 
 
+  /**
+   * Метод удаляет родительский компонент.
+   */
   sendDelete() {
     this.sectServ.removeSection(this.sectionId);
   }
 
+  /**
+   * Метод переименовывает родительский компонент.
+   */
   sendRename() {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
     this.onClose.emit();
   }
-
+  
+  /**
+   * Метод отправляет родительскому компоненту информацию о выьранных пользователем флагах.
+   */
   sendFilter() {
     this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
     this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;

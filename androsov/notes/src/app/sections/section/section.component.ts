@@ -10,6 +10,9 @@ import { quickSort } from '../../not-angular-solutions/sorts';
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })
+/**
+ * Класс отвечает за хранение заметок и работу с ними внутри секции.
+ */
 export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
   faPlus = faPlus;
@@ -46,6 +49,12 @@ export class SectionComponent implements OnInit, ISection {
     this.filterNotes(); 
   }
 
+  /**
+   * Метод отображает заметки в соответствии с заданными пользователем параметрами.
+   * 
+   * @param e 
+   *    Объект, который хранит в себе информацию о выбранных пользователем параметрах фильтрации.
+   */
   filterNotes(e: any = {
     even: this.showEven, 
     notEven: this.showNotEven, 

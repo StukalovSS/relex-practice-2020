@@ -8,6 +8,10 @@ import { SectionsDataService } from './../sections-data.service';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
+
+/**
+ * Класс отвечает за хранение секций.
+ */
 export class ContainerComponent implements OnInit {
   faPlus = faPlus;
   faTimesCircle = faTimesCircle;
@@ -29,6 +33,9 @@ export class ContainerComponent implements OnInit {
     this.changeVisibillity();
   }
 
+  /**
+   * Изменение видимости формы.
+   */
   changeVisibillity(): void {
     this.invisible = !this.invisible;
   }

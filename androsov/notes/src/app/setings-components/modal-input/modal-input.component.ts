@@ -9,6 +9,10 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './modal-input.component.html',
   styleUrls: ['./modal-input.component.scss']
 })
+
+/**
+ * Класс нужен для обработки информации, введенной пользователем в модальное окно.
+ */
 export class ModalInputComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   addNoteForm: FormGroup;
@@ -29,10 +33,16 @@ export class ModalInputComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Метод отправляет родительскому элементу информацию о том, что был нажат крестик в правом верхнем углу.
+   */
   closeForm() {
     this.onCloseClick.emit();
   }
 
+  /**
+   * Метод отправляет в родительский компонент информацию, о введенных пользователем данных о заметке.
+   */
   addNote() {
     let date = this.addNoteForm.value.noteDate.split('-');
     date = `${date[0]}-${date[1]}-${date[2]}`;

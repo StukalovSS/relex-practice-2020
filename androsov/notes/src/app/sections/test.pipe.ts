@@ -3,6 +3,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'test'
 })
+
+/**
+ * Класс нужен для форматирования даты в строку вида дд имя_месяца_в_винительном_падеже гггг, чч:мм.
+ */
 export class TestPipe implements PipeTransform {
   months: string[] = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 
     'августа', 'сентября', 'октября', 'ноября', 'декабря'];
