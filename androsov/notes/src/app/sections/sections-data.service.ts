@@ -18,6 +18,17 @@ export class SectionsDataService {
     this.sectionsObserver$ = new Observable<Map<number, ISection>>( observer => {
       observer.next( this.sections );
     });
+
+    const notes: INote[] = [];
+    for (let i = 0; i < 6; i++) {
+      notes.push({
+        header: `Note ${i + 1}`,
+        content: 'Simple text',
+        id: -1,
+        date: new Date( Date.now() - 864e5 * i)
+      });
+    }
+    this.addSection('Header', notes);
   }
 
   getSections(): IterableIterator<ISection> {
@@ -28,7 +39,7 @@ export class SectionsDataService {
    * Метод может отформатировать массив заметок, перед тем как его выдать.
    *
    * @param sectionId
-   *    ID секции
+   *    ID секции.
    * @param consumer
    *    Функция, которая форматирует массив заметок.
    */
