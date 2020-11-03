@@ -1,6 +1,6 @@
 <div class="modal modal__add-note">
     <div class="modal__inner">
-        <button class="btn modal__close" type="button" aria-label="Закрыть" (click)="close.emit()">
+        <button class="btn modal__close" type="button" aria-label="Закрыть" (click)="closeModal.emit()">
             <fa-icon [icon]="iconClose"></fa-icon>
         </button>
         <form class="form" [formGroup]="form" novalidate (ngSubmit)="onNote()">

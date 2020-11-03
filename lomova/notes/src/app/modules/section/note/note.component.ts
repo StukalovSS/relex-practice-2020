@@ -10,41 +10,48 @@ import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component'
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss']
 })
+/**
+ * Класс комнопента заметки.
+ */
 export class NoteComponent implements OnInit {
   iconTrash = faTrashAlt;
   iconEdit = faEdit;
+
   note: INote;
   @Input() sectionId: number;
   @Input() noteId: number;
 
+  @ViewChild('modalForNote', { read: ViewContainerRef }) containerModal;
+  @Output() outRemoveNote = new EventEmitter<any>();
+
   constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) { }
+
   ngOnInit(): void {
     this.note = this.dataService.getNote(this.sectionId, this.noteId);
   }
 
-  @ViewChild("modalForNote", { read: ViewContainerRef }) containerNote;
-  @Output() onRemoveNote = new EventEmitter<any>();
-  removeNote() {
-    this.onRemoveNote.emit(this.note.noteId);
+  removeNote(): void {
+    this.outRemoveNote.emit(this.note.noteId);
   }
-  editNote() {
-    this.containerNote.clear();
+
+  /**
+   * Создание динамического компонента модального окна для редактирования заметки.
+   */
+  editNote(): void {
+    this.containerModal.clear();
     const modalFactoryNote = this.resolver.resolveComponentFactory(ModalNoteComponent);
-    const n = this.containerNote.createComponent(modalFactoryNote);
+    const modal = this.containerModal.createComponent(modalFactoryNote);
 
-    n.instance.sectionId = this.sectionId;
-    n.instance.noteId = this.note.noteId;
-    n.instance.edit = true;
+    modal.instance.sectionId = this.sectionId;
+    modal.instance.noteId = this.note.noteId;
+    modal.instance.edit = true;
+    modal.instance.currNote = this.note;
 
-    n.instance.currNote = this.note;
-
-    n.instance.close.subscribe(() => {
-      this.containerNote.clear();
+    modal.instance.closeModal.subscribe(() => {
+      this.containerModal.clear();
     });
-    n.instance.submit.subscribe(() => {
-      this.containerNote.clear();
+    modal.instance.submitForm.subscribe(() => {
+      this.containerModal.clear();
     });
   }
-
-
 }
