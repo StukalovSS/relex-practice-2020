@@ -9,6 +9,9 @@ import { INote } from './note.interface';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
 })
+/**
+ * Класс для компонента заметки.
+ */
 export class NoteComponent implements OnInit {
   /*получаем Id секции и Id заметки чтобы при инициализации получить
     конкретную заметку из конкретной секции*/

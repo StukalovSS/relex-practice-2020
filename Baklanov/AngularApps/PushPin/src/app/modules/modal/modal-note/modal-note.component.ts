@@ -11,6 +11,9 @@ import { INote } from '../../../modules/section/note/note.interface';
   templateUrl: './modal-note.component.html',
   styleUrls: ['./modal-note.component.scss']
 })
+/**
+ * Класс компонента модального окна, для создания заметки
+ */
 export class ModalNoteComponent implements OnInit, OnDestroy {
 
   noteForm: FormGroup;

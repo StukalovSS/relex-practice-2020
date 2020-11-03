@@ -12,8 +12,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './modal-section.component.html',
   styleUrls: ['./modal-section.component.scss']
 })
+/**
+ * Класс компонента модального окна, для создания секции
+ */
 export class ModalSectionComponent implements OnInit, OnDestroy {
-
   sectionForm: FormGroup;
   noteForm: FormGroup;
   faWindowClose = faWindowClose;

@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
 import { INote } from '../modules/section/note/note.interface';
+import { Observable, of } from 'rxjs';
 import { ISection } from '../modules/section/section/section.interface';
+
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Сервис для обмена данными между секциями и заметками.
+ */
 export class DataService {
   private sections: ISection[] = [];
   private sectionId = 0;
   private noteId = 0;
-  // https://en.wikipedia.org/wiki/Shellsort
+  /**
+   * Сортировка Шелла для заметок.
+   * Суть алгоритма: https://en.wikipedia.org/wiki/Shellsort
+   * @param array массив заметок
+   * @param earlier флаг для сортировки по возрастанию или убыванию
+   */
   private ShellSort(array: INote[], earlier: boolean): INote[] {
     const n = array.length;
     let i = Math.floor(n / 2);
@@ -32,8 +42,8 @@ export class DataService {
     }
     return array;
   }
-  getData(): ISection[] {
-    return this.sections;
+  getSections(): Observable<ISection[]> {
+    return of(this.sections);
   }
   addSection(section: ISection): void {
     section.id = this.sectionId++;
@@ -68,7 +78,9 @@ export class DataService {
     const index = this.sections.findIndex(section => section.id == id);
     this.sections[index] = section;
   }
-  // фильтрация заметок по четным и нечетным числам месяца
+  /**
+   * Фильтрация заметок по четным и нечетным числам месяца.
+   */
   notesFiltration(section: ISection): ISection {
     let tempSection: ISection = { ...section };
     switch (tempSection.filtrationType) {

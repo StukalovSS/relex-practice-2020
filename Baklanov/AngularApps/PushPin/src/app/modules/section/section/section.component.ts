@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss'],
 })
+/**
+ * Класс для компонента секции
+ */
 export class SectionComponent implements OnInit {
   faEllipsisV = faEllipsisV;
   faArrowUp = faArrowUp;
