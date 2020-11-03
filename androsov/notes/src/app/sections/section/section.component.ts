@@ -4,6 +4,8 @@ import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
 import { quickSort } from '../../not-angular-solutions/sorts';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-section',
@@ -16,8 +18,9 @@ import { quickSort } from '../../not-angular-solutions/sorts';
 export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
   faPlus = faPlus;
+  private subscription: Subscription;
 
-  constructor(public data: SectionsDataService) {
+  constructor(public data: SectionsDataService, private activateRoute: ActivatedRoute) {
   }
 
   @Input() header: string;
@@ -33,6 +36,7 @@ export class SectionComponent implements OnInit, ISection {
 
 
   ngOnInit(): void {
+    this.filterNotes();
   }
 
 

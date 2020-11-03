@@ -15,20 +15,13 @@ export class SectionsDataService {
   sectionsObserver$: Observable<Map<number, ISection>>;
 
   constructor() {
+
+    // if ( localStorage.getItem('sections') ) {
+    //   this.sections = new Map<number, ISection>( Object.entries(JSON.parse(localStorage.getItem('sections'))) as any);
+    // }
     this.sectionsObserver$ = new Observable<Map<number, ISection>>( observer => {
       observer.next( this.sections );
     });
-
-    const notes: INote[] = [];
-    for (let i = 0; i < 6; i++) {
-      notes.push({
-        header: `Note ${i + 1}`,
-        content: 'Simple text',
-        id: -1,
-        date: new Date( Date.now() - 864e5 * i)
-      });
-    }
-    this.addSection('Header', notes);
   }
 
   getSections(): IterableIterator<ISection> {
@@ -56,18 +49,21 @@ export class SectionsDataService {
         id,
         headerColor: '#add19a',
       });
+      this.safeStateInLocalStorage();
     } );
   }
 
   removeSection(id: number): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.delete(id);
+      this.safeStateInLocalStorage();
     } );
   }
 
   changeSectionName(id: number, newName: string): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.get(id).header = newName;
+      this.safeStateInLocalStorage();
     } );
   }
 
@@ -75,18 +71,21 @@ export class SectionsDataService {
     this.sectionsObserver$.subscribe( sections => {
       note.id = this.createId();
       sections.get(sectionId).notes.set(note.id, note);
+      this.safeStateInLocalStorage();
     } );
   }
 
   deleteNote(sectionId: number, noteId: number): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.get(sectionId).notes.delete(noteId);
+      this.safeStateInLocalStorage();
     });
   }
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
     this.sectionsObserver$.subscribe( sections => {
       sections.get(sectionId).headerColor = newColor;
+      this.safeStateInLocalStorage();
     } );
   }
 
@@ -94,6 +93,7 @@ export class SectionsDataService {
     this.sectionsObserver$.subscribe( sections => {
       newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
       sections.get(sectionId).notes.set(noteId, newNote);
+      this.safeStateInLocalStorage();
     });
   }
 
@@ -115,5 +115,16 @@ export class SectionsDataService {
   private createId(): number {
     this.id++;
     return this.id;
+  }
+
+  private safeStateInLocalStorage(): void {
+    this.sectionsObserver$.subscribe( sections => {
+      const savedObject: any = {};
+      Object.assign(savedObject, (Object as any).fromEntries(sections));
+      for (const key of Object.keys(savedObject)) {
+        Object.assign(savedObject[key].notes, (Object as any).fromEntries( savedObject[key].notes ));
+      }
+      localStorage.setItem('sections', JSON.stringify(savedObject));
+    });
   }
 }

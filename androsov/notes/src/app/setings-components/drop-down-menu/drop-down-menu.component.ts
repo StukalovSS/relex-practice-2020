@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { SectionsDataService } from '../../sections/sections-data.service';
 
@@ -28,7 +29,7 @@ export class DropDownMenuComponent implements OnInit {
   showNotEven = true;
   sortAscending = true;
 
-  constructor(fb: FormBuilder, public sectServ: SectionsDataService) {
+  constructor(fb: FormBuilder, public sectServ: SectionsDataService, private router: Router) {
     this.inputSectionHeader = fb.group({
       sectionHeader: new FormControl(this.sectionHeader, Validators.required)
     });
