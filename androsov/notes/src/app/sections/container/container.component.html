@@ -1,11 +1,12 @@
 <div class="buttons">
-    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" checked>
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved"
+    (click)="changeAllSectionsViewFromat()" checked>
     <span class="buttons_right-moved">Сортировать по возрастанию даты</span>
-    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved">
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()">
     <span class="buttons_right-moved">Сортировать по убыванию даты</span>
-    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" checked>
+    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
     <span class="buttons_right-moved">Показывать четные даты</span>
-    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" checked>
+    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
     <span>Показывать нечетные даты</span>
 </div>
 <div class="sections">
