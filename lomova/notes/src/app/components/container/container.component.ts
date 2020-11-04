@@ -10,43 +10,50 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss']
 })
+/**
+ * Класс компонента контейнера.
+ */
 export class ContainerComponent implements OnInit {
   iconPlus = faPlus;
 
   sections: ISection[] = [];
-  sectionId: number = 0;
+  sectionId = 0;
 
-  @ViewChild("modalForSection", { read: ViewContainerRef }) container;
+  @ViewChild('modalForSection', { read: ViewContainerRef }) container;
 
-  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) {
-    this.dataService.getAllSections().subscribe(value => {
-      this.sections = value;
-      console.log(this.sections);
-    })
-  }
+  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) {}
 
   ngOnInit(): void {
-    //this.sections = this.dataService.sections;
+    this.dataService.getAllSections().subscribe(value => {
+      this.sections = value;
+    });
   }
 
-  addSection() {
+   /**
+    * Создание динамического компонента модального окна для добавления секции.
+    */
+  addSection(): void {
     this.container.clear();
     const modalFactory = this.resolver.resolveComponentFactory(ModalSectionComponent);
     const component = this.container.createComponent(modalFactory);
 
     component.instance.idSection = this.sectionId++;
     component.instance.rename = false;
-    component.instance.close.subscribe( () => {
+    component.instance.closeModal.subscribe( () => {
       this.container.clear();
     });
-    component.instance.submit.subscribe( () => {
+    component.instance.submitForm.subscribe( () => {
       this.container.clear();
-      console.log(this.sections);
+      this.dataService.getAllSections().subscribe(value => {
+        this.sections = value;
+      });
     });
   }
 
-  removeSection(id: number) {
+  removeSection(id: number): void {
     this.dataService.removeSection(id);
-    console.log(this.sections);
+    this.dataService.getAllSections().subscribe(value => {
+      this.sections = value;
+    });
   }
 }

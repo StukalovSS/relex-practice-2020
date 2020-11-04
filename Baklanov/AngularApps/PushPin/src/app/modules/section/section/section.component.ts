@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss'],
 })
+/**
+ * Класс для компонента секции
+ */
 export class SectionComponent implements OnInit {
   faEllipsisV = faEllipsisV;
   faArrowUp = faArrowUp;
@@ -20,7 +23,7 @@ export class SectionComponent implements OnInit {
   faCogs = faCogs;
   faPlus = faPlus;
   section: ISection;
-  isVisible: boolean = false;
+  isVisible = false;
   sectionForm: FormGroup;
   constructor(private service: DataService, private formBuilder: FormBuilder, private router: Router) {
   }
@@ -29,7 +32,7 @@ export class SectionComponent implements OnInit {
     this.router.navigate(['modal-note'],
       {
         queryParams: {
-          'sectionId': this.section.id
+          sectionId: this.section.id
         }
       });
   }
@@ -52,14 +55,14 @@ export class SectionComponent implements OnInit {
       this.section = this.service.notesFiltration(this.section);
     }
   }
-  notesSorting(earlier:boolean) : void {
-    this.section = this.service.notesSorting(this.section,earlier);
+  notesSorting(earlier: boolean): void {
+    this.section = this.service.notesSorting(this.section, earlier);
   }
   ngOnInit(): void {
     this.section = this.service.getLastSection();
     this.sectionForm = this.formBuilder.group({
-      "sectionHeader": [this.section.sectionTitle, [Validators.required]],
-      "sectionColor": [this.section.color, [Validators.required]]
+      sectionHeader: [this.section.sectionTitle, [Validators.required]],
+      sectionColor: [this.section.color, [Validators.required]]
     });
   }
 

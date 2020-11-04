@@ -9,6 +9,9 @@ import { INote } from '../../section/note/inote';
   templateUrl: './modal-note.component.html',
   styleUrls: ['./modal-note.component.scss']
 })
+/**
+ * Класс компонента модального окна для заметки.
+ */
 export class ModalNoteComponent implements OnInit {
   iconClose = faTimes;
 
@@ -17,49 +20,59 @@ export class ModalNoteComponent implements OnInit {
   edit: boolean;
   currNote: INote;
 
-  datePipeString: string;
-
-  @Output() close = new EventEmitter<void>();
-  @Output() submit = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() submitForm = new EventEmitter<void>();
 
   form: FormGroup;
   constructor(private formBuilder: FormBuilder, private dataService: DataService) {
     this.form = formBuilder.group({
-      "noteTitle": new FormControl("", Validators.required),
-      "noteText": new FormControl("", Validators.required),
-      "noteDate": new FormControl("")
+      noteTitle: new FormControl('', Validators.required),
+      noteText: new FormControl('', Validators.required),
+      noteDate: new FormControl('')
     });
   }
 
   ngOnInit(): void {
     if (!this.edit) {
       this.form.patchValue({
-        "noteDate": new Date()
-      })
+        noteDate: new Date()
+      });
     }
     else {
       this.form.patchValue({
-        "noteTitle": this.currNote.noteTitle,
-        "noteText": this.currNote.noteText,
-        "noteDate": this.currNote.noteDate
+        noteTitle: this.currNote.noteTitle,
+        noteText: this.currNote.noteText,
+        noteDate: this.currNote.noteDate
       });
     }
   }
 
-  onNote() {
+  editDate(date: any): Date {
+    if (typeof date === 'object') {
+      return date;
+    }
+    else {
+      return new Date(this.form.value.noteDate);
+    }
+  }
+
+  /**
+   * Обрабатка события отправки формы. Редактирование и добавление новой заметки.
+   */
+  onNote(): void {
     if (!this.edit) {
       this.dataService.addNote(this.sectionId, {
         noteId: this.noteId,
         noteTitle: this.form.value.noteTitle,
         noteText: this.form.value.noteText,
-        noteDate: typeof this.form.value.noteDate == "object" ? this.form.value.noteDate : new Date(this.form.value.noteDate)
-      })
+        noteDate: this.editDate(this.form.value.noteDate)
+      });
     }
     else {
       this.dataService.getNote(this.sectionId, this.noteId).noteTitle = this.form.value.noteTitle;
       this.dataService.getNote(this.sectionId, this.noteId).noteText = this.form.value.noteText;
-      this.dataService.getNote(this.sectionId, this.noteId).noteDate = typeof this.form.value.noteDate == "object" ? this.form.value.noteDate : new Date(this.form.value.noteDate);
+      this.dataService.getNote(this.sectionId, this.noteId).noteDate = this.editDate(this.form.value.noteDate);
     }
-    this.submit.emit();
+    this.submitForm.emit();
   }
 }
