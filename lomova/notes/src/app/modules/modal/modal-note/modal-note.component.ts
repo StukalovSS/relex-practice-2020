@@ -52,7 +52,7 @@ export class ModalNoteComponent implements OnInit {
       return date;
     }
     else {
-      return new Date(this.form.value.noteDate);
+      return new Date(date);
     }
   }
 
@@ -61,11 +61,16 @@ export class ModalNoteComponent implements OnInit {
    */
   onNote(): void {
     if (!this.edit) {
+      // this.dataService.addNote(this.sectionId, {
+      //   noteId: this.dataService.setIdForNote(this.sectionId),
+      //   noteTitle: this.form.value.noteTitle,
+      //   noteText: this.form.value.noteText,
+      //   noteDate: this.editDate(this.form.value.noteDate)
+      // });
       this.dataService.addNote(this.sectionId, {
-        noteId: this.noteId,
-        noteTitle: this.form.value.noteTitle,
-        noteText: this.form.value.noteText,
-        noteDate: this.editDate(this.form.value.noteDate)
+        title: this.form.value.noteTitle,
+        text: this.form.value.noteText,
+        date: this.editDate(this.form.value.noteDate)
       });
     }
     else {

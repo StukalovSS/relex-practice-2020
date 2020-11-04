@@ -34,7 +34,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
   @Input() sectionId: number;
   currSection: ISection;
   notes: INote[] = [];
-  idNote = 0;
 
   idInputs = { filterEven: '', filterUneven: '', sortOld: '', sortNew: '' };
 
@@ -134,6 +133,7 @@ export class SectionComponent implements OnInit, AfterViewInit {
     });
     s.instance.submitForm.subscribe(() => {
       this.containerSection.clear();
+      this.dataService.updateLocalStorage();
     });
   }
 
@@ -150,7 +150,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
     const n = this.containerNote.createComponent(modalFactoryNote);
 
     n.instance.sectionId = this.sectionId;
-    n.instance.noteId = this.idNote++;
     n.instance.edit = false;
 
     n.instance.closeModal.subscribe(() => {

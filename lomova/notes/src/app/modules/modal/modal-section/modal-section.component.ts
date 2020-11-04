@@ -32,11 +32,7 @@ export class ModalSectionComponent implements OnInit {
    */
   onSection(): void {
     if (!this.rename) {
-      this.dataService.addSection({
-        sectionId: this.idSection,
-        sectionTitle: this.form.value.sectionTitle,
-        notes: []
-      });
+      this.dataService.addSection(this.form.value.sectionTitle);
     }
     else {
       this.dataService.getSection(this.idSection).sectionTitle = this.form.value.sectionTitle;

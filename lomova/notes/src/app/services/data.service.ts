@@ -12,6 +12,13 @@ export class DataService {
     private sections: ISection[] = [];
 
     getAllSections(): Observable<ISection[]> {
+        if (JSON.parse(localStorage.getItem('sections')) === null) {
+            this.sections = [];
+        }
+        else {
+            this.sections = JSON.parse(localStorage.getItem('sections'));
+        }
+        console.log('sections from service', this.sections);
         return of(this.sections);
     }
 
@@ -19,30 +26,54 @@ export class DataService {
         return this.sections.find(s => s.sectionId === id);
     }
 
-    addSection(newSection: ISection): void {
-        this.sections.push(newSection);
+    addSection(title: string): void {
+        this.sections.push(
+            {
+                sectionTitle: title,
+                sectionId: this.sections.length === 0 ? 0 : this.sections[this.sections.length - 1].sectionId + 1,
+                notes: []
+            }
+        );
+        this.updateLocalStorage();
     }
 
     removeSection(id: number): void {
         this.sections.splice(this.sections.findIndex(s => s.sectionId === id), 1);
+        this.updateLocalStorage();
     }
 
     getAllNotes(idSection: number): Observable<INote[]> {
+        const currSection = this.getSection(idSection);
+        const indCurrSection = this.sections.findIndex(s => s.sectionId === idSection);
+        if (JSON.parse(localStorage.getItem('sections'))[indCurrSection].notes) {
+            currSection.notes = JSON.parse(localStorage.getItem('sections'))[indCurrSection].notes;
+            currSection.notes.map(n => n.noteDate = new Date(n.noteDate));
+        }
         return of(this.getSection(idSection).notes);
     }
 
     getNote(idSection: number, idNote: number): INote {
-        return this.sections.find(s => s.sectionId === idSection).notes.find(n => n.noteId === idNote);
+        return this.getSection(idSection).notes.find(n => n.noteId === idNote);
     }
 
-    addNote(idSection: number, newNote: INote): void {
-        this.sections.find(s => s.sectionId === idSection).notes.push(newNote);
+    addNote(idSection: number, data: any): void {
+        const arrId = this.getSection(idSection).notes.map(n => n.noteId);
+        this.getSection(idSection).notes.push(
+            {
+                noteId: this.getSection(idSection).notes.length === 0 ? 0 : Math.max(...arrId) + 1,
+                noteTitle: data.title,
+                noteText: data.text,
+                noteDate: data.date
+            }
+        );
+        this.updateLocalStorage();
     }
 
     removeNote(idSection: number, idNote: number): void {
-        const currSection = this.sections.find(s => s.sectionId === idSection);
+        const currSection = this.getSection(idSection);
         const i = currSection.notes.findIndex(n => n.noteId === idNote);
         currSection.notes.splice(i, 1);
+        this.updateLocalStorage();
     }
 
     parityFilterNotes(s: ISection, even: boolean, uneven: boolean): INote[] {
@@ -55,6 +86,10 @@ export class DataService {
         else {
             return s.notes;
         }
+    }
+
+    updateLocalStorage(): void {
+        localStorage.setItem('sections', JSON.stringify(this.sections));
     }
 
     /**
