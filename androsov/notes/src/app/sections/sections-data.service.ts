@@ -65,6 +65,7 @@ export class SectionsDataService {
 
   deleteNote(sectionId: number, noteId: number): void {
     this.sections.get(sectionId).notes.delete(noteId);
+    delete this.sections.get(sectionId).notes[noteId];
     this.safeStateInLocalStorage();
   }
 
