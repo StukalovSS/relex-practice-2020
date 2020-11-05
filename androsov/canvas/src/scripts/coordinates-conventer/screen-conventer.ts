@@ -6,17 +6,40 @@ export class Point {
  * Класс конвертирует реальные точки в экранные и обратно
  */
 export class ScreenConventor {
-    constructor(public x: number,public y: number, public w: number,public h: number, public screenW: number, public screenH: number) {}
+    private width: number;
+    private height: number;
+    private x = 0;
+    private y = 0;
+    private x0: number;
+    private y0: number;
 
-    convertRealPointToScreen(p: Point): Point {
-        const px = (p.x - this.x) * this.screenW / this.w;
-        const py = (this.y - p.y) * this.screenH / this.h;
-        return new Point(px, py);
+    constructor() {
+        this.width = document.body.clientWidth;
+        this.height = document.documentElement.clientHeight - 9;
+        this.x0 = this.width / 2;
+        this.y0 = this.height / 2;
     }
 
-    convertScreenpointToReal(p: Point): Point {
-        const px = p.x * this.w / this.screenW + this.x;
-        const py = y - p.y * this.h / this.screenH;
-        return new Point(px, py);
+    set centre(p: Point) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
+    /**
+     * Конвертирует экранные точки в реальные
+     * @param p 
+     *  Экранная точка
+     */
+    s2r(p: Point): Point {
+        return new Point(p.x - this.x0 + this.x, p.y + this.y0 + this.y);
+    }
+
+    /**
+     * Конвертирует реальные точки в экранные.
+     * @param p 
+     *  Реальная точка
+     */
+    r2s(p: Point): Point {
+        return new Point(p.x + this.x0 - this.x , this.y0 - p.y + this.y);
     }
 }
