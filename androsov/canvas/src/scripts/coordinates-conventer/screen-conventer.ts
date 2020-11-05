@@ -31,7 +31,7 @@ export class ScreenConventor {
      *  Экранная точка
      */
     s2r(p: Point): Point {
-        return new Point(p.x - this.x0 + this.x, p.y + this.y0 + this.y);
+        return new Point(p.x - this.x0 + this.x, p.y - this.y0 + this.y);
     }
 
     /**

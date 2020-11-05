@@ -59,11 +59,23 @@ function drawCirclesFromResponse(req: any) {
     }
 
     const playerPos: Point = sc.r2s(new Point(req.player.x, req.player.y));
-    player.x = playerPos.x;
-    player.y = playerPos.y;
-    player.r = req.player.r;
     render.fillStyle = '#72ff4f';
-    player.show(render);
+    new Circle(playerPos.x, playerPos.y, req.player.r).show(render);
+}
+
+async function updateState() {
+    const mouseScreenConventer = new ScreenConventor();
+    const mousePos = mouseScreenConventer.s2r(new Point(mouseX, mouseY));
+    sendResponse('get_state', {
+        id: playerId,
+        x: mousePos.x,
+        y: -mousePos.y
+    }, req => {
+        sc.centre = new Point(req.player.x, req.player.y);
+        drawField();
+        drawCirclesFromResponse(req);
+        updateState();
+    })
 }
 
 const canvas = document.getElementById('field') as HTMLCanvasElement;
@@ -72,10 +84,20 @@ canvas.height = document.documentElement.clientHeight - 9;
 const render = canvas.getContext('2d');
 const sc: ScreenConventor = new ScreenConventor();
 const leftupcorner = sc.r2s(new Point(-2000 - document.body.clientWidth / 2, 2000 + document.body.clientHeight / 2));
-const player: Circle = new Circle(0, 0, 36);
+let playerId: number;
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+})
 
 sendResponse('new_player', {}, req => {
     sc.centre = new Point(req.player.x, req.player.y);
+    playerId = req.player.id;
     drawField();
     drawCirclesFromResponse(req);
+    updateState();
 });
+
