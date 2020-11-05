@@ -1,11 +1,18 @@
+import { drawLine } from './function-graph/graphics';
 import Circle from './primitivs/circle';
 
-const p5 = require('../../node_modules/p5/lib/p5'),
-    http = require('http');
+const http = require('http');
 
-
-let responseForbiden: boolean = true;
-
+/**
+ * Отправка и обработка GET запроса на сервер.
+ * 
+ * @param path 
+ *  Путь до ресурса.
+ * @param args 
+ *  Аргументы запроса.
+ * @param callback 
+ *  Функция, которая обрабатывае ответ сервера. В качестве аргумента принимает ответ.
+ */
 async function sendResponse(path: string, args: object, callback: (req: object) => void) {
     const options = {
         hostname: '127.0.0.1',
@@ -22,72 +29,19 @@ async function sendResponse(path: string, args: object, callback: (req: object) 
             callback(fromJSON);
         });
 
-        res.on('end', (chunck: any) => console.log('Response end'));
+        res.on('end', () => console.log('Response end'));
     }).end();
 }
 
-function drawField(s: any, player: Circle, circles: Circle []): void {
-    const newZoom = 36 / player.r;
-    zoom = s.lerp(zoom, newZoom, 0.1);
-
-    s.translate(s.width / 2, s.height / 2);
-    s.translate(-player.pos.x, -player.pos.y);
-
-    player.show();
-    for (let i = circles.length - 1; i >= 0; i --) {
-
-    }
+const canvas = document.getElementById('field') as HTMLCanvasElement;
+canvas.width = document.body.clientWidth -  9;
+canvas.height = document.documentElement.clientHeight - 9;
+const render = canvas.getContext('2d');
+render.fillStyle = '#4e9c5c';
+render.fillRect(0, 0, canvas.width, canvas.height);
+for (let i = 0; i < canvas.width; i += 100) {
+    drawLine(i, 0, i, canvas.height, render);
 }
-
-let zoom: number = 1,
-    id: string;
-
-
-const sketch = (s: typeof p5) => {
-    s.setup = () => {
-        s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
-        s.translate(s.width / 2, s.height / 2);
-        s.background(197, 227, 200);
-
-        for (let i = -2000; i <= 2000; i += s.width / 15) {
-            s.line(i, -2000, i, 2000);
-        }
-
-        for (let i = -2000; i <= 2000; i += s.width / 15) {
-            s.line(- 2000, i, 2000, i);
-        }
-
-        sendResponse('new_player', {}, (obj: any) => {
-            const player = new Circle(obj.player.x, obj.player.y, obj.player.r, s),
-            food: Circle[] = [];
-            for (let el of obj.food) {
-                food.push(new Circle(el.x, el.y, el.r, s));
-            }
-            id = obj.player.id;
-
-            // drawField(s, player, food);
-        } );
-    }
-
-    s.draw = async () => {    
-        await sendResponse('get_state', {
-            x: s.mouseX - s.width / 2, 
-            y: s.mouseY - s.height / 2,
-            id: id
-        }, (obj: any) => {
-            const circles: Circle[] = [];
-    
-            for (let el of obj.players) {
-                circles.push(new Circle(el.x, el.y, el.r, s));
-            }
-    
-            for (let el of obj.food) {
-                circles.push(new Circle(el.x, el.y, el.r, s));
-            }
-    
-            drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
-        });
-    }
+for (let i = 0; i < canvas.height; i += 100) {
+    drawLine(0, i, canvas.width, i, render);
 }
-
-const sketchInst = new p5(sketch);
