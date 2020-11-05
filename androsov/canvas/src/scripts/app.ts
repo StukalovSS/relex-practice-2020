@@ -84,7 +84,7 @@ canvas.height = document.documentElement.clientHeight - 9;
 const render = canvas.getContext('2d');
 const sc: ScreenConventor = new ScreenConventor();
 const leftupcorner = sc.r2s(new Point(-2000 - document.body.clientWidth / 2, 2000 + document.body.clientHeight / 2));
-let playerId: number;
+let playerId: number = +sessionStorage.getItem('playerId');
 let mouseX = 0;
 let mouseY = 0;
 
@@ -93,11 +93,16 @@ document.addEventListener('mousemove', e => {
     mouseY = e.clientY;
 })
 
-sendResponse('new_player', {}, req => {
-    sc.centre = new Point(req.player.x, req.player.y);
-    playerId = req.player.id;
-    drawField();
-    drawCirclesFromResponse(req);
+if (!playerId){
+    sendResponse('new_player', {}, req => {
+        sc.centre = new Point(req.player.x, req.player.y);
+        playerId = req.player.id;
+        sessionStorage.setItem('playerId', '' + playerId);
+        drawField();
+        drawCirclesFromResponse(req);
+        updateState();
+    });
+} else {
     updateState();
-});
+}
 
