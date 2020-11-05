@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
  * Класс для компонента секции
  */
 export class SectionComponent implements OnInit {
+  @Input() sectionId: number;
   faEllipsisV = faEllipsisV;
   faArrowUp = faArrowUp;
   faArrowDown = faArrowDown;
@@ -59,7 +60,7 @@ export class SectionComponent implements OnInit {
     this.section = this.service.notesSorting(this.section, earlier);
   }
   ngOnInit(): void {
-    this.section = this.service.getLastSection();
+    this.section = this.service.getSectionById(this.sectionId);
     this.sectionForm = this.formBuilder.group({
       sectionHeader: [this.section.sectionTitle, [Validators.required]],
       sectionColor: [this.section.color, [Validators.required]]

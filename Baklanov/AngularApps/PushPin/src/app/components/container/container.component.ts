@@ -19,6 +19,9 @@ export class ContainerComponent implements OnInit {
 
   addNewSection(): void {
     this.router.navigate(['modal-section']);
+    this.service.getSections().subscribe(data => {
+      this.arrayOfSections = data;
+    });
   }
   ngOnInit(): void {
     this.service.getSections().subscribe(data => {
