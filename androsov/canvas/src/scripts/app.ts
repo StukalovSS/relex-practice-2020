@@ -36,33 +36,49 @@ async function sendResponse(path: string, args: object, callback: (req: any) => 
 
 function drawField(): void {
     render.fillStyle = '#4e9c5c';
+    leftupcorner.x *= scale;
+    leftupcorner.y *= scale;
     render.fillRect(leftupcorner.x, leftupcorner.y, 4000 + document.body.clientWidth, 4000 + document.body.clientHeight);
-    for (let i = -2000; i <= 2000; i += 100) {
-        new Line(sc.r2s(new Point(i, -2000)), sc.r2s(new Point(i, 2000))).draw(render);
+    for (let i = -2000 * scale; i <= 2000 * scale; i += 100 * scale) {
+        new Line(sc.r2s(new Point(i, -2000 * scale)), sc.r2s(new Point(i, 2000 * scale))).draw(render);
     }
-    for (let i = -2000; i <= 2000; i += 100) {
-        new Line(sc.r2s(new Point(-2000, i)), sc.r2s(new Point(2000, i))).draw(render);
+    for (let i = -2000 * scale; i <= 2000 * scale; i += 100 * scale) {
+        new Line(sc.r2s(new Point(-2000 * scale, i)), sc.r2s(new Point(2000 * scale, i))).draw(render);
     }
 }
 
+
+/**
+ * Отрисовка игрока, врагов и еды.
+ * @param req 
+ *  Ответ сервера, содержащий информацию об игроке, других игроках и еде.
+ */
 function drawCirclesFromResponse(req: any) {
+    if (req.player.r > 100) {
+        scale = 100 / req.player.r;
+    }
+
     for (const f of req.food) {
         render.fillStyle = 'white';
-        const foodPos: Point = sc.r2s(new Point(f.x, f.y));
-        new Circle(foodPos.x, foodPos.y, f.r).show(render);
+        const foodPos: Point = sc.r2s(new Point(f.x * scale, f.y * scale));
+        new Circle(foodPos.x, foodPos.y, f.r * scale).show(render);
     }
 
     for (const enemy of req.players) {
         render.fillStyle = '#ff4a4a';
-        const anotherPlayerPos: Point = sc.r2s(new Point(enemy.x, enemy.y));
-        new Circle(anotherPlayerPos.x, anotherPlayerPos.y, enemy.r).show(render);
+        const anotherPlayerPos: Point = sc.r2s(new Point(enemy.x * scale, enemy.y * scale));
+        new Circle(anotherPlayerPos.x, anotherPlayerPos.y, enemy.r * scale).show(render);
     }
 
-    const playerPos: Point = sc.r2s(new Point(req.player.x, req.player.y));
+    const playerPos: Point = sc.r2s(new Point(req.player.x * scale, req.player.y * scale));
     render.fillStyle = '#72ff4f';
-    new Circle(playerPos.x, playerPos.y, req.player.r).show(render);
+    new Circle(playerPos.x, playerPos.y, req.player.r * scale).show(render);
 }
 
+
+/**
+ * Отрисовка поля и кругов на поле.
+ */
 async function updateState() {
     const mouseScreenConventer = new ScreenConventor();
     const mousePos = mouseScreenConventer.s2r(new Point(mouseX, mouseY));
@@ -71,7 +87,7 @@ async function updateState() {
         x: mousePos.x,
         y: -mousePos.y
     }, req => {
-        sc.centre = new Point(req.player.x, req.player.y);
+        sc.centre = new Point(req.player.x * scale, req.player.y * scale);
         drawField();
         drawCirclesFromResponse(req);
         updateState();
@@ -87,6 +103,7 @@ const leftupcorner = sc.r2s(new Point(-2000 - document.body.clientWidth / 2, 200
 let playerId: number = +sessionStorage.getItem('playerId');
 let mouseX = 0;
 let mouseY = 0;
+let scale = 1;
 
 document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
@@ -105,4 +122,3 @@ if (!playerId){
 } else {
     updateState();
 }
-
