@@ -18,7 +18,6 @@ import { Subscription } from 'rxjs/internal/Subscription';
 export class SectionComponent implements OnInit, ISection {
   faCogs = faCogs;
   faPlus = faPlus;
-  private subscription: Subscription;
 
   constructor(public data: SectionsDataService, private activateRoute: ActivatedRoute) {
   }
@@ -36,7 +35,18 @@ export class SectionComponent implements OnInit, ISection {
 
 
   ngOnInit(): void {
-    this.filterNotes();
+    this.activateRoute.queryParams.subscribe( params => {
+      if (params.even) {
+        this.showEven = params.even === 'true';
+      }
+      if (params['not-even']) {
+        this.showNotEven = params['not-even'] === 'true';
+      }
+      if (params['sort-ascending']) {
+        this.sortAscending = params['sort-ascending'] === 'true';
+      }
+      this.filterNotes();
+    });
   }
 
 

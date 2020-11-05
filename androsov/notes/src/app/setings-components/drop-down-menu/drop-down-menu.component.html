@@ -7,7 +7,7 @@
 <span>Сортировать начиная с самых ранних</span>
 <input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()" [id]="'sort-ascending'+sectionId" checked>
 <span>Сортировать начиная с самых поздних</span>
-<input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()">
+<input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()" [id]="'reverse-sort-ascending'+sectionId">
 <span>Четное число</span>
 <input type="checkbox" name="isEven" (change)="sendFilter()" [id]="'even'+sectionId"  checked>
 <span>Нечетное число</span>
