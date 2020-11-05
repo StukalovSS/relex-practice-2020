@@ -41,13 +41,16 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
     const section: ISection = {
       sectionTitle: this.sectionForm.value.sectionHeader,
       notes: [],
-      id: 0,
+      id: this.service.getFreeSectionId(),
       color: this.sectionForm.value.sectionColor,
       filtrationType: 'none',
       sortingType: 'none'
     };
     this.service.addSection(section);
-    this.router.navigate(['/']);
+    this.router.navigate(['/'], {queryParams: {
+      canInit : true,
+      sectionId : section.id
+    }});
   }
   ngOnInit(): void {
   }

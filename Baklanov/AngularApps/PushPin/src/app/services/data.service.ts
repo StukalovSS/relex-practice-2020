@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { INote } from '../modules/section/note/note.interface';
 import { Observable, of } from 'rxjs';
 import { ISection } from '../modules/section/section/section.interface';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -42,15 +44,41 @@ export class DataService {
     }
     return array;
   }
+  private saveStateOfAppInLocalSt(): void {
+    localStorage.setItem('sections', JSON.stringify(this.sections));
+    localStorage.setItem('sectionId', String(this.sectionId));
+    localStorage.setItem('noteId', String(this.noteId));
+  }
+  private fixDateOfNotes(section: ISection): void {
+    section.notes.map(note => {
+      note.noteCreationDate = new Date(Date.parse(note.noteCreationDate));
+    });
+  }
+  private getStateFromLocalSt(): void {
+    if (localStorage.getItem('sections')) {
+      this.sections = JSON.parse(localStorage.getItem('sections'));
+      this.sections.map(this.fixDateOfNotes);
+      this.noteId = +localStorage.getItem('noteID');
+      this.sectionId = +localStorage.getItem('sectionId');
+    }
+  }
+  constructor(private activateRoute: ActivatedRoute) { 
+      this.getStateFromLocalSt();
+      console.log(localStorage);
+      console.log(this.sections);
+      localStorage.clear();
+  }
   getSections(): Observable<ISection[]> {
     return of(this.sections);
   }
   addSection(section: ISection): void {
-    section.id = this.sectionId++;
     this.sections.push(section);
+    this.saveStateOfAppInLocalSt();
   }
-  getLastSection(): ISection {
-    return this.sections[this.sections.length - 1];
+  getFreeSectionId(): number {
+    console.log(this.sectionId);
+    console.log(this.sectionId);
+    return this.sectionId++;
   }
   getNote(sectionId: number, noteId: number): INote {
     const section: ISection = this.getSectionById(sectionId);
@@ -61,6 +89,7 @@ export class DataService {
     const index = this.sections.findIndex(section => section.id == sectionId);
     note.id = this.noteId++;
     this.sections[index].notes.push(note);
+    this.saveStateOfAppInLocalSt();
   }
   getSectionById(id: number): ISection {
     return this.sections.find(section => section.id === id);
@@ -69,24 +98,31 @@ export class DataService {
     const section: ISection = this.sections.find(section => section.id == sectionId);
     const indexOfDeletingNote: number = section.notes.findIndex(note => note.id == noteId);
     section.notes.splice(indexOfDeletingNote, 1);
+    this.saveStateOfAppInLocalSt();
   }
   deleteSectionById(sectionId: number): void {
     const index = this.sections.findIndex(section => section.id == sectionId);
     this.sections.splice(index, 1);
+    this.saveStateOfAppInLocalSt();
   }
   editSection(id: number, section: ISection): void {
     const index = this.sections.findIndex(section => section.id == id);
     this.sections[index] = section;
+    this.saveStateOfAppInLocalSt();
   }
   /**
    * Фильтрация заметок по четным и нечетным числам месяца.
    */
   notesFiltration(section: ISection): ISection {
     let tempSection: ISection = { ...section };
+    let subscription: Subscription;
+    subscription = this.activateRoute.params.subscribe(params => console.log(params['filterType']));
+    subscription.unsubscribe();
+    console.log(tempSection);
     switch (tempSection.filtrationType) {
       case 'even':
         tempSection.notes = tempSection.notes.filter(note =>
-          note.noteCreationDate.getDay() % 2 === 1);
+          note.noteCreationDate.getDay() % 2 == 1);
         tempSection.filtrationType = 'none';
         return tempSection;
       case 'odd':
