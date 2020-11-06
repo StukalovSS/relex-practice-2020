@@ -9,19 +9,35 @@ import { INote } from './note.interface';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
 })
+/**
+ * Класс для компонента заметки.
+ */
 export class NoteComponent implements OnInit {
+  /*получаем Id секции и Id заметки чтобы при инициализации получить
+    конкретную заметку из конкретной секции*/
   @Input() sectionId: number;
   @Input() noteId: number;
   faTrashAlt = faTrashAlt;
   faEdit = faEdit;
   note: INote;
   noteForm: FormGroup;
-  isEdit: boolean = false;
+  isEdit = false;
+   // преобразуем время в формат ISO строки, чтобы потом заполнить поле поумолчанию в форме редактирования заметки
+    // str = str + this.note.noteCreationDate.toLocaleString('ru', { hour: 'numeric', minute: 'numeric' });
+    /*тк при преобразовании к iso строке время становится utc+0 то нам нужно убрать последние 13 симоволов
+    чтобы заменить их на время локального часового пояса.*/
+    // замена на локальное время
   constructor(private service: DataService, private formBuilder: FormBuilder) { }
+  formatDateToISOstring(): string {
+    let str: string = this.note.noteCreationDate.toISOString();
+    str = str.substring(0, str.length - 13);
+    str = str + this.note.noteCreationDate.toLocaleString('ru', { hour: 'numeric', minute: 'numeric' });
+    return str;
+  }
   deleteNote(): void {
     this.service.deleteNote(this.note.sectionId, this.note.id);
   }
-  editNote() : void {
+  editNote(): void {
     this.note.noteHeader = this.noteForm.value.noteHeader;
     this.note.noteContent = this.noteForm.value.noteContent;
     this.note.noteCreationDate = new Date(this.noteForm.value.noteCreationDate);
@@ -30,13 +46,10 @@ export class NoteComponent implements OnInit {
   }
   ngOnInit(): void {
     this.note = this.service.getNote(this.sectionId, this.noteId);
-    let str : string=this.note.noteCreationDate.toISOString();
-    str = str.substring(0,str.length-13);
-    str = str + this.note.noteCreationDate.toLocaleString('ru', {hour : 'numeric', minute:'numeric'});
     this.noteForm = this.formBuilder.group({
-      "noteHeader": [this.note.noteHeader, [Validators.required]],
-      "noteContent": [this.note.noteContent],
-      "noteCreationDate": [str],
+      noteHeader: [this.note.noteHeader, [Validators.required]],
+      noteContent: [this.note.noteContent],
+      noteCreationDate: [this.formatDateToISOstring],
     });
   }
 }

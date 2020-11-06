@@ -1,5 +1,7 @@
-<app-section *ngFor="let section of arrayOfSections"></app-section>
-<router-outlet></router-outlet>
+<div *ngIf = 'arrayOfSections.length >0'>
+<app-section *ngFor="let section of arrayOfSections"[id]="section.id"></app-section>
+</div>
+<router-outlet></router-outlet> 
 <div class="new-section-container">
     <fa-icon class="new-section-container_add-section" [icon]="faPlus" (click)="addNewSection()"></fa-icon>
 </div>

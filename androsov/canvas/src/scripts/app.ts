@@ -1,12 +1,20 @@
+import { Point, ScreenConventor } from './coordinates-conventer/screen-conventer';
+import Line from './primitivs/line';
 import Circle from './primitivs/circle';
 
-const p5 = require('../../node_modules/p5/lib/p5'),
-    http = require('http');
+const http = require('http');
 
-
-let responseForbiden: boolean = true;
-
-async function sendResponse(path: string, args: object, callback: (req: object) => void) {
+/**
+ * Отправка и обработка GET запроса на сервер.
+ * 
+ * @param path 
+ *  Путь до ресурса.
+ * @param args 
+ *  Аргументы запроса.
+ * @param callback 
+ *  Функция, которая обрабатывае ответ сервера. В качестве аргумента принимает ответ.
+ */
+async function sendResponse(path: string, args: object, callback: (req: any) => void) {
     const options = {
         hostname: '127.0.0.1',
         port: 3000,
@@ -22,72 +30,95 @@ async function sendResponse(path: string, args: object, callback: (req: object) 
             callback(fromJSON);
         });
 
-        res.on('end', (chunck: any) => console.log('Response end'));
+        res.on('end', () => console.log('Response end'));
     }).end();
 }
 
-function drawField(s: any, player: Circle, circles: Circle []): void {
-    const newZoom = 36 / player.r;
-    zoom = s.lerp(zoom, newZoom, 0.1);
-
-    s.translate(s.width / 2, s.height / 2);
-    s.translate(-player.pos.x, -player.pos.y);
-
-    player.show();
-    for (let i = circles.length - 1; i >= 0; i --) {
-
+function drawField(): void {
+    render.fillStyle = '#4e9c5c';
+    leftupcorner.x *= scale;
+    leftupcorner.y *= scale;
+    render.fillRect(leftupcorner.x, leftupcorner.y, 4000 + document.body.clientWidth, 4000 + document.body.clientHeight);
+    for (let i = -2000 * scale; i <= 2000 * scale; i += 100 * scale) {
+        new Line(sc.r2s(new Point(i, -2000 * scale)), sc.r2s(new Point(i, 2000 * scale))).draw(render);
+    }
+    for (let i = -2000 * scale; i <= 2000 * scale; i += 100 * scale) {
+        new Line(sc.r2s(new Point(-2000 * scale, i)), sc.r2s(new Point(2000 * scale, i))).draw(render);
     }
 }
 
-let zoom: number = 1,
-    id: string;
 
-
-const sketch = (s: typeof p5) => {
-    s.setup = () => {
-        s.createCanvas(document.body.clientWidth -  9, document.documentElement.clientHeight - 9);
-        s.translate(s.width / 2, s.height / 2);
-        s.background(197, 227, 200);
-
-        for (let i = -2000; i <= 2000; i += s.width / 15) {
-            s.line(i, -2000, i, 2000);
-        }
-
-        for (let i = -2000; i <= 2000; i += s.width / 15) {
-            s.line(- 2000, i, 2000, i);
-        }
-
-        sendResponse('new_player', {}, (obj: any) => {
-            const player = new Circle(obj.player.x, obj.player.y, obj.player.r, s),
-            food: Circle[] = [];
-            for (let el of obj.food) {
-                food.push(new Circle(el.x, el.y, el.r, s));
-            }
-            id = obj.player.id;
-
-            // drawField(s, player, food);
-        } );
+/**
+ * Отрисовка игрока, врагов и еды.
+ * @param req 
+ *  Ответ сервера, содержащий информацию об игроке, других игроках и еде.
+ */
+function drawCirclesFromResponse(req: any) {
+    if (req.player.r > 100) {
+        scale = 100 / req.player.r;
     }
 
-    s.draw = async () => {    
-        await sendResponse('get_state', {
-            x: s.mouseX - s.width / 2, 
-            y: s.mouseY - s.height / 2,
-            id: id
-        }, (obj: any) => {
-            const circles: Circle[] = [];
-    
-            for (let el of obj.players) {
-                circles.push(new Circle(el.x, el.y, el.r, s));
-            }
-    
-            for (let el of obj.food) {
-                circles.push(new Circle(el.x, el.y, el.r, s));
-            }
-    
-            drawField(s, new Circle(obj.player.x, obj.player.y, obj.player.r, s), circles);
-        });
+    for (const f of req.food) {
+        render.fillStyle = 'white';
+        const foodPos: Point = sc.r2s(new Point(f.x * scale, f.y * scale));
+        new Circle(foodPos.x, foodPos.y, f.r * scale).show(render);
     }
+
+    for (const enemy of req.players) {
+        render.fillStyle = '#ff4a4a';
+        const anotherPlayerPos: Point = sc.r2s(new Point(enemy.x * scale, enemy.y * scale));
+        new Circle(anotherPlayerPos.x, anotherPlayerPos.y, enemy.r * scale).show(render);
+    }
+
+    const playerPos: Point = sc.r2s(new Point(req.player.x * scale, req.player.y * scale));
+    render.fillStyle = '#72ff4f';
+    new Circle(playerPos.x, playerPos.y, req.player.r * scale).show(render);
 }
 
-const sketchInst = new p5(sketch);
+
+/**
+ * Отрисовка поля и кругов на поле.
+ */
+async function updateState() {
+    const mouseScreenConventer = new ScreenConventor();
+    const mousePos = mouseScreenConventer.s2r(new Point(mouseX, mouseY));
+    sendResponse('get_state', {
+        id: playerId,
+        x: mousePos.x,
+        y: -mousePos.y
+    }, req => {
+        sc.centre = new Point(req.player.x * scale, req.player.y * scale);
+        drawField();
+        drawCirclesFromResponse(req);
+        updateState();
+    })
+}
+
+const canvas = document.getElementById('field') as HTMLCanvasElement;
+canvas.width = document.body.clientWidth -  9;
+canvas.height = document.documentElement.clientHeight - 9;
+const render = canvas.getContext('2d');
+const sc: ScreenConventor = new ScreenConventor();
+const leftupcorner = sc.r2s(new Point(-2000 - document.body.clientWidth / 2, 2000 + document.body.clientHeight / 2));
+let playerId: number = +sessionStorage.getItem('playerId');
+let mouseX = 0;
+let mouseY = 0;
+let scale = 1;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+})
+
+if (!playerId){
+    sendResponse('new_player', {}, req => {
+        sc.centre = new Point(req.player.x, req.player.y);
+        playerId = req.player.id;
+        sessionStorage.setItem('playerId', '' + playerId);
+        drawField();
+        drawCirclesFromResponse(req);
+        updateState();
+    });
+} else {
+    updateState();
+}

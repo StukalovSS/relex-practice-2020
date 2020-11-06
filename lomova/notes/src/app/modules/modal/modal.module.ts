@@ -8,7 +8,7 @@ import { ModalNoteComponent } from './modal-note/modal-note.component';
 
 @NgModule({
   declarations: [
-    ModalSectionComponent, 
+    ModalSectionComponent,
     ModalNoteComponent
   ],
   imports: [

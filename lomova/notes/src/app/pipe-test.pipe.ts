@@ -9,40 +9,40 @@ export class PipeTestPipe implements PipeTransform {
     let month: string;
     switch (value.getMonth()) {
       case 0:
-        month = "января";
+        month = 'января';
         break;
       case 1:
-        month = "февраля";
+        month = 'февраля';
         break;
       case 2:
-        month = "марта";
+        month = 'марта';
         break;
       case 3:
-        month = "апреля";
+        month = 'апреля';
         break;
       case 4:
-        month = "мая";
+        month = 'мая';
         break;
       case 5:
-        month = "июня";
+        month = 'июня';
         break;
       case 6:
-        month = "июля";
+        month = 'июля';
         break;
       case 7:
-        month = "августа";
+        month = 'августа';
         break;
       case 8:
-        month = "сентября";
+        month = 'сентября';
         break;
       case 9:
-        month = "октября";
+        month = 'октября';
         break;
       case 10:
-        month = "ноября";
+        month = 'ноября';
         break;
       case 11:
-        month = "декабря";
+        month = 'декабря';
         break;
     }
     return `${value.getDate()} ${month} ${value.getFullYear()} года, ${value.getHours()}:${value.getMinutes()}`;

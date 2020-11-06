@@ -6,6 +6,12 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { SectionComponent } from '../section/section/section.component';
 import { NoteComponent } from '../section/note/note.component';
 
+import {Routes, RouterModule} from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: '', component: SectionComponent}
+];
+
 @NgModule({
   declarations: [
     SectionComponent,
@@ -14,10 +20,11 @@ import { NoteComponent } from '../section/note/note.component';
   imports: [
     CommonModule,
     FontAwesomeModule,
-    ColorPickerModule
+    ColorPickerModule,
+    RouterModule.forRoot(appRoutes)
   ],
   exports: [
-    SectionComponent, 
+    SectionComponent,
     NoteComponent
   ]
 })

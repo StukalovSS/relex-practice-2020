@@ -13,7 +13,7 @@
         <fa-icon [icon]="faArrowDown"></fa-icon>
         <input type ="radio" name="sort" (change) = "notesSorting(false)"/>
         <br> <label>Четные числа </label>
-        <input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')" id='even' />
+        <input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')" id='even'/>
         <br> <label>Нечетные числа </label>
         <input type ="checkbox" name="sort"(change) = "notesFilter($event, 'odd')" id='odd'/>
       </div>

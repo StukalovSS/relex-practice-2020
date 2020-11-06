@@ -1,21 +1,34 @@
-<app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes"
-[id]="section.id" [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)">
-</app-section>
-<button class="add-btn">
-    <form [formGroup]="sectionHeaderInput" class="form" [ngClass]="{'invisible': invisible}"
-    (ngSubmit)="addSection()">
-        <div class="form__form-element">
-            <label class="form__head">Название секции</label>
-            <input name="header" formControlName="sectionHeader" class="form__input">
-        </div>
-        <button [disabled]="sectionHeaderInput.invalid" class="form__btn">
-            Добавить секцию
-        </button>
-    </form>
-    <fa-icon [icon]="faTimesCircle" class="add-btn__times-circle" [ngClass]="{'invisible': invisible}"
-    (click)="changeVisibillity()">
-    </fa-icon>
-    <fa-icon [icon]="faPlus" class="add-btn__plus" [ngClass]="{'invisible': !invisible}"
-    (click)="changeVisibillity()">
-    </fa-icon>
-</button>
+<div class="buttons">
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved"
+    (click)="changeAllSectionsViewFromat()" checked>
+    <span class="buttons_right-moved">Сортировать по возрастанию даты</span>
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()">
+    <span class="buttons_right-moved">Сортировать по убыванию даты</span>
+    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
+    <span class="buttons_right-moved">Показывать четные даты</span>
+    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
+    <span>Показывать нечетные даты</span>
+</div>
+<div class="sections">
+    <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes"
+    [id]="section.id" [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)">
+    </app-section>
+    <button class="sections__add-btn">
+        <form [formGroup]="sectionHeaderInput" class="sections__form" [ngClass]="{'invisible': invisible}"
+        (ngSubmit)="addSection()">
+            <div class="sections__form_form-element">
+                <label class="sections__form_head">Название секции</label>
+                <input name="header" formControlName="sectionHeader" class="sections__form_input">
+            </div>
+            <button [disabled]="sectionHeaderInput.invalid" class="sections__form_btn">
+                Добавить секцию
+            </button>
+        </form>
+        <fa-icon [icon]="faTimesCircle" class="sections__add-btn_times-circle" [ngClass]="{'invisible': invisible}"
+        (click)="changeVisibillity()">
+        </fa-icon>
+        <fa-icon [icon]="faPlus" class="sections__add-btn_plus" [ngClass]="{'invisible': !invisible}"
+        (click)="changeVisibillity()">
+        </fa-icon>
+    </button>
+</div>
