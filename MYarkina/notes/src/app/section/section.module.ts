@@ -19,7 +19,7 @@ import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
     BrowserModule,
     ColorPickerModule
   ],
-  exports:[NoteComponent,SectionComponent],
+  exports: [ NoteComponent, SectionComponent],
   providers: [DataService, ColorPickerService],
 })
 export class SectionModule { }

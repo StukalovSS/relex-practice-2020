@@ -7,26 +7,26 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./modalwindowsection.component.scss']
 })
 export class ModalwindowsectionComponent implements OnInit {
-  
+
+  @Output() output = new EventEmitter();
   @Input() nameSection;
   @Input() formStatus;
-  form:FormGroup;
-  private createForm(name:string) {
+  form: FormGroup;
+  private createForm(name: string): void{
     this.form = new FormGroup({
-      'name': new FormControl(name,Validators.required)
-    })
+      name: new FormControl(name, Validators.required)
+    });
   }
 
   ngOnInit(): void {
     this.createForm(this.nameSection);
   }
 
-  @Output() output = new EventEmitter();
-  clickOnFormStatus(form){
+  clickOnFormStatus(form): void{
     this.output.emit(form);
   }
 
-  closeForm(){
+  closeForm(): void{
     this.output.emit(false);
   }
 

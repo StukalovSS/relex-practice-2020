@@ -1,5 +1,5 @@
-import { Component, Input, Output ,EventEmitter} from '@angular/core';
-import {faEdit,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Component, Input, Output , EventEmitter} from '@angular/core';
+import {faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-note',
@@ -8,23 +8,22 @@ import {faEdit,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class NoteComponent {
-  
+
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
-  
+  @Output() doEdit = new EventEmitter<number>();
   @Input() id;
   @Input() name;
   @Input() nodeTxt;
   @Input() date;
 
   @Output() doDelete = new EventEmitter<number>();
-  deleteNote(){
+  deleteNote(): void{
     this.doDelete.emit(this.id);
   }
 
-  @Output() doEdit = new EventEmitter<number>();
-  editNote(){
+  editNote(): void{
     this.doEdit.emit(this.id);
   }
-  
+
 }
