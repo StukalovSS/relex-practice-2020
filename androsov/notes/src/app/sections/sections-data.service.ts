@@ -15,6 +15,9 @@ export class SectionsDataService {
 
   constructor() {
     this.setStateFromLocalStorage();
+    window.addEventListener('beforeunload', () => {
+      this.safeStateInLocalStorage();
+    });
   }
 
   getSections(): IterableIterator<ISection> {
@@ -41,43 +44,33 @@ export class SectionsDataService {
       id,
       headerColor: '#add19a',
     });
-    this.safeStateInLocalStorage();
   }
 
   removeSection(id: number): void {
     this.sections.delete(id);
-    this.safeStateInLocalStorage();
-
   }
 
   changeSectionName(id: number, newName: string): void {
     this.sections.get(id).header = newName;
-    this.safeStateInLocalStorage();
-
   }
 
   addNote(sectionId: number, note: INote): void {
     note.id = this.createId();
     this.sections.get(sectionId).notes.set(note.id, note);
-    this.safeStateInLocalStorage();
-
   }
 
   deleteNote(sectionId: number, noteId: number): void {
     this.sections.get(sectionId).notes.delete(noteId);
     delete this.sections.get(sectionId).notes[noteId];
-    this.safeStateInLocalStorage();
   }
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
     this.sections.get(sectionId).headerColor = newColor;
-    this.safeStateInLocalStorage();
   }
 
   changeNoteContent(sectionId: number, noteId: number, newNote: INote): void {
     newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
     this.sections.get(sectionId).notes.set(noteId, newNote);
-    this.safeStateInLocalStorage();
   }
 
   /**
