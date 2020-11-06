@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
@@ -7,7 +7,10 @@ import { Router } from '@angular/router';
   templateUrl: './container.component.html',
   styleUrls: ['./container.component.scss'],
 })
-export class ContainerComponent implements OnInit, OnDestroy {
+/**
+ * Класс для компонента контейнера
+ */
+export class ContainerComponent implements OnInit {
   arrayOfSections: any[] = [];
   faPlus = faPlus;
   constructor(private service: DataService, private router: Router) {
@@ -18,8 +21,8 @@ export class ContainerComponent implements OnInit, OnDestroy {
     this.router.navigate(['modal-section']);
   }
   ngOnInit(): void {
-    this.arrayOfSections = this.service.getData();
-  }
-  ngOnDestroy(): void {
+    this.service.getSections().subscribe(data => {
+      this.arrayOfSections = data;
+    });
   }
 }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { ISection } from './container/section.interface';
 import { INote } from './section/note.interface';
 
@@ -12,12 +11,10 @@ import { INote } from './section/note.interface';
  */
 export class SectionsDataService {
   sections: Map<number, ISection> = new Map<number, ISection>();
-  sectionsObserver$: Observable<Map<number, ISection>>;
+
 
   constructor() {
-    this.sectionsObserver$ = new Observable<Map<number, ISection>>( observer => {
-      observer.next( this.sections );
-    });
+    this.setStateFromLocalStorage();
   }
 
   getSections(): IterableIterator<ISection> {
@@ -28,7 +25,7 @@ export class SectionsDataService {
    * Метод может отформатировать массив заметок, перед тем как его выдать.
    *
    * @param sectionId
-   *    ID секции
+   *    ID секции.
    * @param consumer
    *    Функция, которая форматирует массив заметок.
    */
@@ -37,53 +34,50 @@ export class SectionsDataService {
   }
 
   addSection(name: string, notes: INote[]): void {
-    this.sectionsObserver$.subscribe( sections => {
-      const id = this.createId();
-      sections.set(id, {
-        header: name,
-        notes: this.notesMapFromArr(notes),
-        id,
-        headerColor: '#add19a',
-      });
-    } );
+    const id = this.createId();
+    this.sections.set(id, {
+      header: name,
+      notes: this.notesMapFromArr(notes),
+      id,
+      headerColor: '#add19a',
+    });
+    this.safeStateInLocalStorage();
   }
 
   removeSection(id: number): void {
-    this.sectionsObserver$.subscribe( sections => {
-      sections.delete(id);
-    } );
+    this.sections.delete(id);
+    this.safeStateInLocalStorage();
+
   }
 
   changeSectionName(id: number, newName: string): void {
-    this.sectionsObserver$.subscribe( sections => {
-      sections.get(id).header = newName;
-    } );
+    this.sections.get(id).header = newName;
+    this.safeStateInLocalStorage();
+
   }
 
   addNote(sectionId: number, note: INote): void {
-    this.sectionsObserver$.subscribe( sections => {
-      note.id = this.createId();
-      sections.get(sectionId).notes.set(note.id, note);
-    } );
+    note.id = this.createId();
+    this.sections.get(sectionId).notes.set(note.id, note);
+    this.safeStateInLocalStorage();
+
   }
 
   deleteNote(sectionId: number, noteId: number): void {
-    this.sectionsObserver$.subscribe( sections => {
-      sections.get(sectionId).notes.delete(noteId);
-    });
+    this.sections.get(sectionId).notes.delete(noteId);
+    delete this.sections.get(sectionId).notes[noteId];
+    this.safeStateInLocalStorage();
   }
 
   changeSectionHeadColor(sectionId: number, newColor: string): void {
-    this.sectionsObserver$.subscribe( sections => {
-      sections.get(sectionId).headerColor = newColor;
-    } );
+    this.sections.get(sectionId).headerColor = newColor;
+    this.safeStateInLocalStorage();
   }
 
   changeNoteContent(sectionId: number, noteId: number, newNote: INote): void {
-    this.sectionsObserver$.subscribe( sections => {
-      newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
-      sections.get(sectionId).notes.set(noteId, newNote);
-    });
+    newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
+    this.sections.get(sectionId).notes.set(noteId, newNote);
+    this.safeStateInLocalStorage();
   }
 
   /**
@@ -104,5 +98,40 @@ export class SectionsDataService {
   private createId(): number {
     this.id++;
     return this.id;
+  }
+
+  private setStateFromLocalStorage(): void {
+    if ( localStorage.getItem('sections') ) {
+      let objFromStorage = JSON.parse(localStorage.getItem('sections')) as any;
+      const sections = new Map<number, ISection>();
+
+      // tslint:disable-next-line: forin
+      for (const key in objFromStorage) {
+        sections.set(+key, objFromStorage[key]);
+        sections.get(+key).notes = new Map<number, INote>();
+      }
+      this.sections = sections;
+      this.id = +localStorage.getItem('max-id');
+
+      objFromStorage = JSON.parse(localStorage.getItem('sections')) as any;
+      for (const sectionId in objFromStorage) {
+        // tslint:disable-next-line: forin
+        for (const noteId in objFromStorage[sectionId].notes) {
+          objFromStorage[sectionId].notes[noteId].date = new Date(objFromStorage[sectionId].notes[noteId].date);
+          this.addNote(+sectionId, objFromStorage[sectionId].notes[noteId]);
+        }
+      }
+    }
+  }
+
+  private safeStateInLocalStorage(): void {
+    const savedObject: any = {};
+    Object.assign(savedObject, (Object as any).fromEntries(this.sections));
+    // tslint:disable-next-line: forin
+    for (const key in savedObject) {
+      Object.assign(savedObject[key].notes, (Object as any).fromEntries( savedObject[key].notes ));
+    }
+    localStorage.setItem('sections', JSON.stringify(savedObject));
+    localStorage.setItem('max-id', '' + this.id);
   }
 }
