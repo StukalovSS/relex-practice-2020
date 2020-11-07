@@ -3,7 +3,7 @@ import { ModalSectionComponent } from '../../modules/modal/modal-section/modal-s
 import { DataService } from '../../services/data.service';
 import { ISection } from '../../modules/section/section/isection';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-container',

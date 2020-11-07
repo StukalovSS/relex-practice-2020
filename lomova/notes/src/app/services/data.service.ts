@@ -9,7 +9,7 @@ import { ISection } from '../modules/section/section/isection';
  * Сервис для секций и заметок.
  */
 export class DataService {
-    private sections: ISection[] = [];
+    sections: ISection[] = [];
 
     getAllSections(): Observable<ISection[]> {
         if (JSON.parse(localStorage.getItem('sections')) === null) {

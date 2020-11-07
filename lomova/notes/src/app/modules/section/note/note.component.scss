@@ -1,6 +1,5 @@
 @import '../../../colors.scss';
-
-.notes__item {
+:host {
     display: flex;
     flex-direction: column;
     height: 122px;
@@ -36,16 +35,16 @@
 .icon__edit {
     stroke: $edit-icon;
     color: $edit-icon;
-    .note__edit:hover &{
+    .note__edit:hover & {
         stroke: $edit-icon-hover;
-        color:  $edit-icon-hover;
+        color: $edit-icon-hover;
     }
 }
 
 .icon__trash {
     stroke: $trash-icon;
     color: $trash-icon;
-    .note__delete:hover &{
+    .note__delete:hover & {
         stroke: $trash-icon-hover;
         color: $trash-icon-hover;
     }

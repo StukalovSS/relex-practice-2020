@@ -14,14 +14,11 @@
                 <fieldset class="distribution__group">
                     <legend class="distribution__title">По дате и времени:</legend>
                     <div class="distribution__fields">
-                        <label>
-                            <input id={{idInputs.sortOld}} type="radio" name="date" value="old" checked>
-                            Сначала старые
-                        </label>
-                        <label>
-                            <input id={{idInputs.sortNew}} type="radio" name="date" value="new">
-                            Сначала новые
-                        </label>
+                        <input class="sort__radio" id={{idInputs.sortOld}} type="radio" name="date" value="old" checked>
+                        <label for={{idInputs.sortOld}}>Сначала старые</label>
+
+                        <input class="sort__radio" id={{idInputs.sortNew}} type="radio" name="date" value="new">
+                        <label for={{idInputs.sortNew}}>Сначала новые</label>
                     </div>
                 </fieldset>
             </li>
@@ -30,14 +27,11 @@
                 <fieldset class="distribution__group">
                     <legend class="distribution__title">По дате:</legend>
                     <div class="distribution__fields">
-                        <label>
-                            <input id={{idInputs.filterEven}} class="filter__checkbox" type="checkbox" name="date-even">
-                            Чётные
-                        </label>
-                        <label>
-                            <input id={{idInputs.filterUneven}} class="filter__checkbox" type="checkbox" name="date-uneven">
-                            Нечётные
-                        </label>
+                        <input class="filter__checkbox" id={{idInputs.filterEven}} type="checkbox" name="date-even">
+                        <label for={{idInputs.filterEven}}>Чётные</label>
+
+                        <input class="filter__checkbox" id={{idInputs.filterUneven}} type="checkbox" name="date-uneven">
+                        <label for={{idInputs.filterUneven}}>Нечётные</label>
                     </div>
                 </fieldset>
             </li>
@@ -45,9 +39,10 @@
     </a>
 </div>
 <div class="notes">
-    <ul class="notes__list">
-        <app-note *ngFor="let n of notes" [sectionId]="sectionId" [noteId]="n.noteId" (outRemoveNote)="removeNote($event)"></app-note>
-    </ul>
+    <div cdkDropList class="notes__list" (cdkDropListDropped)="drop($event)">
+        <app-note *ngFor="let n of notes" [sectionId]="sectionId" [noteId]="n.noteId" (outRemoveNote)="removeNote($event)" cdkDrag>
+        </app-note>
+    </div>
     <button (click)="addNote()" class="add-note" type="button" aria-label="Добавить новую заметку">
         <fa-icon class="icon icon__plus" [icon]="iconPlus"></fa-icon>
     </button>

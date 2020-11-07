@@ -16,6 +16,7 @@ import { Observable, Subscription, fromEvent, merge } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 /**
  * Класс компонента секции.
@@ -164,5 +165,9 @@ export class SectionComponent implements OnInit, AfterViewInit {
   removeNote(idNote: number): void {
     this.dataService.removeNote(this.sectionId, idNote);
     this.update();
+  }
+
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
   }
 }
