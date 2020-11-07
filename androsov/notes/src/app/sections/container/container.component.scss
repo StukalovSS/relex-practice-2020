@@ -24,7 +24,10 @@ $light_grey : #f7f7f7;
 .sections {
     display: flex;
     height: 90%;
-
+    &__ellipsis {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
     &__add-btn {
         background-color: $light_grey;
         margin-bottom: 10px;
