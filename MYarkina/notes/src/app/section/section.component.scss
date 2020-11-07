@@ -5,7 +5,6 @@
     min-width: 320px;
     border:1px solid $border-color;
     margin-left: 20px;
-    height: 100%;
 } 
 
 :host:not(:last-child){
@@ -63,8 +62,8 @@
 .notes{
     padding-left: 10px;
     padding-right: 10px;
-    max-height: calc(100%-45px);
-    overflow-y: scroll;
+    max-height: calc(100% - 45px);
+    overflow-y: auto;
     
     .button__newnode{
         margin-top:10px;
