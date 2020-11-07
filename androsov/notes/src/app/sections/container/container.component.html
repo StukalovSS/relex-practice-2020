@@ -9,9 +9,11 @@
     <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
     <span>Показывать нечетные даты</span>
 </div>
-<div class="sections">
-    <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes"
-    [id]="section.id" [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)">
+<div class="sections" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropSections($event)">
+    <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes" [id]="section.id" 
+    [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)" cdkDragLockAxis="x"  cdkDrag cdkDragBoundary="sections"
+    >
+        <span class="sections__ellipsis" cdkDragHandle>...</span>
     </app-section>
     <button class="sections__add-btn">
         <form [formGroup]="sectionHeaderInput" class="sections__form" [ngClass]="{'invisible': invisible}"

@@ -3,3 +3,8 @@
     margin-bottom: 40px;
     color: #6b6b6b;
 }
+
+:host {
+    display: block;
+    height: 100vh;
+}

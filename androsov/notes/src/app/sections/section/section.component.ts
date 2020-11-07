@@ -5,7 +5,6 @@ import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
 import { quickSort } from '../../not-angular-solutions/sorts';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-section',
