@@ -10,10 +10,11 @@ $light_grey : #f7f7f7;
     height: 100%;
     margin-left: 8px;
     margin-right: 8px;
-    overflow-y: auto;
 }
 
 .header {
+    position: sticky;
+    top: 9;
     min-height: 40px;
     display: flex;
     justify-content: space-between;
@@ -45,6 +46,7 @@ $light_grey : #f7f7f7;
     padding-left: 6.5px;
     padding-right: 6.5px;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .add-btn {
@@ -53,6 +55,7 @@ $light_grey : #f7f7f7;
     border: 1px #b2b2b2 solid;
     cursor: pointer;
     height: 40px;
+    flex-shrink: 0;
     &__icon {
         color: $dark_grey;
     }

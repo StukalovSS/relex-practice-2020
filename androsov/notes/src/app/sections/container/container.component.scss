@@ -6,7 +6,7 @@ $light_grey : #f7f7f7;
 }
 
 :host {
-    height: 100vh;
+    height: calc(100% - 117px);
     margin-left: 65px;
     overflow: auto;
     margin-bottom: 30px;
@@ -33,6 +33,7 @@ $light_grey : #f7f7f7;
         min-width: 320px;
         height: 100%;
         position: relative;
+        flex-shrink: 0;
         &_plus {
             cursor: pointer;
             color: $dark_grey;
