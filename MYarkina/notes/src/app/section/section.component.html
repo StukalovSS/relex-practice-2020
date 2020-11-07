@@ -9,17 +9,20 @@
 
         <span class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">Сортировать</span><br>    
         <div id = {{idOfElements.idDropSort}} class = "drop-sort">
-            <input type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
-            <label for="sortrise">По возврастанию</label>
+            <input class="custom-radio" type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
+            <label for={{idOfElements.idSortRise}}>По возврастанию</label>
 
-            <input type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
-            <label for="sortlow">По убыванию</label>
+            <input class="custom-radio" type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
+            <label for={{idOfElements.idSortLow}}>По убыванию</label>
         </div>
 
         <span class="drop__sec" (click)="openMenu(idOfElements.idDropFiltr)">Фильтровать</span><br>
         <div id = {{idOfElements.idDropFiltr}} class = "drop-filter">
-            <input id = {{idOfElements.idFilterEven}} type="checkbox" value="even">Четные даты<Br>
-            <input id = {{idOfElements.idFilterOdd}} type="checkbox" value="odd">Нечетные даты<Br> 
+            <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterEven}} name="evendate" value="even">
+            <label for={{idOfElements.idFilterEven}}>Четные даты</label>
+
+            <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterOdd}} name="odddate" value="odd">
+            <label for={{idOfElements.idFilterOdd}}>Нечетные даты</label>
         </div>
         
         <span id ="delete__span" class="drop__sec" (click)="dataService.deleteSection(id)">Удалить</span><br>

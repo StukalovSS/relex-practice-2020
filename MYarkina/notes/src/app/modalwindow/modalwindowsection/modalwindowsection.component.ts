@@ -6,37 +6,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './modalwindowsection.component.html',
   styleUrls: ['./modalwindowsection.component.scss']
 })
-/**
- * Класс модальное окно для создания новой секции.
- */
 export class ModalwindowsectionComponent implements OnInit {
-  
+
+  @Output() output = new EventEmitter();
   @Input() nameSection;
   @Input() formStatus;
-
-  /**
-   * Форма для создания новой секции.
-   */
-  form:FormGroup;
-  private createForm(name:string) {
+  form: FormGroup;
+  private createForm(name: string): void{
     this.form = new FormGroup({
-      'name': new FormControl(name,Validators.required)
-    })
+      name: new FormControl(name, Validators.required)
+    });
   }
 
   ngOnInit(): void {
     this.createForm(this.nameSection);
   }
 
-  /**
-   * Родительскому компоненту передается информация о отредактированной или новой секции 
-   */
-  @Output() output = new EventEmitter();
-  clickOnFormStatus(form){
+  clickOnFormStatus(form): void{
     this.output.emit(form);
   }
 
-  closeForm(){
+  closeForm(): void{
     this.output.emit(false);
   }
 

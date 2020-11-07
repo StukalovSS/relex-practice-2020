@@ -6,6 +6,7 @@ import { ContainerComponent } from './container/container.component';
 import { DataService } from './data.service';
 import { ModalwindowModule } from './modalwindow/modalwindow.module';
 import { SectionModule } from './section/section.module';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SectionModule } from './section/section.module';
     BrowserModule,
     FontAwesomeModule,
     ModalwindowModule,
-    SectionModule 
+    SectionModule,
+    RouterModule.forRoot([])
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

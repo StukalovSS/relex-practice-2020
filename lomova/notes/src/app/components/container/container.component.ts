@@ -15,18 +15,13 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
  */
 export class ContainerComponent implements OnInit {
   iconPlus = faPlus;
-
   sections: ISection[] = [];
-  sectionId = 0;
-
   @ViewChild('modalForSection', { read: ViewContainerRef }) container;
 
   constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) {}
 
   ngOnInit(): void {
-    this.dataService.getAllSections().subscribe(value => {
-      this.sections = value;
-    });
+    this.update();
   }
 
    /**
@@ -37,21 +32,22 @@ export class ContainerComponent implements OnInit {
     const modalFactory = this.resolver.resolveComponentFactory(ModalSectionComponent);
     const component = this.container.createComponent(modalFactory);
 
-    component.instance.idSection = this.sectionId++;
     component.instance.rename = false;
     component.instance.closeModal.subscribe( () => {
       this.container.clear();
     });
     component.instance.submitForm.subscribe( () => {
       this.container.clear();
-      this.dataService.getAllSections().subscribe(value => {
-        this.sections = value;
-      });
+      this.update();
     });
   }
 
   removeSection(id: number): void {
     this.dataService.removeSection(id);
+    this.update();
+  }
+
+  private update(): void {
     this.dataService.getAllSections().subscribe(value => {
       this.sections = value;
     });

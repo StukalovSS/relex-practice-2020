@@ -1,4 +1,4 @@
-<app-section *ngFor="let item of array" (changeNameSection)= "openForm($event,'Изменить')" (newNote) = "addNewNote($event)" (deleteNote) = "dataService.deleteNote($event)" [id] = "item.id" [name] = "item.name">
+<app-section *ngFor="let item of array" (changeNameSection)= "openForm($event,'Изменить')" (newNote) = "addNewNote($event)" [id] = "item.id" [name] = "item.name">
 </app-section>
 
 <button class = "button__newsection" (click)= "openForm(null,'Добавить')">
