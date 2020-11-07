@@ -1,6 +1,7 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import '@angular/platform-browser-dynamic';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { DataService } from '../data.service';
 import { ModalwindowsectionComponent } from '../modalwindow/modalwindowsection/modalwindowsection.component';
 import { INote } from './note.interface';
@@ -15,6 +16,8 @@ export class ContainerComponent implements OnInit {
 
   array;
   faPlus = faPlus;
+  faEllipsisV = faEllipsisV;
+
   @ViewChild('modalWindowContainer', { read: ViewContainerRef }) container;
   componentRef: ComponentRef<any>;
   constructor(private resolver: ComponentFactoryResolver, public dataService: DataService) {}
@@ -23,6 +26,10 @@ export class ContainerComponent implements OnInit {
     this.update();
   }
 
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.array, event.previousIndex, event.currentIndex);
+    this.dataService.updateLocalStorage();
+  }
 
   openForm(idSection, formStatus): void{
     this.container.clear();

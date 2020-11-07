@@ -27,7 +27,6 @@ export class SectionComponent implements OnInit, ISection, AfterViewInit {
 
   color =  `$header-background-color`;
   faCogs = faCogs;
-  faEllipsisV = faEllipsisV;
 
   flags = { filterEven: false, filterOdd: false, sortMinToMax: false};
   idOfElements = { idDropSort: '', idDropFiltr: '', idFilterOdd: '', idFilterEven: '', idSortRise: '', idSortLow: '', nameSort: ''};
