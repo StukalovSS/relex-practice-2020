@@ -73,6 +73,17 @@ export class SectionsDataService {
     this.sections.get(sectionId).notes.set(noteId, newNote);
   }
 
+  changeSectionPosition(prevPos: number, nextpos: number): void {
+    const sectsArr = Array.from( this.sections.values() );
+    const prevSect = sectsArr[prevPos];
+    const nextSect = sectsArr[nextpos];
+    const prevId = prevSect.id;
+    prevSect.id = nextSect.id;
+    nextSect.id = prevId;
+    this.sections.set(prevSect.id, prevSect);
+    this.sections.set(nextSect.id, nextSect);
+  }
+
   /**
    * Метод возвращает Map заметок с уникальным id, который создается внутри метода
    */
