@@ -11,7 +11,7 @@
 </div>
 <div class="sections">
     <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes"
-    [id]="section.id" [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)">
+    [id]="section.id" [headerColor]="section.headerColor"  (onDelete)="data.removeSection($event)" cdkDrag>
     </app-section>
     <button class="sections__add-btn">
         <form [formGroup]="sectionHeaderInput" class="sections__form" [ngClass]="{'invisible': invisible}"
