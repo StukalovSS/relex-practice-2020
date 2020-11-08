@@ -44,14 +44,22 @@ export class DataService {
     }
     return array;
   }
+<<<<<<< HEAD
   saveStateOfAppInLocalSt(): void {
+=======
+  private saveStateOfAppInLocalSt(): void {
+>>>>>>> dbb78adf25eb45e79ccfd2df221bf06842197d0a
     localStorage.setItem('sections', JSON.stringify(this.sections));
     localStorage.setItem('sectionId', String(this.sectionId));
     localStorage.setItem('noteId', String(this.noteId));
   }
   private fixDateOfNotes(section: ISection): void {
     section.notes.map(note => {
+<<<<<<< HEAD
       note.noteCreationDate = new Date(Date.parse(String(note.noteCreationDate)));
+=======
+      note.noteCreationDate = new Date(Date.parse(note.noteCreationDate));
+>>>>>>> dbb78adf25eb45e79ccfd2df221bf06842197d0a
     });
   }
   private getStateFromLocalSt(): void {
@@ -64,6 +72,12 @@ export class DataService {
   }
   constructor(private activateRoute: ActivatedRoute) { 
       this.getStateFromLocalSt();
+<<<<<<< HEAD
+=======
+      console.log(localStorage);
+      console.log(this.sections);
+      localStorage.clear();
+>>>>>>> dbb78adf25eb45e79ccfd2df221bf06842197d0a
   }
   getSections(): Observable<ISection[]> {
     return of(this.sections);

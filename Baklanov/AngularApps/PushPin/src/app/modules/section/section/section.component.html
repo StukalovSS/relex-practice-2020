@@ -12,6 +12,7 @@
         <input class="custom-radio" type="radio" name="sort" (change)="notesSorting(true)" [id]="section.id+'rb1'" />
         <label [for]="section.id+'rb1'"></label>
         <fa-icon [icon]="faArrowDown"></fa-icon>
+<<<<<<< HEAD
         <input class="custom-radio" type="radio" name="sort" (change)="notesSorting(false)" [id]="section.id+'rb2'" />
         <label [for]="section.id+'rb2'"></label>
         <input class="custom-checkbox" type="checkbox"  (change)="notesFilter($event, 'even')"
@@ -19,6 +20,13 @@
         <label [for]="section.id+'cb1'">Четные числа</label>
         <input class="custom-checkbox" type="checkbox"  (change)="notesFilter($event, 'odd')" [id]="section.id +'cb2'" />
         <label [for]="section.id+'cb2'">Нечетные числа</label>
+=======
+        <input type ="radio" name="sort" (change) = "notesSorting(false)"/>
+        <br> <label>Четные числа </label>
+        <input type ="checkbox" name="sort" (change) = "notesFilter($event, 'even')" id='even'/>
+        <br> <label>Нечетные числа </label>
+        <input type ="checkbox" name="sort"(change) = "notesFilter($event, 'odd')" id='odd'/>
+>>>>>>> dbb78adf25eb45e79ccfd2df221bf06842197d0a
       </div>
     </form>
     <datalist id="colors">

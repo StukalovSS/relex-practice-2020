@@ -47,7 +47,10 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
       sortingType: 'none'
     };
     this.service.addSection(section);
-    this.router.navigate(['/']);
+    this.router.navigate(['/'], {queryParams: {
+      canInit : true,
+      sectionId : section.id
+    }});
   }
   ngOnInit(): void {
   }

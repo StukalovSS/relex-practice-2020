@@ -26,11 +26,6 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.sectionId = queryParam.sectionId;
-      }
-    );
     // заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.noteForm = formBuilder.group({
       noteHeader: ['Введите название', [Validators.required]],
@@ -54,6 +49,11 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
   ngOnInit(): void {
+    this.querySubscription = this.route.queryParams.subscribe(
+      (queryParam: any) => {
+        this.sectionId = queryParam.sectionId;
+      }
+    );
   }
   ngOnDestroy(): void {
     // отписываемся от Observable чтобы не произошло учетчки памяти
