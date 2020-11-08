@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 <div *ngIf='arrayOfSections.length!=0' class="sections-container" cdkDropList 
 cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
 <app-section *ngFor="let section of arrayOfSections; index as i" [(sectionId)] = "section.id"
  class="dragged-section"cdkDrag></app-section>
-=======
-<div *ngIf = 'arrayOfSections.length >0'>
-<app-section *ngFor="let section of arrayOfSections"[id]="section.id"></app-section>
->>>>>>> dbb78adf25eb45e79ccfd2df221bf06842197d0a
 </div>
 <router-outlet></router-outlet> 
 <div class="new-section-container">

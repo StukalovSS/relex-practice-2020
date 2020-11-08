@@ -1,7 +1,7 @@
 export interface INote {
     noteHeader: string;
     noteContent: string;
-    noteCreationDate: any;
+    noteCreationDate: Date;
     id: number;
     sectionId: number;
 }
