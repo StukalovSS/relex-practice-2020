@@ -6,7 +6,7 @@ $light_grey : #f7f7f7;
 }
 
 :host {
-    height: 100vh;
+    height: calc(100% - 117px);
     margin-left: 65px;
     overflow: auto;
     margin-bottom: 30px;
@@ -23,8 +23,12 @@ $light_grey : #f7f7f7;
 
 .sections {
     display: flex;
-    height: 90%;
-
+    height: calc(100% - 50px);
+    max-width: calc(100% - 130px);
+    &__ellipsis {
+        transform: rotate(90deg);
+        cursor: pointer;
+    }
     &__add-btn {
         background-color: $light_grey;
         margin-bottom: 10px;
@@ -33,6 +37,7 @@ $light_grey : #f7f7f7;
         min-width: 320px;
         height: 100%;
         position: relative;
+        flex-shrink: 0;
         &_plus {
             cursor: pointer;
             color: $dark_grey;

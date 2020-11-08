@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import { Component, Input, OnInit, Output , EventEmitter, ViewChild} from '@angular/core';
 import { ViewContainerRef, ComponentFactoryResolver, ComponentRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +27,6 @@ export class SectionComponent implements OnInit, ISection, AfterViewInit {
 
   color =  `$header-background-color`;
   faCogs = faCogs;
-  faEllipsisV = faEllipsisV;
 
   flags = { filterEven: false, filterOdd: false, sortMinToMax: false};
   idOfElements = { idDropSort: '', idDropFiltr: '', idFilterOdd: '', idFilterEven: '', idSortRise: '', idSortLow: '', nameSort: ''};
@@ -39,7 +39,7 @@ export class SectionComponent implements OnInit, ISection, AfterViewInit {
   filteringSortLow$: Observable<Event>;
   observable$: Observable<any>;
 
-  data;
+  date;
   @ViewChild('modalWindowContainer', { read: ViewContainerRef }) container;
   @Output() changeNameSection = new EventEmitter<number>();
   componentRef: ComponentRef<any>;
@@ -52,6 +52,13 @@ export class SectionComponent implements OnInit, ISection, AfterViewInit {
     );
     this.update();
     this.setIdElements();
+
+    this.routes.queryParams.subscribe(
+      (queryParam: any) => {
+        this.date = queryParam.date;
+        this.urlFunc();
+      }
+    );
   }
 
   ngAfterViewInit(): void {
@@ -83,6 +90,17 @@ export class SectionComponent implements OnInit, ISection, AfterViewInit {
           this.arrayOfNotes = vl;
         }
     );
+  }
+
+  urlFunc(): void{
+    if (this.date){
+      for (let i = 0; i < this.arrayOfNotes.length; i++){
+        if (this.arrayOfNotes[i].date.substr(0, 2) !== this.date){
+          this.arrayOfNotes.splice(i, 1);
+          i = -1;
+        }
+      }
+    }
   }
 
   update(): void{

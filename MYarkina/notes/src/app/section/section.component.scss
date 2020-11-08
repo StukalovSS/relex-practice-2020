@@ -5,7 +5,7 @@
     min-width: 320px;
     border:1px solid $border-color;
     margin-left: 20px;
-    height: 100%;
+    background-color: white;
 } 
 
 :host:not(:last-child){
@@ -20,9 +20,10 @@
     justify-content: space-between;
     align-items: center;
     
-    .icon__faellipse, .icon__facogs{
+    .icon__facogs{
         margin: 7px;
         color: $header-color;
+        cursor: pointer;
     }
     
     .name__section{
@@ -63,13 +64,14 @@
 .notes{
     padding-left: 10px;
     padding-right: 10px;
-    max-height: calc(100%-45px);
-    overflow-y: scroll;
+    max-height: calc(100% - 45px);
+    overflow-y: auto;
     
     .button__newnode{
         margin-top:10px;
         width: 100%;
         height: 40px;
+        cursor: pointer;
     }
     
     .button__txt{

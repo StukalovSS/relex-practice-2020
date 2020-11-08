@@ -7,7 +7,7 @@ import { DataService } from './data.service';
 import { ModalwindowModule } from './modalwindow/modalwindow.module';
 import { SectionModule } from './section/section.module';
 import { RouterModule } from '@angular/router';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { RouterModule } from '@angular/router';
     FontAwesomeModule,
     ModalwindowModule,
     SectionModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    DragDropModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

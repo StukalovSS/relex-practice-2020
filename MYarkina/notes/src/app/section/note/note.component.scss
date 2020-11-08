@@ -46,11 +46,13 @@
     
     .icon__faedit{
         color:$icon-edit-color;
+        cursor: pointer;
     }
     
     .icon__fatrashalt{
         color:$icon-trashalt-color;
         margin: 7px;
+        cursor: pointer;
     }
 }
     
