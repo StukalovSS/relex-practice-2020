@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContainerComponent } from './components/container/container.component';
 import { SectionModule } from './modules/section/section.module';
 import { ModalModule } from './modules/modal/modal.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ModalModule } from './modules/modal/modal.module';
     FormsModule,
     ReactiveFormsModule,
     SectionModule,
-    ModalModule
+    ModalModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent],

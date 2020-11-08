@@ -44,7 +44,7 @@ export class DataService {
     }
     return array;
   }
-  private saveStateOfAppInLocalSt(): void {
+  saveStateOfAppInLocalSt(): void {
     localStorage.setItem('sections', JSON.stringify(this.sections));
     localStorage.setItem('sectionId', String(this.sectionId));
     localStorage.setItem('noteId', String(this.noteId));

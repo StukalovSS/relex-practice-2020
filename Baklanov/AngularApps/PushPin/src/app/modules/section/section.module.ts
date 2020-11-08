@@ -4,13 +4,15 @@ import { SectionComponent } from './section/section.component';
 import { NoteComponent } from './note/note.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [SectionComponent, NoteComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
   ],
   exports: [
     SectionComponent,

@@ -8,6 +8,7 @@ import { DataService } from '../../../services/data.service';
 import { ISection } from './section.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
@@ -58,6 +59,10 @@ export class SectionComponent implements OnInit {
   }
   notesSorting(earlier: boolean): void {
     this.section = this.service.notesSorting(this.section, earlier);
+  }
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.section.notes, event.previousIndex, event.currentIndex);
+    this.service.saveStateOfAppInLocalSt();
   }
   ngOnInit(): void {
     this.section = this.service.getSectionById(this.sectionId);
