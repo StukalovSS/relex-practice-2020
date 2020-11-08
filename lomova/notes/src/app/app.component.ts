@@ -12,5 +12,6 @@ export class AppComponent {
   constructor(private dataService: DataService) {}
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.dataService.sections, event.previousIndex, event.currentIndex);
+    this.dataService.updateLocalStorage();
   }
 }

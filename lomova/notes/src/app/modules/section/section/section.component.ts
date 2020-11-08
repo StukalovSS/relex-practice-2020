@@ -169,5 +169,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
+    this.dataService.updateLocalStorage();
   }
 }
