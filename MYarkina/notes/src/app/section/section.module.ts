@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserModule } from '@angular/platform-browser';
 import { DataService } from '../data.service';
 import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
     CommonModule,
     FontAwesomeModule,
     BrowserModule,
-    ColorPickerModule
+    ColorPickerModule,
+    DragDropModule
   ],
   exports:[NoteComponent,SectionComponent],
   providers: [DataService, ColorPickerService],

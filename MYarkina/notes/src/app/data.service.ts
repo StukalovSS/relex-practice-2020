@@ -30,12 +30,56 @@ export class DataService {
 
   array = JSON.parse(JSON.stringify(this.arrayOfSection));
 
+<<<<<<< HEAD
   findSectionPosById(id:number){
     return this.arrayOfSection.findIndex(section => section.id == id);
   }
 
   findNotePosById(idSection:number,idNote:number){
     return this.arrayOfSection[idSection].arrayOfNotes.findIndex(note => note.id == idNote);
+=======
+  getArrayOfNotes(idSection: number): Observable<INote[]>{
+    return of(JSON.parse(JSON.stringify(this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes)));
+  }
+
+  findSectionPosById(id: number): number{
+    return this.arrayOfSection.findIndex(section => section.id === id);
+  }
+
+  findNotePosById(idSection: number, idNote: number): number{
+    return this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes.findIndex(note => note.id === idNote);
+  }
+
+  checkLocalStorage(): ISection[]{
+    const sec = JSON.parse(window.localStorage.getItem('sections'));
+    return sec;
+  }
+
+  updateLocalStorage(): void {
+    localStorage.setItem('sections', JSON.stringify(this.arrayOfSection));
+  }
+
+  idSection(): number{
+    let max = 0;
+    for (const section of this.arrayOfSection){
+      if (section.id > max){
+        max = section.id;
+      }
+    }
+    return max + 1;
+  }
+
+  idNote(): number{
+    let max = 0;
+    for (const section of this.arrayOfSection){
+      for (const note of section.arrayOfNotes){
+        if (note.id > max){
+          max = note.id;
+        }
+      }
+    }
+    return max + 1;
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
   }
 
   addNewSection(form:FormGroup){
@@ -49,8 +93,13 @@ export class DataService {
 
   addNewNote(newNode:INote){
     this.arrayOfSection = JSON.parse(JSON.stringify(this.array));
+<<<<<<< HEAD
     let pos = this.findSectionPosById(newNode.id);
     newNode.id = this.idNote++;
+=======
+    const pos = this.findSectionPosById(newNode.id);
+    newNode.id = this.idNote();
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     this.arrayOfSection[pos].arrayOfNotes.push(newNode);
     this.array[pos].arrayOfNotes.push(newNode);
   }
@@ -64,6 +113,7 @@ export class DataService {
   deleteSection(id:number){
     this.arrayOfSection.splice(this.findSectionPosById(id),1);
     this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
+<<<<<<< HEAD
   } 
 
     deleteNote(posNote:number,idSection:number){
@@ -90,6 +140,44 @@ export class DataService {
       }
       this.arrayOfSection[posSec].arrayOfNotes[posNote] = newEdit;
       this.array[posSec].arrayOfNotes[posNote] =  newEdit;
+=======
+    this.updateLocalStorage();
+  }
+
+  /**
+   * Метод редактирования заметки.
+   *
+   * @param idNote - уникальный id заметки
+   * @param idSection - уникальный id секции, в которой находится заметка
+   * @param editNote - данные с формы редактирования заметки
+   */
+  editNote(idNote: number, idSection: number, editNote: any): void{
+    const posSec = this.findSectionPosById(idSection);
+    const posNote = this.findNotePosById(idSection, idNote);
+    const newEdit: INote = {
+      id: idNote,
+      name: editNote.value.name,
+      nodeTxt: editNote.value.text,
+      date: editNote.value.date
+    };
+    this.arrayOfSection[posSec].arrayOfNotes[posNote] = newEdit;
+    this.array[posSec].arrayOfNotes[posNote] =  newEdit;
+    this.updateLocalStorage();
+  }
+
+  /**
+   * Метод фильтрации заметок, возвращающий отфильтрованный и сортированныц массив.
+   *
+   * @param array - массив с заметками, которые нужно отфильтровать
+   * @param idSection - уникальный id секции, в которой находится заметка
+   * @param flagOdd - флаг о типе фильтрации
+   * @param flagEven - флаг о типе фильтрации
+   * @param sortMinToMax - флаг для сортировки массива
+   */
+  filterNote(idSection: number, array: INote[], flagOdd: boolean, flagEven: boolean, sortMinToMax: boolean): INote[]{
+    if ((flagEven && flagOdd) || (!flagOdd && !flagEven)){
+      array = JSON.parse(JSON.stringify(this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes));
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     }
 
     
@@ -130,6 +218,7 @@ export class DataService {
     }
 
 
+<<<<<<< HEAD
     /**
      * Метод сортировки заметок, возвращающий сортированный массив.
      * 
@@ -159,6 +248,36 @@ export class DataService {
             array[i+1].date = cur;
             i=-1; 
           }
+=======
+  /**
+   * Метод сортировки заметок, возвращающий сортированный массив.
+   *
+   * @param array - массив с заметками, которые нужно сортировать
+   * @param sortMinToMax - флаг для сортировки массива
+   */
+  sortNote(sortMinToMax: boolean, array: INote[]): INote[]{
+    if (sortMinToMax){
+      for (let i = 0; i < array.length - 1; i++){
+        const date1 = Number(array[i].date.substr(0, 2));
+        const date2 = Number(array[i + 1].date.substr(0, 2));
+        if (date1 > date2){
+          const cur = array[i];
+          array[i] =  array[i + 1];
+          array[i + 1] = cur;
+          i = -1;
+        }
+      }
+    }
+    else{
+      for (let i = 0 ; i < array.length - 1; i++){
+        const date1 = Number(array[i].date.substr(0, 2));
+        const date2 = Number(array[i + 1].date.substr(0, 2));
+        if (date1 < date2){
+          const cur = array[i];
+          array[i] = array[i + 1];
+          array[i + 1] = cur;
+          i = -1;
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
         }
       }  
       return array;

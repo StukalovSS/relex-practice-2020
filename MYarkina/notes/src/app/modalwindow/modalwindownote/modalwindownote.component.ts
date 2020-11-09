@@ -13,6 +13,7 @@ import { INote } from '../../container/note.interface';
  */
 export class ModalwindownoteComponent implements OnInit{
 
+<<<<<<< HEAD
   @Input() note:INote;
 
   /**
@@ -21,6 +22,14 @@ export class ModalwindownoteComponent implements OnInit{
   myForm:FormGroup;
   private createForm(name,text) {
     var today = new DatePipe("en-US").transform(new Date(), "dd.MM.yyyy HH:mm");
+=======
+  @Output() output = new EventEmitter();
+  @Input() note: INote;
+  myForm: FormGroup;
+  statusForm: string;
+  private createForm(name, text): void {
+    const today = new DatePipe('en-US').transform(new Date(), 'dd.MM.yyyy HH:mm');
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     this.myForm = new FormGroup({
       'name': new FormControl(name,Validators.required),
       'text': new FormControl(text,Validators.required),
@@ -29,11 +38,21 @@ export class ModalwindownoteComponent implements OnInit{
   }
 
   ngOnInit(): void {
+<<<<<<< HEAD
     if(this.note){
       this.createForm(this.note.name,this.note.nodeTxt);
     }
     else{
       this.createForm("","");
+=======
+    if (this.note){
+      this.createForm(this.note.name, this.note.nodeTxt);
+      this.statusForm = 'Изменить';
+    }
+    else{
+      this.createForm('', '');
+      this.statusForm = 'Добавить';
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     }
   }
 

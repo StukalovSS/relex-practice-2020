@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 import { Component, Input, OnInit, Output ,EventEmitter, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef, AfterViewInit } from '@angular/core';
 import {faCogs,faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+=======
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit, Output , EventEmitter, ViewChild} from '@angular/core';
+import { ViewContainerRef, ComponentFactoryResolver, ComponentRef, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
 import { fromEvent, merge, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { INote } from '../container/note.interface';
@@ -79,10 +87,33 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     );
   }
 
+<<<<<<< HEAD
   /**
    * Метод, реализующий подписку на данные с массивом заметок.
    */
   update(){
+=======
+
+  drop(event: CdkDragDrop<string[]>): void {
+    const sec = this.dataService.arrayOfSection[this.dataService.findSectionPosById(this.id)];
+    moveItemInArray(this.arrayOfNotes, event.previousIndex, event.currentIndex);
+    sec.arrayOfNotes = this.arrayOfNotes;
+    this.dataService.updateLocalStorage();
+  }
+
+  urlFunc(): void{
+    if (this.date){
+      for (let i = 0; i < this.arrayOfNotes.length; i++){
+        if (this.arrayOfNotes[i].date.substr(0, 2) !== this.date){
+          this.arrayOfNotes.splice(i, 1);
+          i = -1;
+        }
+      }
+    }
+  }
+
+  update(): void{
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     this.dataList$.subscribe(
       (value) => {
         this.arrayOfNotes = value;
@@ -104,7 +135,8 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.container.clear(); 
     const factory = this.resolver.resolveComponentFactory(ModalwindownoteComponent);
     this.componentRef = this.container.createComponent(factory);
-    this.componentRef.instance.note = this.arrayOfNotes[idNote];
+    const sec = this.dataService.arrayOfSection[this.dataService.findSectionPosById(this.id)];
+    this.componentRef.instance.note = sec.arrayOfNotes[this.dataService.findNotePosById(this.id, idNote)];
     this.componentRef.instance.output.subscribe(event => {
       if(event != false){
         if(idNote == null){

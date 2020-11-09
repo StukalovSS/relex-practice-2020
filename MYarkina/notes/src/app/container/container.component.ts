@@ -32,8 +32,13 @@ export class ContainerComponent implements OnInit {
     this.container.clear(); 
     const factory = this.resolver.resolveComponentFactory(ModalwindowsectionComponent);
     this.componentRef = this.container.createComponent(factory);
+<<<<<<< HEAD
     if(idSection){
       this.componentRef.instance.nameSection = this.array[idSection].name;
+=======
+    if (idSection){
+      this.componentRef.instance.nameSection = this.dataService.arrayOfSection[this.dataService.findSectionPosById(idSection)].name;
+>>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     }
     this.componentRef.instance.formStatus = formStatus;
     this.componentRef.instance.output.subscribe(event => {
