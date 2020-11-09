@@ -1,8 +1,11 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { SectionsDataService } from './../sections-data.service';
+import { ISection } from './section.interface';
 
 @Component({
   selector: 'app-container',
@@ -67,5 +70,9 @@ export class ContainerComponent implements OnInit {
         })[0].checked
       }
     });
+  }
+
+  dropSections(e: CdkDragDrop<ISection[]>): void {
+    this.data.changeSectionPosition(e.previousIndex, e.currentIndex);
   }
 }
