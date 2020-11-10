@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group">          
-        <button [disabled]="myForm.invalid" class="btn-form" (click)="addNewNote(myForm)">{{statusForm}}</button>
-        <button class="btn-form" (click)="closeForm()">Закрыть</button>
+        <button id = "add__but" [disabled]="myForm.invalid" class="btn-form" (click)="addNewNote(myForm)">{{statusForm}}</button>
+        <button id = "close__but" class="btn-form" (click)="closeForm()">Закрыть</button>
     </div>
 </form>

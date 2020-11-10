@@ -70,7 +70,7 @@ export class DataService {
   }
 
   idNote(): number{
-    let max = 0;
+    let max = 1000;
     for (const section of this.arrayOfSection){
       for (const note of section.arrayOfNotes){
         if (note.id > max){

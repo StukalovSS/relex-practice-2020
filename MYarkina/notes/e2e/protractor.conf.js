@@ -15,6 +15,10 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
+  suites: {
+    addnewsection: './src/addnewsection/*.e2e-spec.ts',
+    addnewnote: './src/addnewnote/*.e2e-spec.ts'
+  },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',

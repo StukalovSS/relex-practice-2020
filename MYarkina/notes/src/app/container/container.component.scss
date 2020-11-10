@@ -1,6 +1,14 @@
 @import '../color';
 
 :host{
+<<<<<<< HEAD
+=======
+    overflow-y: hidden;
+    height: calc(100% - 100px);
+}
+
+#main-container{
+>>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
     display: flex;
     flex-grow: 1;
 }

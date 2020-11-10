@@ -37,6 +37,7 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   faEllipsisV = faEllipsisV;
 
   flags = { filterEven: false, filterOdd: false, sortMinToMax: false};
+<<<<<<< HEAD
   idOfElements = { idDropSort: '', idDropFiltr: '', idFilterOdd: '', idFilterEven: '', idSortRise: '', idSortLow: '', nameSort: ''};
  
  
@@ -46,6 +47,9 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   filteringSortRise$:Observable<Event>;
   filteringSortLow$:Observable<Event>;
   observable$:Observable<any>;
+=======
+  idOfElements = { idDrop: '',  idDropSort: '', idDropFiltr: '', idFilterOdd: '', idFilterEven: '', idSortRise: '', idSortLow: '', nameSort: ''};
+>>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
 
 
   ngOnInit(): void {
@@ -166,6 +170,7 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.newNote.emit(obj);
     this.update();
   }
+<<<<<<< HEAD
   
   /**
    * Метод, открывающий меню сортировки или фильтрации по переданному id.
@@ -176,6 +181,15 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     }
     else{
       document.getElementById(id).style.display = "block";
+=======
+
+  openMenu(id: string): void{
+    if (document.getElementById(this.idOfElements.idDrop).style.display === 'block'){
+      document.getElementById(this.idOfElements.idDrop).style.display = 'none';
+    }
+    else{
+      document.getElementById(this.idOfElements.idDrop).style.display = 'block';
+>>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
     }
   }
 
@@ -183,6 +197,7 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   changeName(){
     this.changeNameSection.emit(this.id);
     this.openMenu(this.id);
+<<<<<<< HEAD
   } 
   
   /**
@@ -196,6 +211,19 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
     this.idOfElements.idSortLow = "low" + this.id;
     this.idOfElements.idSortRise ="rise" + this.id;
     this.idOfElements.nameSort = "nameSort" + this.id;
+=======
+  }
+
+  setIdElements(): void{
+    this.idOfElements.idDrop = 'drop' + this.id;
+    this.idOfElements.idDropSort = 'menusort' + this.id;
+    this.idOfElements.idDropFiltr = 'menufilter' + this.id;
+    this.idOfElements.idFilterOdd = 'filter' + this.id;
+    this.idOfElements.idFilterEven = 'even' + this.id;
+    this.idOfElements.idSortLow = 'low' + this.id;
+    this.idOfElements.idSortRise = 'rise' + this.id;
+    this.idOfElements.nameSort = 'nameSort' + this.id;
+>>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
   }
 
 }
