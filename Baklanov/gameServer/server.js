@@ -1,56 +1,41 @@
-//const {p5} = require('./node_modules/p5/lib/p5');
-const { json } = require("body-parser");
-//const p5 = require('./node_modules/p5/lib/p5.min.js');
-const { response, request, query } = require("express");
+const { v4: uuidv4 } = require('uuid');
 const express = require("express");
 const app = express();
-app.use(function (require, response,next) {
+const GameState = require('./Objects/gameState');
+app.use(function (require, response, next) {
     let origin = 'http://127.0.0.1/8080/';
-    response.header('Access-Control-Allow-Origin',require.headers.origin);
+    response.header('Access-Control-Allow-Origin', require.headers.origin);
     response.header('Access-Control-Allow-Origin-Methods', 'GET');
     response.header('Access-Control-Allow-Origin-Headers', 'Origin, X-Requested-Width, Content-Type, Accept');
     next();
 });
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-class Circle {
-    constructor(x, y, r) {
-        x = x;
-        y = y;
-        r = r;
-    }
-}
-class Player extends Circle {
-    constructor(x, y, r, name) {
-        super(x, y, r);
-        name = '';
-    }
-}
-class GameState {
-    food = [];
-    init() {
-        this.food = [];
-        for (let i = 0; i < 100; i++) {
-            let height = 927;
-            let width = 1980;
-            let grain = new Circle(random(-height, height), random(-width, width), 20);
-            this.food.push(grain);
-        }
-    }
-}
+const R_PLAYER = 40;
+const height = 927;
+const width = 1980;
+const foodSize = 20;
+const AmountOfFood = 100;
+
+let gameSt = new GameState(width,height);
+gameSt.init(foodSize,AmountOfFood);
 app.get("/get_state", (request, response) => {
-    let state = new GameState;
-    state.init()
-    response.send(JSON.stringify(state));
+    let index = state.players.findIndex(player => player.id == request.query.id);
+    if (index >= 0) {
+        let playerState = new PlayerState;
+        playerState.players = state.players[index];
+        playerState.food = state.food;
+        response.send(JSON.stringify(playerState));
+    }
+    else {
+        response.send(404);
+    }
 });
 app.get("/create_player", (request, response) => {
-    let state = new GameState;
-    state.init()
-    response.send(JSON.stringify(state));
+    let playerId = uuidv4();
+    gameSt.addPlayer(playerId, R_PLAYER);
+    response.send(JSON.stringify(gameSt.players));
 });
-app.listen(3000, function() {
-console.log("сервер запущен");
+app.listen(3000, function () {
+    console.log("сервер запущен");
 });
 // const players =[];
 // const food = [];
