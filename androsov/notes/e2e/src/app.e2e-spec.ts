@@ -85,4 +85,32 @@ describe('Добавление заметок пользователем', () =>
     expect(appModalInput.isDisplayed()).toBeTruthy('Модальное окно не должно исчезнуть.');
     expect(element.all(by.css('app-note')).count()).toBe(notesCount);
   });
+
+  it('Сокрытие модального окна с формой после клика на иконку ”крестик” на модальном окне.', () => {
+    const appModalInput = last.element(by.css('app-modal-input'));
+    appModalInput.element(by.css('.icon')).click();
+    expect(appModalInput.isDisplayed()).toBeFalsy('Модальное окно должна исчезнуть.');
+  });
+
+  it('Добавление новой заметки после заполнения формы и клика на кнопку с надписью “добавить заметку”.', () => {
+    last.element(by.css('.add-btn')).click();
+
+    const appModalInput = last.element(by.css('app-modal-input'));
+    const notesCount = element.all(by.css('app-note')).count();
+
+    appModalInput.element(by.name('header')).sendKeys('note');
+    appModalInput.element(by.name('text')).sendKeys('text');
+    appModalInput.element(by.name('date')).clear();
+    appModalInput.element(by.name('date')).sendKeys('19/11/2020');
+    appModalInput.element(by.css('.form-container__add-btn')).click();
+
+    expect(appModalInput.isDisplayed()).toBeFalsy('Модальное окно должна исчезнуть.');
+    expect(last.element(by.cssContainingText('.text', 'text')).isDisplayed())
+      .toBeTruthy('Новая заметка с надписью "текст" должна быть создана.');
+
+    expect(last.element(by.cssContainingText('span', 'note')).isDisplayed())
+      .toBeTruthy('Новая заметка с именем "note" должна быть создана.');
+
+    expect(element.all(by.css('app-note')).count()).toBe(notesCount.then( n => n + 1 ));
+  });
 });
