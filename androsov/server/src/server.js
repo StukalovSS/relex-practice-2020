@@ -1,9 +1,5 @@
 class Circle {
-    x;
-    y;
-    r;
-
-    constructor(x, y, r) {
+ constructor(x, y, r) {
         this.x = x;
         this.y = y;
         this.r = r; 
@@ -19,9 +15,6 @@ class Circle {
 }
 
 class Vector {
-    x;
-    y;
-
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -78,12 +71,10 @@ class Vector {
 }
 
 class Player extends Circle {
-    id;
-    prevResponceTime = Date.now();
-
     constructor(x, y, id) {
         super(x, y, 36);
         this.id = id;
+        this.prevResponceTime = Date.now();
     }
 
     get distanceFromCentre() {
@@ -95,6 +86,10 @@ class Player extends Circle {
             dist = (Date.now() - this.prevResponceTime) * 0.1;
         this.prevResponceTime = Date.now();
         vect.length = dist;
+        if ((this.x + vect.x > 2000 && vect.x > 0) || (this.x + vect.x < -2000 && vect.x < 0) ||
+        (this.y + vect.y > 2000 && vect.y > 0) || (this.y + vect.y < -2000 && vect.y < 0)) {
+            return;
+        }
         this.x += vect.x;
         this.y += vect.y;
     }
@@ -138,9 +133,7 @@ function random(min, max) {
 }
 
 
-
-import express from "express";
-
+const express = require('express');
 const app = express();
 
 const players = new Map(),
@@ -160,7 +153,6 @@ app.use(function (require, response, next) {
 
 app.get("/get_state", (request, response) => {
     const player = players.get( +request.query.id );
-    
     player.update( +request.query.x, +request.query.y );
     for (let el of food) {
         player.eat(el);
@@ -181,6 +173,7 @@ app.get("/get_state", (request, response) => {
         players: Array.from( players.values() ).filter( obj => obj.id !== player.id )
         .map( obj => {
             obj.id = undefined;
+            obj.prevResponceTime = undefined;
             return obj;
         } ),
         food: food.filter( obj =>  
@@ -188,13 +181,12 @@ app.get("/get_state", (request, response) => {
         )
     });
 
-
     response.send( answer );
 
 });
 
 
-app.get("/new_player", (request, response) => {
+app.get("/new_player", (_request, response) => {
         let player = new Player( random(-2000, 2000), random(-2000, 2000), players.size);
         players.set( players.size, player );
 
@@ -203,6 +195,7 @@ app.get("/new_player", (request, response) => {
             players: Array.from( players.values() ).filter( obj => obj.id !== player.id )
             .map( obj => {
                 obj.id = undefined;
+                obj.prevResponceTime = undefined;
                 return obj;
             } ),
             food: food.filter( obj =>  
@@ -210,7 +203,6 @@ app.get("/new_player", (request, response) => {
             )
         }) );
 });
-
 
 app.listen(3000, function() {
     console.log("Start server");

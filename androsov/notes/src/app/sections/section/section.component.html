@@ -1,5 +1,5 @@
 <div class="header" [ngStyle]="{'background-color': headerColor}">
-    <span class="header__ellipsis">...</span>
+    <ng-content></ng-content>
     <span>{{header}}</span>
     <span>
         <fa-icon [icon]="faCogs" class="header__icon" (click)="changeDropAndDownMenuVisibillity()">
