@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const express = require("express");
 const app = express();
+const PlayerState = require('./Objects/playerState');
 const GameState = require('./Objects/gameState');
 app.use(function (require, response, next) {
     let origin = 'http://127.0.0.1/8080/';
@@ -18,11 +19,12 @@ const AmountOfFood = 100;
 let gameSt = new GameState(width,height);
 gameSt.init(foodSize,AmountOfFood);
 app.get("/get_state", (request, response) => {
-    let index = state.players.findIndex(player => player.id == request.query.id);
-    if (index >= 0) {
+    let player_id = request.query.id;
+    console.log(gameSt.map.get(player_id));
+    if (gameSt.map.get(player_id)) {
         let playerState = new PlayerState;
-        playerState.players = state.players[index];
-        playerState.food = state.food;
+        playerState.players = gameSt.players;
+        playerState.food = gameSt.food;
         response.send(JSON.stringify(playerState));
     }
     else {
