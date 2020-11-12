@@ -15,7 +15,7 @@
     <app-note *ngFor="let note of notes | mapValues" [header]="note.header" [sectionId]="id"
     [date]="note.date"  [content]="note.content" [id]="note.id" (clickOnTrash)="deleteNote($event)">
     </app-note>
-    <button class="add-btn" (click)="changeFormVisibillity()">
+    <button class="add-btn" (click)="changeFormVisibillity()" name="add-btn">
         <fa-icon [icon]="faPlus" class="add-btn__icon icon"></fa-icon>
     </button>
 </div>

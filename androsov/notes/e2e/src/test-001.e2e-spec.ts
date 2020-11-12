@@ -43,7 +43,7 @@ describe('Добавление секции.', () => {
       expect(element(by.name('sections__add-btn_plus')).isDisplayed()).toBeTruthy('Иконка со знаком "плюс" должна появиться.');
     });
 
-    it('Добавление новой секции.', () => {
+    it('Добавление новой секции выполнено успешно.', () => {
       const sectionsCount = element.all(by.tagName('app-section')).count();
       element(by.name('sections__add-btn_plus')).click();
       element(by.name('sections__form_input')).sendKeys('section');

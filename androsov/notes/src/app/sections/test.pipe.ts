@@ -12,7 +12,7 @@ export class TestPipe implements PipeTransform {
     'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
   transform(date: Date): string {
-    return `${('0' + date.getDate()).slice(-2)} ${this.months[date.getMonth()]}
-      ${date.getFullYear()}, ${('0' + date.getHours()).slice(-2)}:${('0' + date.getMonth()).slice(-2)}`;
+    return `${('0' + date.getDate()).slice(-2)} ${this.months[date.getMonth()]}` +
+      ` ${date.getFullYear()}, ${('0' + date.getHours()).slice(-2)}:${('0' + date.getMonth()).slice(-2)}`;
   }
 }
