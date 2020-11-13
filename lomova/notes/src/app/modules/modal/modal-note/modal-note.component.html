@@ -1,0 +1,23 @@
+<div class="modal modal__add-note">
+    <div class="modal__inner">
+        <button class="btn modal__close" type="button" aria-label="Закрыть" (click)="closeModal.emit()">
+            <fa-icon [icon]="iconClose"></fa-icon>
+        </button>
+        <form class="form" [formGroup]="form" novalidate (ngSubmit)="onNote()">
+            <div class="form__item">
+                <label class="form__label" for="note-title">Заголовок</label>
+                <input class="form__input form__title" id="note-title" name="title" formControlName="noteTitle">
+            </div>
+            <div class="form__item">
+                <label class="form__label" for="note-text">Текст заметки</label>
+                <textarea class="form__input form__text" id="note-text" name="text"
+                    formControlName="noteText"></textarea>
+            </div>
+            <div class="form__item">
+                <label class="form__label" for="note-date">Дата</label>
+                <input class="form__input form__date" id="note-date" name="date" formControlName="noteDate">
+            </div>
+            <button class="btn form__add-btn" [disabled]="form.invalid" (click)="onNote()">Добавить</button>
+        </form>
+    </div>
+</div>

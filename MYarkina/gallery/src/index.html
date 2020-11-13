@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Галерея</title>
 </head>
 <body>
     <div id="gallery">
-        <input type="button" id="but" value="Категории">
+        <input type="button" id="butmenu" value="Меню">
+
+        <input type="button" id="butcategory" value="Категории"> 
         <div id="checkdiv">
-        <input type="checkbox" id="check1" name="option2">Summer<Br>
-        <input type="checkbox" id="check2" name="option3">Autumn<Br>
+            <input type="checkbox" id="0" ><label for="0">Summer</label>
+            <input type="checkbox" id="1" ><label for="1">Autumn</label>
         </div>
+
+        <input type="button" id="butadd" value="Добавить картинку">
+
+        <div id="mymodal"> 
+
+                  <input type="file" id="addnew"><Br>
+
+            Выберите категорию картинки<Br>
+            <input id="listcategory" list="category" placeholder="Категории картинок">
+                <datalist id="category">
+                    <option value="autumn"></option>
+                    <option value="summer"></option>
+                </datalist>
+                <Br>
+            <input type="button" id="butsave" value="Сохранить">
+            <input type="button" id="butback" value="Отмена">
+        </div>
+
     </div>
 </body>
 </html>

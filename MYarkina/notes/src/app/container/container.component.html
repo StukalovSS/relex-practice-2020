@@ -1,0 +1,15 @@
+<app-section *ngFor="let item of array" (changeNameSection)= "openForm($event,'Изменить')" (newNote) = "addNewNote($event)" (deleteNote) = "dataService.deleteNote($event)" [id] = "item.id" [name] = "item.name">
+</app-section>
+
+<button class = "button__newsection" (click)= "openForm(null,'Добавить')">
+    <fa-icon class="icon__faplus"  [icon]="faPlus"></fa-icon>
+</button>
+
+<template #modalWindowContainer></template>
+
+
+
+
+
+
+

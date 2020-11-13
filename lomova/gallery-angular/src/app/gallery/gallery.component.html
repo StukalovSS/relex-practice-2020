@@ -1,0 +1,11 @@
+<div id="gallery">
+  <div class="main-image-container">
+    <img class="main-image" (click)="goView()" src={{pathMainImg}} alt="Главное изображение">
+  </div>
+  <app-preview [images]="images" (onChanged)="onChanged($event)" [imgActive]="imgSelect" ></app-preview>
+</div>
+<div>
+  <button class="btn" type="button" (click)="deleteImage()">Удалить выбранное изображение</button><br>
+  <input class="input-file-name" type="text" [(ngModel)]="pathNewImg" placeholder="имя файла">
+  <button class="btn" type="button" (click)="addImage()">Добавить изображение</button>
+</div>

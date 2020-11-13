@@ -1,0 +1,19 @@
+@import 'color';
+
+:host{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+.h1-main{
+    text-align: center;
+    .h1__text{
+        font: {
+            family: fixedsys;
+            weight: 600;
+        }
+        color: $text-color;
+    }
+}

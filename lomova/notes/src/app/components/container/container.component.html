@@ -1,0 +1,7 @@
+<app-section *ngFor="let s of sections" [sectionId]="s.sectionId" (outRemoveSection)="removeSection($event)">
+</app-section>
+<div class="add-section" (click)="addSection()">
+    <fa-icon class="icon icon__plus" [icon]="iconPlus"></fa-icon>
+</div>
+
+<ng-template #modalForSection></ng-template>

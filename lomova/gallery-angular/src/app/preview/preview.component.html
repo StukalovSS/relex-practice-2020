@@ -1,0 +1,4 @@
+<div class="preview">
+    <img class="preview-image" (click)="changeMainImg($event, item, ind)" *ngFor="let item of images; index as ind"
+        [class.image-select]="item == imgActive" src={{item}}>
+</div>

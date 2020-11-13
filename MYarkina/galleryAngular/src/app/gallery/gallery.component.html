@@ -1,0 +1,9 @@
+<router-outlet></router-outlet>
+<div class="for-buttons">
+    <input class="input__buttons" id="new-img-input" type="file">
+    <input class="input__buttons" type="button" value="Добавить" (click)="addImg()">
+    <input class="input__buttons" type="button" value="Удалить" (click)="delImg()">
+</div>
+<div class="for-small-img">
+    <img *ngFor="let item of items;trackBy: trackByFunction ;let i = index;" id = {{i}}  src={{item}} class ="small__img" (click)="curShow($event)">
+</div>

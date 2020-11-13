@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 940px;
+    margin: 0 auto;
+    padding: 0 10px;
+    padding-top: 30px;
+    /* outline: 2px solid greenyellow; */
+}
+
+

@@ -1,0 +1,6 @@
+<div class="main">
+    <img *ngFor="let item of sources" src="{{item}}" alt="" (click)="clickImage($event)">
+</div>
+<input type="text">
+<button (click)="add()">+</button>
+<button (click)="remove()">-</button>
