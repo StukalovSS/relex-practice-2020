@@ -5,6 +5,7 @@ import { NoteComponent } from './note/note.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SectionComponent, NoteComponent],
@@ -12,7 +13,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     CommonModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'ru'
+    })
   ],
   exports: [
     SectionComponent,

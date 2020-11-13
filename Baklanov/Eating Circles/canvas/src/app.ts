@@ -1,95 +1,103 @@
 const p5 = require('../node_modules/p5/lib/p5');
 const http = require('http');
-import { LoaderOptionsPlugin } from 'webpack';
-import {Circle} from './circle';
+import { Circle } from './circle';
+import { LeaderBoard } from './leaderBoard'
 
 const options = {
-    hostname:'127.0.0.1',
+    hostname: '127.0.0.1',
     port: 3000,
     path: '',
-    method :'Get'
+    method: 'Get'
 }
-let player: any;
-let bodyParse :any;
-const food: any = [];
-let obj = {
-    "x": 0,
-    "y" : 0
-};
-function query () {
-    let req = http.request(options, function (response :any) {
-        response.on('data', function (body:any) {
-            let string = new TextDecoder("utf-8").decode(body);
-            console.log("получили   ");
-            bodyParse= JSON.parse(body);
+let leadersBoard: any;
+let playerId: string;
+let width: number;
+let height: number;
+let playerIndex: number;
+let food: any = [];
+let players: any = [];
+let serverPlayers: any = [];
+let serverFood: any = [];
+let zoom: number = 1.8;//1.8
+let newzoom = zoom;
+let serverResp: any;
+let prevR: number;
+function sendData(mx: number, my: number) {
+    options.path = '/get_state?id=' + playerId + '&x=' + mx + '&y=' + my;
+    let req = http.request(options, (res: any) => {
+        res.on('data', (body: any) => {
+            serverResp = JSON.parse(new TextDecoder("utf-8").decode(body));
+            playerIndex = serverResp.playerIndex;
+            serverFood = serverResp.food;
+            serverPlayers = serverResp.players;
         });
-        response.on ('end', function(chunck:any) {
-            console.log('Response ended');
+        res.on('end', () => {
+            console.log('req');
         });
     });
     req.end();
-    return bodyParse;
 }
-let pathforNewPlayer = "/state?player_id =..&mx=..&my=..";
-let zoom: number = 1;
 const sketch = (s: typeof p5) => {
+    let FixedsysFont: any;
+    s.preload = () => {
+        FixedsysFont = s.loadFont('./assets/Fixedsys.ttf');
+        s.loadJSON('http://127.0.0.1:3000/create_player', (response: any) => {
+            playerId = response.playerId;
+            width = response.width;
+            height = response.height;
+
+            s.loadJSON(`http://127.0.0.1:3000/get_state?id=${playerId}&x=${Number.EPSILON}&y=${Number.EPSILON}`, (response: any) => {
+                serverFood = response.food;
+                playerIndex = response.playerIndex;
+                serverPlayers = response.players;
+            })
+        });
+    }
     s.setup = () => {
-        s.createCanvas(window.innerWidth, window.innerHeight);
+        s.createCanvas(width, height);
         s.background(220);
-        player = new Circle(obj.x, obj.y, 36,s);
-        for(let i = 0; i < 100; i++) {
-            let obj = new Circle(s.random(-s.width, s.width), s.random(-s.height, s.height), 7, s);
-            food.push(obj);
-        }
-        options.path =  '/new_player'; 
-        query();
-        options.path =  `/state?player_id =${bodyParse}&mx=${s.mouseX}&my=${s.mouseY}`;
-        query();
+        s.frameRate(64);
+        s.textFont(FixedsysFont);
     }
 
     s.draw = () => {
         s.background(220);
-        s.translate(s.width/2, s.height/2);
-        const newZoom: number = 36 / player.r;
-        zoom = s.lerp(zoom, newZoom, 0.0001);
+        food = [];
+        for (let i = 0; i < serverFood.length; i++) {
+            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s);
+        }
+        players = [];
+        for (let i = 0; i < serverPlayers.length; i++) {
+            players[i] = new Circle(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s);
+        }
+        s.translate(s.width / 2, s.height / 2);
+        if (prevR != serverPlayers[playerIndex].r) {
+            newzoom -= 0.0065;
+        }
+        zoom = s.lerp(zoom, newzoom, 0.1);
         s.scale(zoom);
-
-        s.translate(-player.pos.x, -player.pos.y);
-
-        for(let i = -s.width; i < s.width; i = i + 50) {
+        s.translate(-serverPlayers[playerIndex].x, -serverPlayers[playerIndex].y);
+        for (let i = -s.width; i < s.width; i = i + 50) {
             s.line(i, -s.height, i, s.height);
             s.stroke(126);
         }
-        for(let i = -s.height; i < s.height; i = i + 50) {
+        for (let i = -s.height; i < s.height; i = i + 50) {
             s.line(-s.width, i, s.width, i);
             s.stroke(126);
         }
-        options.path =  `/state?player_id =${bodyParse}&mx=${s.mouseX}&my=${s.mouseY}`;
-        obj = query();
-            // options.path =  '/?x=' + s.mouseX +'&y=' + s.mouseY;
-            // console.log("что посылали   " +options.path);
-            // let req = http.request(options, function (response :any) {
-            //     response.on('data', function (body:any) {
-            //         let string = new TextDecoder("utf-8").decode(body);
-            //         console.log("получили   "+string);
-            //         obj = JSON.parse(body);
-            //     });
-            //     response.on ('end', function(chunck:any) {
-            //         console.log('Response ended');
-            //     });
-            // });
-            // req.end();
-       player.show();
-       player.update(obj.x, obj.y);
 
-        for(let i = food.length - 1; i >= 0; i--) {
+        for (let i = 0; i < food.length; i++) {
             food[i].show();
-            if(player.eats(food[i])) {
-                food.splice(i, 1);
-            }
         }
+        for (let i = players.length - 1; i >= 0; i--) {
+            players[i].show();
+        }
+        leadersBoard = new LeaderBoard('adfs',s);
+        leadersBoard.show(serverPlayers[playerIndex].x+serverPlayers[playerIndex].r,serverPlayers[playerIndex].y);
+        prevR = serverPlayers[playerIndex].r;
+        sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
     }
 
 }
-
+console.log(window.innerHeight, '  ', window.innerWidth);
 const sketchInst = new p5(sketch);

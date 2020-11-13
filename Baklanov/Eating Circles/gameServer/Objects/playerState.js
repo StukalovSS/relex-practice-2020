@@ -1,4 +1,7 @@
 module.exports = class PlayerState {
-    food = [];
-    players =[];
+    constructor(food = [], players = [], playerIndex) {
+        this.food = food;
+        this.players = players;
+        this.playerIndex = playerIndex;
+    }
 }
