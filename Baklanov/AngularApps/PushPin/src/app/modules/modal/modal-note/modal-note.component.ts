@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { INote } from '../../../modules/section/note/note.interface';
+import {TranslateService} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-modal-note',
   templateUrl: './modal-note.component.html',
@@ -19,13 +21,14 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
   noteForm: FormGroup;
   faWindowClose = faWindowClose;
   sectionId: number;
-  title: string;
   private querySubscription: Subscription;
   constructor(
     private formBuilder: FormBuilder, private service: DataService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    translate: TranslateService
   ) {
+    //translate.use('ru');
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         this.sectionId = queryParam.sectionId;
@@ -36,7 +39,6 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
       noteHeader: ['Введите название', [Validators.required]],
       noteContent: ['Напишите текст заметки'],
     });
-    this.title = 'Создание заметки';
   }
   closeModalWindow(): void {
     this.router.navigate(['/']);

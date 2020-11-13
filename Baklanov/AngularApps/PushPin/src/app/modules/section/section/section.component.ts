@@ -34,8 +34,7 @@ export class SectionComponent implements OnInit {
               private router: Router,
               translate: TranslateService) {
 
-  translate.setDefaultLang('ru');
-  translate.use('en');
+  //translate.use('ru');
   }
   addNewNote(): void {
     this.isVisible = false;

@@ -4,9 +4,18 @@
     position: absolute;
     width: 100vw;
     height: 100vh;
-    h1 {
-        text-align: center;
-        font-family: fixedsys, sans-serif;
-        color: $mouse-gray;
+    .title-bar {
+        display: flex;
+        .change-language {
+            font-size: 28pt;
+            margin-left: 20px;
+            color: $gray-olive;
+        }
+        h1 {
+            text-align: center;
+            font-family: fixedsys, sans-serif;
+            color: $mouse-gray;
+            margin-left: 45%;
+        }
     }
 }

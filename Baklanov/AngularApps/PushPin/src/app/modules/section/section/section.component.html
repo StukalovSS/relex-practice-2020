@@ -2,23 +2,22 @@
   <div class="dropdown-container" [ngStyle]="{display: isVisible ? 'flex' : 'none'}">
     <form [formGroup]="sectionForm" novalidate>
       <div class="form-group">
-        <label>{{'Заголовок секции:'| translate}}</label>
+        <label>{{'section.title'| translate}}</label>
         <input class="section-header-input" name="sectionHeader" formControlName="sectionHeader" />
-        <br><label>Цвет секции: </label>
+        <br><label>{{'section.color'| translate}}</label>
         <input class="color-input" type="color" list="colors" formControlName="sectionColor" />
-        <br> <label>Фильтрация:</label>
-        <br><label>По дате: </label>
+        <br> <label>{{'section.filter'| translate}}</label>
+        <br><label>{{'section.byDate'| translate}}</label>
         <fa-icon [icon]="faArrowUp"></fa-icon>
         <input class="custom-radio" type="radio" name="sort" (change)="notesSorting(true)" [id]="section.id+'rb1'" />
         <label [for]="section.id+'rb1'"></label>
         <fa-icon [icon]="faArrowDown"></fa-icon>
         <input class="custom-radio" type="radio" name="sort" (change)="notesSorting(false)" [id]="section.id+'rb2'" />
         <label [for]="section.id+'rb2'"></label>
-        <input class="custom-checkbox" type="checkbox"  (change)="notesFilter($event, 'even')"
-          [id]="section.id+'cb1'" />
-        <label [for]="section.id+'cb1'">Четные числа</label>
-        <input class="custom-checkbox" type="checkbox"  (change)="notesFilter($event, 'odd')" [id]="section.id +'cb2'" />
-        <label [for]="section.id+'cb2'">Нечетные числа</label>
+        <input class="custom-checkbox" type="checkbox" (change)="notesFilter($event, 'even')" [id]="section.id+'cb1'" />
+        <label [for]="section.id+'cb1'">{{'section.even'| translate}}</label>
+        <input class="custom-checkbox" type="checkbox" (change)="notesFilter($event, 'odd')" [id]="section.id +'cb2'" />
+        <label [for]="section.id+'cb2'">{{'section.odd'| translate}}</label>
       </div>
     </form>
     <datalist id="colors">
@@ -33,8 +32,8 @@
 
     </datalist>
     <div class="form-btn-container">
-      <button type="button" class="form-btn-container_edit-btn" (click)="editSection ()">Изменить</button>
-      <button type="button" class="form-btn-container_delete-btn" (click)="deleteSection()">Удалить</button>
+      <button type="button" class="form-btn-container_edit-btn" (click)="editSection ()">{{'section.edit'| translate}}</button>
+      <button type="button" class="form-btn-container_delete-btn" (click)="deleteSection()">{{'section.delete'| translate}}</button>
     </div>
   </div>
   <div class="title-container" [style.background-color]='section.color'>
