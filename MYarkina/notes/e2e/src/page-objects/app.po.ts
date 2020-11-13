@@ -1,18 +1,12 @@
-import { browser, by, element, ElementFinder } from 'protractor';
+import { browser, by, element, ElementArrayFinder, ElementFinder } from 'protractor';
 
 export class AppPage {
   navigateTo(): Promise<unknown> {
     return browser.get(browser.baseUrl) as Promise<unknown>;
   }
 
-  addTestSection(): void{
-    this.getNewSectionButton().click();
-    this.getInputName().sendKeys('Test');
-    this.getAddNewSectionButton().click();
-  }
-
-  getTitleText(): Promise<string> {
-    return element(by.className('h1__text')).getText() as Promise<string>;
+  getFormNewSection(): ElementFinder {
+    return element(by.tagName('app-modalwindowsection'));
   }
 
   getNewSectionButton(): ElementFinder{
@@ -31,11 +25,15 @@ export class AppPage {
     return element(by.id('closeform'));
   }
 
-  getNewSection(): ElementFinder {
-    return element(by.id('1'));
+  getNewSection(): ElementArrayFinder {
+    return element.all(by.tagName('app-section'));
   }
 
-  getNewNodeButton(): ElementFinder {
+  getFormNewNote(): ElementFinder {
+    return element(by.tagName('app-modalwindownote'));
+  }
+
+  getNewNoteButton(): ElementFinder {
     return element(by.className('button__newnode'));
   }
 
@@ -59,8 +57,8 @@ export class AppPage {
     return element(by.id('close__but'));
   }
 
-  getNewNode(): ElementFinder {
-    return element(by.tagName('app-note'));
+  getNewNote(): ElementArrayFinder {
+    return element.all(by.tagName('app-note'));
   }
 
 }

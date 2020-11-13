@@ -184,12 +184,16 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
 =======
 
   openMenu(id: string): void{
-    if (document.getElementById(this.idOfElements.idDrop).style.display === 'block'){
-      document.getElementById(this.idOfElements.idDrop).style.display = 'none';
+    if (document.getElementById(id).style.display === 'block'){
+      document.getElementById(id).style.display = 'none';
     }
     else{
+<<<<<<< HEAD
       document.getElementById(this.idOfElements.idDrop).style.display = 'block';
 >>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
+=======
+      document.getElementById(id).style.display = 'block';
+>>>>>>> Добавлены тесты для сортировки и фильтрации заметок
     }
   }
 

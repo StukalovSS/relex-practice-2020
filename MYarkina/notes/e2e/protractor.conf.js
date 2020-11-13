@@ -16,8 +16,7 @@ exports.config = {
     browserName: 'chrome'
   },
   suites: {
-    addnewsection: './src/addnewsection/*.e2e-spec.ts',
-    addnewnote: './src/addnewnote/*.e2e-spec.ts'
+    tests: './src/tests/*.e2e-spec.ts'
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
