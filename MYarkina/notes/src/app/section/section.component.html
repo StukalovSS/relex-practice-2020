@@ -4,9 +4,10 @@
     
     <fa-icon class="icon__facogs" [icon]="faCogs" (click)="openMenu(idOfElements.idDrop)"></fa-icon>
     <div id = {{idOfElements.idDrop}} class="dropdown-content">
-        <button name = 'Переименовать' class="drop__sec" (click)="changeName()">Переименовать</button><br>
-        <button name = 'Изменить цвет'class="drop__sec" [(colorPicker)] = "color">Изменить цвет</button><br>
+        <button name = 'Переименовать' class="drop__sec" (click)="changeName()">{{ "rename" | translate }}</button><br>
+        <button name = 'Изменить цвет'class="drop__sec" [(colorPicker)] = "color">{{ "changecolor" | translate}}</button><br>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         <span class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">Сортировать</span><br>    
         <div id = {{idOfElements.idDropSort}} class = "drop-sort">
@@ -30,16 +31,32 @@
             <input id = {{idOfElements.idFilterOdd}} type="checkbox" value="odd">Нечетные даты<Br> 
 =======
         <button name = 'Фильтровать' class="drop__sec" (click)="openMenu(idOfElements.idDropFiltr)">Фильтровать</button><br>
+=======
+        <button name = 'Сортировать' class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">{{ "sort" | translate}}</button><br>    
+        <div name = 'Меню сортировки' id = {{idOfElements.idDropSort}} class = "drop-sort">
+            <input class="custom-radio" type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
+            <label for={{idOfElements.idSortRise}}>{{ "ascending" | translate}}</label>
+
+            <input class="custom-radio" type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
+            <label for={{idOfElements.idSortLow}}>{{ "descending" | translate}}</label>
+        </div>
+
+        <button name = 'Фильтровать' class="drop__sec" (click)="openMenu(idOfElements.idDropFiltr)">{{ "filter" | translate}}</button><br>
+>>>>>>> Добавлена возможность выбора языка - русский, английский
         <div name = 'Меню фильтрации' id = {{idOfElements.idDropFiltr}} class = "drop-filter">
             <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterEven}} name="evendate" value="even">
-            <label for={{idOfElements.idFilterEven}}>Четные даты</label>
+            <label for={{idOfElements.idFilterEven}}>{{ "evendates" | translate}}</label>
 
             <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterOdd}} name="odddate" value="odd">
+<<<<<<< HEAD
             <label for={{idOfElements.idFilterOdd}}>Нечетные даты</label>
 >>>>>>> Добавлены тесты для сортировки и фильтрации заметок
+=======
+            <label for={{idOfElements.idFilterOdd}}>{{ "odddates" | translate}}</label>
+>>>>>>> Добавлена возможность выбора языка - русский, английский
         </div>
         
-        <button name = 'Удалить' id ="delete__span" class="drop__sec" (click)="dataService.deleteSection(id)">Удалить</button><br>
+        <button name = 'Удалить' id ="delete__span" class="drop__sec" (click)="dataService.deleteSection(id)">{{ "delete" | translate}}</button><br>
     </div>
 </header>
 

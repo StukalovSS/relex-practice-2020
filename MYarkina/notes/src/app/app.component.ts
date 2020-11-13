@@ -1,4 +1,5 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -7,7 +8,13 @@ import { Component} from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'notes';
-  constructor(){}
+
+  constructor(private translateService: TranslateService){}
+  ngOnInit(): void {
+    this.translateService.setDefaultLang('ru');
+    this.translateService.use('ru');
+  }
+
 }

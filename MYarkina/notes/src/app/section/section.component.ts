@@ -7,7 +7,11 @@ import { Component, Input, OnInit, Output , EventEmitter, ViewChild} from '@angu
 import { ViewContainerRef, ComponentFactoryResolver, ComponentRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faCogs } from '@fortawesome/free-solid-svg-icons';
+<<<<<<< HEAD
 >>>>>>> Добавлена возможность перетаскивание заметок внутри секции
+=======
+import { TranslateService } from '@ngx-translate/core';
+>>>>>>> Добавлена возможность выбора языка - русский, английский
 import { fromEvent, merge, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { INote } from '../container/note.interface';
@@ -30,7 +34,12 @@ export class SectionComponent implements OnInit,ISection,AfterViewInit {
   @Input()name;
   arrayOfNotes:INote[];
 
+<<<<<<< HEAD
   constructor(private resolver: ComponentFactoryResolver,public dataService:DataService) {}
+=======
+  constructor(private resolver: ComponentFactoryResolver, public dataService: DataService, public routes: ActivatedRoute )
+  {}
+>>>>>>> Добавлена возможность выбора языка - русский, английский
 
   color =  `$header-background-color`;
   faCogs = faCogs;
