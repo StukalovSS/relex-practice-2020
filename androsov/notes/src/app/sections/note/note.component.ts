@@ -12,9 +12,11 @@ import { INote } from './../section/note.interface';
 /**
  * Класс отвечает за хранение данных в заметке.
  */
-export class NoteComponent implements OnInit, INote {
-  faEdit = faEdit;
-  faTrashAlt = faTrashAlt;
+export class NoteComponent implements INote {
+  public readonly icons = {
+    faEdit,
+    faTrashAlt
+  };
 
   constructor(public sectServ: SectionsDataService) {
   }
@@ -27,25 +29,21 @@ export class NoteComponent implements OnInit, INote {
 
   @Output() clickOnTrash = new EventEmitter<number>();
 
-  invisibleForm = true;
-
-  ngOnInit(): void {
-  }
+  public invisibleForm = true;
 
   /**
    * В процессе удаления происходит отправка информации о своем удалении родительскому компоненту.
    */
-  delete(): void {
+  public delete(): void {
     this.sectServ.deleteNote(this.sectionId, this.id);
     this.clickOnTrash.emit(this.id);
   }
 
-  changeFormVisibillity(): void {
+  public changeFormVisibillity(): void {
     this.invisibleForm = !this.invisibleForm;
   }
 
-
-  changeNote(e: INote): void {
+  public changeNote(e: INote): void {
     this.changeFormVisibillity();
     this.sectServ.changeNoteContent(this.sectionId, this.id, e);
     this.header = e.header;

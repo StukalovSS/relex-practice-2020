@@ -3,7 +3,7 @@ import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
-import { quickSort } from '../../not-angular-solutions/sorts';
+import { quickSort } from '../../utills/sorts';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -15,8 +15,11 @@ import { ActivatedRoute } from '@angular/router';
  * Класс отвечает за хранение заметок и работу с ними внутри секции.
  */
 export class SectionComponent implements OnInit, ISection {
-  faCogs = faCogs;
-  faPlus = faPlus;
+
+  public readonly icons = {
+    faCogs,
+    faPlus
+  };
 
   constructor(public data: SectionsDataService, private activateRoute: ActivatedRoute) {
   }
@@ -25,15 +28,15 @@ export class SectionComponent implements OnInit, ISection {
   @Input() notes: Map<number, INote>;
   @Input() id: number;
   @Input() headerColor: string;
-  showEven = true;
-  showNotEven = true;
-  sortAscending = true;
-  invisibleForm = true;
-  invisibleDropAndDownMenu = true;
-  invisibleChangeHeader = true;
+  private showEven = true;
+  private showNotEven = true;
+  private sortAscending = true;
+  public invisibleForm = true;
+  public invisibleDropAndDownMenu = true;
+  public invisibleChangeHeader = true;
 
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.activateRoute.queryParams.subscribe( params => {
       if (params.even) {
         this.showEven = params.even === 'true';
@@ -48,16 +51,15 @@ export class SectionComponent implements OnInit, ISection {
     });
   }
 
-
-  changeFormVisibillity(): void {
+  public changeFormVisibillity(): void {
     this.invisibleForm = !this.invisibleForm;
   }
 
-  changeDropAndDownMenuVisibillity(): void {
+  public changeDropAndDownMenuVisibillity(): void {
     this.invisibleDropAndDownMenu = !this.invisibleDropAndDownMenu;
   }
 
-  addNote(note: INote): void {
+  public addNote(note: INote): void {
     this.data.addNote(this.id, note);
     this.changeFormVisibillity();
     this.filterNotes();
@@ -69,7 +71,7 @@ export class SectionComponent implements OnInit, ISection {
    * @param e
    *    Объект, который хранит в себе информацию о выбранных пользователем параметрах фильтрации.
    */
-  filterNotes(e: any = {
+  public filterNotes(e: any = {
     even: this.showEven,
     notEven: this.showNotEven,
     sortAscending: this.sortAscending
@@ -92,7 +94,7 @@ export class SectionComponent implements OnInit, ISection {
     this.notes = map;
   }
 
-  deleteNote(id: number): void {
+  public deleteNote(id: number): void {
     this.notes.delete(id);
   }
 }

@@ -1,5 +1,4 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,11 +16,13 @@ import { ISection } from './section.interface';
  * Класс отвечает за хранение секций.
  */
 export class ContainerComponent implements OnInit {
-  faPlus = faPlus;
-  faTimesCircle = faTimesCircle;
-  invisible = true;
+  public readonly icons = {
+    faPlus,
+    faTimesCircle
+  };
+  public invisible = true;
 
-  sectionHeaderInput: FormGroup;
+  public sectionHeaderInput: FormGroup;
 
   constructor( fb: FormBuilder, public data: SectionsDataService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.sectionHeaderInput = fb.group({
@@ -45,7 +46,7 @@ export class ContainerComponent implements OnInit {
     });
   }
 
-  addSection(): void {
+  public addSection(): void {
     this.data.addSection(this.sectionHeaderInput.value.sectionHeader, []);
     this.changeVisibillity();
   }
@@ -53,14 +54,14 @@ export class ContainerComponent implements OnInit {
   /**
    * Изменение видимости формы.
    */
-  changeVisibillity(): void {
+  public changeVisibillity(): void {
     this.invisible = !this.invisible;
   }
 
   /**
    * Изменение параметров url в зависимости от установленных флагов.
    */
-  changeAllSectionsViewFromat(): void {
+  public changeAllSectionsViewFromat(): void {
     this.router.navigate(['home'], {
       queryParams: {
         even: (document.getElementById('all-sections-even') as HTMLInputElement).checked,
@@ -72,7 +73,7 @@ export class ContainerComponent implements OnInit {
     });
   }
 
-  dropSections(e: CdkDragDrop<ISection[]>): void {
+  public dropSections(e: CdkDragDrop<ISection[]>): void {
     this.data.changeSectionPosition(e.previousIndex, e.currentIndex);
   }
 }

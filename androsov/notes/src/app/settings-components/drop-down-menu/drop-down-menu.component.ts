@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { SectionsDataService } from '../../sections/sections-data.service';
 
@@ -14,7 +14,9 @@ import { SectionsDataService } from '../../sections/sections-data.service';
  * Класс нужен для обработки событий, происходящих в выпадающем меню.
  */
 export class DropDownMenuComponent implements OnInit {
-  faTimesCircle = faTimesCircle;
+  public readonly icons = {
+    faTimesCircle
+  };
 
   @Input() sectionHeader: string;
   @Input() sectionId: number;
@@ -22,12 +24,12 @@ export class DropDownMenuComponent implements OnInit {
   @Output() clickOnClose = new EventEmitter();
   @Output() selectFlag = new EventEmitter<any>();
 
-  inputSectionHeader: FormGroup;
+  public inputSectionHeader: FormGroup;
 
-  invisibleInputSectionHeader = true;
-  showEven = true;
-  showNotEven = true;
-  sortAscending = true;
+  public invisibleInputSectionHeader = true;
+  private showEven = true;
+  private showNotEven = true;
+  private sortAscending = true;
 
   constructor(fb: FormBuilder, public sectServ: SectionsDataService, private activatedRoute: ActivatedRoute) {
     this.inputSectionHeader = fb.group({
@@ -54,14 +56,14 @@ export class DropDownMenuComponent implements OnInit {
   /**
    * Метод удаляет родительский компонент.
    */
-  sendDelete(): void {
+  public sendDelete(): void {
     this.sectServ.removeSection(this.sectionId);
   }
 
   /**
    * Метод переименовывает родительский компонент.
    */
-  sendRename(): void {
+  public sendRename(): void {
     this.changeInputSectinHeaderVisibillity();
     this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
     this.clickOnClose.emit();
@@ -70,7 +72,7 @@ export class DropDownMenuComponent implements OnInit {
   /**
    * Метод отправляет родительскому компоненту информацию о выбранных пользователем флагах.
    */
-  sendFilter(): void {
+  public sendFilter(): void {
     this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
     this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;
     this.sortAscending = (document.getElementById('sort-ascending' + this.sectionId) as HTMLInputElement).checked;
@@ -82,11 +84,11 @@ export class DropDownMenuComponent implements OnInit {
     });
   }
 
-  changeSectionHeaderColor(e: any): void {
+  public changeSectionHeaderColor(e: any): void {
     this.sectServ.changeSectionHeadColor(this.sectionId, e.target.value);
   }
 
-  changeInputSectinHeaderVisibillity(): void {
+  public changeInputSectinHeaderVisibillity(): void {
     this.invisibleInputSectionHeader = !this.invisibleInputSectionHeader;
   }
 }

@@ -20,7 +20,7 @@ export class SectionsDataService {
     });
   }
 
-  getSections(): IterableIterator<ISection> {
+  public getSections(): IterableIterator<ISection> {
     return this.sections.values();
   }
 
@@ -32,11 +32,11 @@ export class SectionsDataService {
    * @param consumer
    *    Функция, которая форматирует массив заметок.
    */
-  getNotes(sectionId: number, consumer: (notes: INote[]) => INote[] = notes => notes): INote[] {
+  public getNotes(sectionId: number, consumer: (notes: INote[]) => INote[] = notes => notes): INote[] {
     return consumer( Array.from( this.sections.get(sectionId).notes.values() ) );
   }
 
-  addSection(name: string, notes: INote[]): void {
+  public addSection(name: string, notes: INote[]): void {
     const id = this.createId();
     this.sections.set(id, {
       header: name,
@@ -46,34 +46,34 @@ export class SectionsDataService {
     });
   }
 
-  removeSection(id: number): void {
+  public removeSection(id: number): void {
     this.sections.delete(id);
   }
 
-  changeSectionName(id: number, newName: string): void {
+  public changeSectionName(id: number, newName: string): void {
     this.sections.get(id).header = newName;
   }
 
-  addNote(sectionId: number, note: INote): void {
+  public addNote(sectionId: number, note: INote): void {
     note.id = this.createId();
     this.sections.get(sectionId).notes.set(note.id, note);
   }
 
-  deleteNote(sectionId: number, noteId: number): void {
+  public deleteNote(sectionId: number, noteId: number): void {
     this.sections.get(sectionId).notes.delete(noteId);
     delete this.sections.get(sectionId).notes[noteId];
   }
 
-  changeSectionHeadColor(sectionId: number, newColor: string): void {
+  public changeSectionHeadColor(sectionId: number, newColor: string): void {
     this.sections.get(sectionId).headerColor = newColor;
   }
 
-  changeNoteContent(sectionId: number, noteId: number, newNote: INote): void {
+  public changeNoteContent(sectionId: number, noteId: number, newNote: INote): void {
     newNote.id = this.sections.get(sectionId).notes.get(noteId).id;
     this.sections.get(sectionId).notes.set(noteId, newNote);
   }
 
-  changeSectionPosition(prevPos: number, nextpos: number): void {
+  public changeSectionPosition(prevPos: number, nextpos: number): void {
     const sectsArr = Array.from( this.sections.values() );
     const prevSect = sectsArr[prevPos];
     const nextSect = sectsArr[nextpos];

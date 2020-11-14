@@ -14,7 +14,7 @@
 <label [for]="'not-even'+sectionId" name="label-not-even">Нечетное число</label>
 <form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
 [ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
-    <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
+    <fa-icon [icon]="icons.faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
     </fa-icon>
     <label class="form__head">Новый заголовок</label>
     <input formControlName="sectionHeader" class="form__input">
