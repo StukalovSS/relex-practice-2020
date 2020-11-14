@@ -1,4 +1,4 @@
-import { by, element, promise, WebElement } from 'protractor';
+import { by, element, promise } from 'protractor';
 
 describe('Сортировка заметок.', () => {
 

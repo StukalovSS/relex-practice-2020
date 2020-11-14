@@ -9,9 +9,9 @@
 <input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()" [id]="'reverse-sort-ascending'+sectionId" class="input-btn__radio">
 <label [for]="'reverse-sort-ascending'+sectionId" name="label-reverse-sort-ascending">Сортировать начиная с самых поздних</label>
 <input type="checkbox" name="isEven" (change)="sendFilter()" [id]="'even'+sectionId" class="input-btn__checkbox" checked>
-<label [for]="'even'+sectionId">Четное число</label>
+<label [for]="'even'+sectionId" name="label-even">Четное число</label>
 <input type="checkbox" name="isNotEven" (change)="sendFilter()" [id]="'not-even'+sectionId" class="input-btn__checkbox" checked>
-<label [for]="'not-even'+sectionId">Нечетное число</label>
+<label [for]="'not-even'+sectionId" name="label-not-even">Нечетное число</label>
 <form [formGroup]="inputSectionHeader" (ngSubmit)="sendRename()" 
 [ngClass]="{'invisible': invisibleInputSectionHeader}" class="form">
     <fa-icon [icon]="faTimesCircle" class="icon__close" (click)="changeInputSectinHeaderVisibillity()">
