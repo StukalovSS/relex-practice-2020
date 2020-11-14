@@ -5,9 +5,9 @@
     <input type="color" class="color-picker__input">
 </p>
 <input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()" [id]="'sort-ascending'+sectionId" class="input-btn__radio" checked>
-<label [for]="'sort-ascending'+sectionId">Сортировать начиная с самых ранних</label>
+<label [for]="'sort-ascending'+sectionId" name="label-sort-ascending">Сортировать начиная с самых ранних</label>
 <input type="radio" [name]="'radio'+sectionId" (change)="sendFilter()" [id]="'reverse-sort-ascending'+sectionId" class="input-btn__radio">
-<label [for]="'reverse-sort-ascending'+sectionId">Сортировать начиная с самых поздних</label>
+<label [for]="'reverse-sort-ascending'+sectionId" name="label-reverse-sort-ascending">Сортировать начиная с самых поздних</label>
 <input type="checkbox" name="isEven" (change)="sendFilter()" [id]="'even'+sectionId" class="input-btn__checkbox" checked>
 <label [for]="'even'+sectionId">Четное число</label>
 <input type="checkbox" name="isNotEven" (change)="sendFilter()" [id]="'not-even'+sectionId" class="input-btn__checkbox" checked>

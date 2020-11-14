@@ -1,4 +1,4 @@
-import { by, element, promise } from 'protractor';
+import { by, element, promise, WebElement } from 'protractor';
 
 describe('Сортировка заметок.', () => {
 
@@ -37,7 +37,15 @@ describe('Сортировка заметок.', () => {
     it('Появление выпадающего меню выполнено успешно.', () => {
         const section = element(by.tagName('app-section'));
         section.element(by.name('header__icon')).click();
-        expect(section.element(by.tagName('app-drop-down-menu')).isDisplayed()).toBeTruthy('Выпадающее меню появилось на странице.');
+        const dropDownMenu = section.element(by.tagName('app-drop-down-menu'));
+
+        expect(dropDownMenu.isDisplayed()).toBeTruthy('Выпадающее меню появилось на странице.');
+
+        expect(dropDownMenu.element(by.name('label-sort-ascending')).isDisplayed())
+            .toBeTruthy('Кнопка сортировки заметок по возрастанию даты присутствует на странице.');
+
+        expect(dropDownMenu.element(by.name('label-reverse-sort-ascending')).isDisplayed())
+            .toBeTruthy('Кнопка сортировки заметок по возрастанию даты в обратном порядке присутствует на странице.');
     });
 
     it('Выпадающее меню скрылось со страницы.', () => {
@@ -62,11 +70,11 @@ describe('Сортировка заметок.', () => {
             ) );
 
         expect((dates as promise.Promise<Date[]>).then( dateArr => {
-            let arrisSorted = true;
+            let arrIsSorted = true;
             for (let i = 1; i < dateArr.length; i++) {
-                arrisSorted = arrisSorted && dateArr[i - 1].getTime() <= dateArr[i].getTime();
+                arrIsSorted = arrIsSorted && dateArr[i - 1].getTime() <= dateArr[i].getTime();
             }
-            return arrisSorted;
+            return arrIsSorted;
         } )).toBeTruthy('Сортировка выполнена успешно.');
     });
 
@@ -78,18 +86,18 @@ describe('Сортировка заметок.', () => {
         const dropDownMenu = section.element(by.tagName('app-drop-down-menu'));
         dropDownMenu.all(by.tagName('label')).get(1).click();
         const dates = section.all(by.tagName('app-note'))
-            .map( note => note.element(by.cssContainingText('span', /[0-2]\d \D\S+ 2020, [0-22]\d:[0-5]\d/)).getText()
+            .map( note => note.element(by.cssContainingText('span', /[0-2]\d [а-я]+ 2020, [0-22]\d:[0-5]\d/)).getText()
                 .then( dateStr => {
                         return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}-${dateStr.slice(0, 2)}`);
                     }
             ) );
 
         expect((dates as promise.Promise<Date[]>).then( dateArr => {
-            let arrisSorted = true;
+            let arrIsSorted = true;
             for (let i = 1; i < dateArr.length; i++) {
-                arrisSorted = arrisSorted && dateArr[i - 1].getTime() >= dateArr[i].getTime();
+                arrIsSorted = arrIsSorted && dateArr[i - 1].getTime() >= dateArr[i].getTime();
             }
-            return arrisSorted;
+            return arrIsSorted;
         } )).toBeTruthy('Сортировка выполнена успешно.');
     });
 });

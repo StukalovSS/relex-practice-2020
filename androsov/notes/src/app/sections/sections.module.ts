@@ -9,6 +9,7 @@ import { MapValuesPipe } from './map-values.pipe';
 import { ContainerComponent } from './container/container.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestPipe } from './test.pipe';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TestPipe } from './test.pipe';
     SetingsComponentsModule,
     FormsModule,
     ReactiveFormsModule,
-    DragDropModule
+    DragDropModule,
+    TranslateModule
   ],
   exports: [
     SectionComponent,

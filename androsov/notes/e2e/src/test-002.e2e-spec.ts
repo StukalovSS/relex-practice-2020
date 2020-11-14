@@ -54,7 +54,7 @@ describe('Добавление заметок.', () => {
       expect(last.element(by.cssContainingText('span', 'note'))?.isPresent())
         .toBeTruthy('Новая заметка с именем "note" должна быть создана.');
 
-      expect(last.element(by.cssContainingText('span', /19 ноября 2020, [0|1|2]\d:[0-5]\d/))?.isPresent())
+      expect(last.element(by.cssContainingText('span', /19 ноября 2020, [0-2]\d:[0-5]\d/))?.isPresent())
         .toBeTruthy('Новая заметка с датой 19.11.2020 далжна быть создана.');
 
       expect(element.all(by.css('app-note')).count()).toBe(notesCount.then( n => n + 1 ));
