@@ -1,9 +1,11 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SectionsDataService } from './../sections-data.service';
 import { ISection } from './section.interface';
 
@@ -16,11 +18,14 @@ import { ISection } from './section.interface';
 /**
  * Класс отвечает за хранение секций.
  */
-export class ContainerComponent implements OnInit {
+export class ContainerComponent implements OnInit, OnDestroy {
     public readonly icons = {
         faPlus,
         faTimesCircle
     };
+
+    private unsubscribe$ = new Subject<void>();
+
     public invisible = true;
     public languagesListInvisible = true;
 
@@ -37,15 +42,15 @@ export class ContainerComponent implements OnInit {
     public ngOnInit(): void {
         this.translator.setDefaultLang('ru');
 
-        this.activatedRoute.params.subscribe(params => {
+        this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
             if (params.lang) {
-                this.translator.use(params.lang);
+                this.setlanguage(params.lang);
             } else {
-                this.translator.use('ru');
+                this.setlanguage('ru');
             }
         });
 
-        this.activatedRoute.queryParams.subscribe(params => {
+        this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
             if (params.even) {
                 (document.getElementById('all-sections-even') as HTMLInputElement).checked = params.even === 'true';
             }
@@ -58,6 +63,11 @@ export class ContainerComponent implements OnInit {
                 })[params['sort-ascending'] === 'true' ? 0 : 1].checked = true;
             }
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     public addSection(): void {
@@ -98,5 +108,21 @@ export class ContainerComponent implements OnInit {
 
     public dropSections(e: CdkDragDrop<ISection[]>): void {
         this.data.changeSectionPosition(e.previousIndex, e.currentIndex);
+    }
+
+    /**
+     * Set language to all application.
+     * @param lang
+     *      Language in short form.
+     *      For example: 'ru', 'en', etc.
+     */
+    private setlanguage(lang: string): void {
+        this.translator.use(lang);
+        Array.from(document.querySelectorAll('input')).filter(el => el.type === 'radio')
+            .forEach(el => {
+                if (el.value === lang) {
+                    el.checked = true;
+                }
+            });
     }
 }

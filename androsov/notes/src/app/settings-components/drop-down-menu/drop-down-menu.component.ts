@@ -1,7 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { SectionsDataService } from '../../sections/sections-data.service';
 
 @Component({
@@ -13,10 +15,12 @@ import { SectionsDataService } from '../../sections/sections-data.service';
 /**
  * Класс нужен для обработки событий, происходящих в выпадающем меню.
  */
-export class DropDownMenuComponent implements OnInit {
+export class DropDownMenuComponent implements OnInit, OnDestroy {
     public readonly icons = {
         faTimesCircle
     };
+
+    private unsubscribe$ = new Subject<void>();
 
     @Input() sectionHeader: string;
     @Input() sectionId: number;
@@ -37,8 +41,8 @@ export class DropDownMenuComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-        this.activatedRoute.queryParams.subscribe(params => {
+    public ngOnInit(): void {
+        this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
             if (params.even) {
                 (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked = params.even === 'true';
             }
@@ -52,6 +56,11 @@ export class DropDownMenuComponent implements OnInit {
                         'sort-ascending' + this.sectionId) as HTMLInputElement).checked = true;
             }
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     /**

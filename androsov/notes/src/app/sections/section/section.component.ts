@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { faCogs, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { INote } from './note.interface';
 import { ISection } from '../container/section.interface';
 import { SectionsDataService } from '../sections-data.service';
 import { quickSort } from '../../utills/sorts';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-section',
@@ -14,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 /**
  * Класс отвечает за хранение заметок и работу с ними внутри секции.
  */
-export class SectionComponent implements OnInit, ISection {
+export class SectionComponent implements OnInit, OnDestroy, ISection {
 
     public readonly icons = {
         faCogs,
@@ -35,9 +37,10 @@ export class SectionComponent implements OnInit, ISection {
     public invisibleDropAndDownMenu = true;
     public invisibleChangeHeader = true;
 
+    private usubscribe$ = new Subject<void>();
 
     public ngOnInit(): void {
-        this.activateRoute.queryParams.subscribe(params => {
+        this.activateRoute.queryParams.pipe(takeUntil(this.usubscribe$)).subscribe(params => {
             if (params.even) {
                 this.showEven = params.even === 'true';
             }
@@ -49,6 +52,11 @@ export class SectionComponent implements OnInit, ISection {
             }
             this.filterNotes();
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.usubscribe$.next();
+        this.usubscribe$.complete();
     }
 
     public changeFormVisibillity(): void {
