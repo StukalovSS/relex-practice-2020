@@ -1,6 +1,5 @@
 import { by, element, ElementFinder } from 'protractor';
 
-
 describe('Фильтрация заметок.', () => {
     let dropDownMenu: ElementFinder;
     let section: ElementFinder;

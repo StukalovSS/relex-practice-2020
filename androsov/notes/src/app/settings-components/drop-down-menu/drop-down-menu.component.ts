@@ -5,90 +5,91 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { SectionsDataService } from '../../sections/sections-data.service';
 
 @Component({
-  selector: 'app-drop-down-menu',
-  templateUrl: './drop-down-menu.component.html',
-  styleUrls: ['./drop-down-menu.component.scss']
+    selector: 'app-drop-down-menu',
+    templateUrl: './drop-down-menu.component.html',
+    styleUrls: ['./drop-down-menu.component.scss']
 })
 
 /**
  * Класс нужен для обработки событий, происходящих в выпадающем меню.
  */
 export class DropDownMenuComponent implements OnInit {
-  public readonly icons = {
-    faTimesCircle
-  };
+    public readonly icons = {
+        faTimesCircle
+    };
 
-  @Input() sectionHeader: string;
-  @Input() sectionId: number;
+    @Input() sectionHeader: string;
+    @Input() sectionId: number;
 
-  @Output() clickOnClose = new EventEmitter();
-  @Output() selectFlag = new EventEmitter<any>();
+    @Output() clickOnClose = new EventEmitter();
+    @Output() selectFlag = new EventEmitter<any>();
 
-  public inputSectionHeader: FormGroup;
+    public inputSectionHeader: FormGroup;
 
-  public invisibleInputSectionHeader = true;
-  private showEven = true;
-  private showNotEven = true;
-  private sortAscending = true;
+    public invisibleInputSectionHeader = true;
+    private showEven = true;
+    private showNotEven = true;
+    private sortAscending = true;
 
-  constructor(fb: FormBuilder, public sectServ: SectionsDataService, private activatedRoute: ActivatedRoute) {
-    this.inputSectionHeader = fb.group({
-      sectionHeader: new FormControl(this.sectionHeader, Validators.required)
-    });
-   }
+    constructor(fb: FormBuilder, public sectServ: SectionsDataService, private activatedRoute: ActivatedRoute) {
+        this.inputSectionHeader = fb.group({
+            sectionHeader: new FormControl(this.sectionHeader, Validators.required)
+        });
+    }
 
-  ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe( params => {
-      if (params.even) {
-        (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked = params.even === 'true';
-      }
-      if (params['not-even']) {
-        this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked = params['not-even'] === 'true';
-      }
-      if (params['sort-ascending']) {
-        (document.
-        getElementById( (params['sort-ascending'] === 'true' ? '' : 'reverse-') +
-        'sort-ascending' + this.sectionId) as HTMLInputElement).checked = true;
-      }
-    });
-  }
+    ngOnInit(): void {
+        this.activatedRoute.queryParams.subscribe(params => {
+            if (params.even) {
+                (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked = params.even === 'true';
+            }
+            if (params['not-even']) {
+                this.showNotEven =
+                    (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked = params['not-even'] === 'true';
+            }
+            if (params['sort-ascending']) {
+                (document.
+                    getElementById((params['sort-ascending'] === 'true' ? '' : 'reverse-') +
+                        'sort-ascending' + this.sectionId) as HTMLInputElement).checked = true;
+            }
+        });
+    }
 
-  /**
-   * Метод удаляет родительский компонент.
-   */
-  public sendDelete(): void {
-    this.sectServ.removeSection(this.sectionId);
-  }
+    /**
+     * Метод удаляет родительский компонент.
+     */
+    public sendDelete(): void {
+        this.sectServ.removeSection(this.sectionId);
+    }
 
-  /**
-   * Метод переименовывает родительский компонент.
-   */
-  public sendRename(): void {
-    this.changeInputSectinHeaderVisibillity();
-    this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
-    this.clickOnClose.emit();
-  }
+    /**
+     * Метод переименовывает родительский компонент.
+     */
+    public sendRename(): void {
+        this.changeInputSectinHeaderVisibillity();
+        this.sectServ.changeSectionName(this.sectionId, this.inputSectionHeader.value.sectionHeader);
+        this.clickOnClose.emit();
+    }
 
-  /**
-   * Метод отправляет родительскому компоненту информацию о выбранных пользователем флагах.
-   */
-  public sendFilter(): void {
-    this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
-    this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;
-    this.sortAscending = (document.getElementById('sort-ascending' + this.sectionId) as HTMLInputElement).checked;
+    /**
+     * Метод отправляет родительскому компоненту информацию о выбранных пользователем флагах.
+     */
+    public sendFilter(): void {
+        this.showEven = (document.getElementById('even' + this.sectionId) as HTMLInputElement).checked;
+        this.showNotEven = (document.getElementById('not-even' + this.sectionId) as HTMLInputElement).checked;
+        this.sortAscending = (document.getElementById('sort-ascending' + this.sectionId) as HTMLInputElement).checked;
 
-    this.selectFlag.emit({
-      even: this.showEven,
-      notEven: this.showNotEven,
-      sortAscending: this.sortAscending
-    });
-  }
+        this.selectFlag.emit({
+            even: this.showEven,
+            notEven: this.showNotEven,
+            sortAscending: this.sortAscending
+        });
+    }
 
-  public changeSectionHeaderColor(e: any): void {
-    this.sectServ.changeSectionHeadColor(this.sectionId, e.target.value);
-  }
+    public changeSectionHeaderColor(e: any): void {
+        this.sectServ.changeSectionHeadColor(this.sectionId, e.target.value);
+    }
 
-  public changeInputSectinHeaderVisibillity(): void {
-    this.invisibleInputSectionHeader = !this.invisibleInputSectionHeader;
-  }
+    public changeInputSectinHeaderVisibillity(): void {
+        this.invisibleInputSectionHeader = !this.invisibleInputSectionHeader;
+    }
 }

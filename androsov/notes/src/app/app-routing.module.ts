@@ -5,11 +5,11 @@ import { ContainerComponent } from './sections/container/container.component';
 const routes: Routes = [{
     path: '**',
     component: ContainerComponent
-  }
+}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

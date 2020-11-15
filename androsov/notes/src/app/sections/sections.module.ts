@@ -9,29 +9,29 @@ import { MapValuesPipe } from './map-values.pipe';
 import { ContainerComponent } from './container/container.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestPipe } from './test.pipe';
-import {TranslateModule} from '@ngx-translate/core';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    SectionComponent,
-    NoteComponent,
-    MapValuesPipe,
-    ContainerComponent,
-    TestPipe
-  ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    SetingsComponentsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DragDropModule,
-    TranslateModule
-  ],
-  exports: [
-    SectionComponent,
-    NoteComponent,
-    ContainerComponent
-  ]
+    declarations: [
+        SectionComponent,
+        NoteComponent,
+        MapValuesPipe,
+        ContainerComponent,
+        TestPipe
+    ],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        SetingsComponentsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        DragDropModule,
+        SharedModule
+    ],
+    exports: [
+        SectionComponent,
+        NoteComponent,
+        ContainerComponent
+    ]
 })
 export class SectionsModule { }
