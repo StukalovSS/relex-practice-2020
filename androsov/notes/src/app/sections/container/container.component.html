@@ -1,13 +1,27 @@
 <div class="buttons">
     <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved"
-    (click)="changeAllSectionsViewFromat()" checked>
+    (click)="changeAllSectionsViewFormat()" checked>
     <span class="buttons_right-moved">{{"SortAscending" | translate}}</span>
-    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()">
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()">
     <span class="buttons_right-moved">{{"ReverseSortAscending" | translate}}</span>
-    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
+    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()" checked>
     <span class="buttons_right-moved">{{'ShowEvenDate' | translate}}</span>
-    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
+    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()" checked>
     <span>{{"ShowNotEvenDate" | translate}}</span>
+    <span class="language" (click)="changeLangListvisibillity()">
+        <span>lang</span>
+        <div class="language__list" [ngClass]="{'invisible': languagesListInvisible}">
+            <div class="language__list_btn">
+                <input type="radio" name="lang" value="ru" (change)="changeLanguage($event)" checked>
+                <label for="lang">ru</label>
+            </div>
+            <div class="language__list_btn" (change)="changeLanguage($event)">
+                <input type="radio" name="lang" value="en">
+                <label for="lang">en</label>
+            </div>
+        </div>
+    </span>
+    
 </div>
 <div class="sections" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropSections($event)">
     <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes" [id]="section.id" 

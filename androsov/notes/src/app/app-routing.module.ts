@@ -3,9 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { ContainerComponent } from './sections/container/container.component';
 
 const routes: Routes = [{
-    path: '**',
-    component: ContainerComponent
-}
+        path: 'home/:lang',
+        component: ContainerComponent
+    },{
+        path: '**',
+        component: ContainerComponent
+    }
 ];
 
 @NgModule({

@@ -22,8 +22,10 @@ export class ContainerComponent implements OnInit {
         faTimesCircle
     };
     public invisible = true;
+    public languagesListInvisible = true;
 
     public sectionHeaderInput: FormGroup;
+    private lang = 'ru';
 
     constructor(fb: FormBuilder, public data: SectionsDataService, private router: Router, private activatedRoute: ActivatedRoute,
                 private translator: TranslateService) {
@@ -34,7 +36,14 @@ export class ContainerComponent implements OnInit {
 
     public ngOnInit(): void {
         this.translator.setDefaultLang('ru');
-        this.translator.use('ru');
+
+        this.activatedRoute.params.subscribe(params => {
+            if (params.lang) {
+                this.translator.use(params.lang);
+            } else {
+                this.translator.use('ru');
+            }
+        });
 
         this.activatedRoute.queryParams.subscribe(params => {
             if (params.even) {
@@ -63,11 +72,15 @@ export class ContainerComponent implements OnInit {
         this.invisible = !this.invisible;
     }
 
+    public changeLangListvisibillity(): void {
+        this.languagesListInvisible = !this.languagesListInvisible;
+    }
+
     /**
      * Изменение параметров url в зависимости от установленных флагов.
      */
-    public changeAllSectionsViewFromat(): void {
-        this.router.navigate(['home'], {
+    public changeAllSectionsViewFormat(): void {
+        this.router.navigate(['home', this.lang], {
             queryParams: {
                 even: (document.getElementById('all-sections-even') as HTMLInputElement).checked,
                 'not-even': (document.getElementById('all-sections-not-even') as HTMLInputElement).checked,
@@ -76,6 +89,11 @@ export class ContainerComponent implements OnInit {
                 })[0].checked
             }
         });
+    }
+
+    public changeLanguage(e: any): void {
+        this.lang = e.target.value;
+        this.changeAllSectionsViewFormat();
     }
 
     public dropSections(e: CdkDragDrop<ISection[]>): void {
