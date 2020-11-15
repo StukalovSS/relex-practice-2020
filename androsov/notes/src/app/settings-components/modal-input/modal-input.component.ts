@@ -21,7 +21,7 @@ export class ModalInputComponent {
     };
     public addNoteForm: FormGroup;
 
-    @Input() textOnButton = 'Добавить заметку';
+    @Input() textOnButton = 'AddNote';
     @Input() sectionId: number;
     @Output() clickOnClose = new EventEmitter();
     @Output() sendNote = new EventEmitter<INote>();
