@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faPlus, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { TranslateService } from '@ngx-translate/core';
 import { SectionsDataService } from './../sections-data.service';
 import { ISection } from './section.interface';
 
@@ -24,13 +25,17 @@ export class ContainerComponent implements OnInit {
 
     public sectionHeaderInput: FormGroup;
 
-    constructor(fb: FormBuilder, public data: SectionsDataService, private router: Router, private activatedRoute: ActivatedRoute) {
+    constructor(fb: FormBuilder, public data: SectionsDataService, private router: Router, private activatedRoute: ActivatedRoute,
+                private translator: TranslateService) {
         this.sectionHeaderInput = fb.group({
             sectionHeader: new FormControl('', Validators.required)
         });
     }
 
     public ngOnInit(): void {
+        this.translator.setDefaultLang('ru');
+        this.translator.use('ru');
+
         this.activatedRoute.queryParams.subscribe(params => {
             if (params.even) {
                 (document.getElementById('all-sections-even') as HTMLInputElement).checked = params.even === 'true';

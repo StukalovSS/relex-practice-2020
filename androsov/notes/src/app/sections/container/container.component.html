@@ -1,13 +1,13 @@
 <div class="buttons">
     <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved"
     (click)="changeAllSectionsViewFromat()" checked>
-    <span class="buttons_right-moved">Сортировать по возрастанию даты</span>
+    <span class="buttons_right-moved">{{"SortAscending" | translate}}</span>
     <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()">
-    <span class="buttons_right-moved">Сортировать по убыванию даты</span>
+    <span class="buttons_right-moved">{{"ReverseSortAscending" | translate}}</span>
     <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
-    <span class="buttons_right-moved">Показывать четные даты</span>
+    <span class="buttons_right-moved">{{'ShowEvenDate' | translate}}</span>
     <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
-    <span>Показывать нечетные даты</span>
+    <span>{{"ShowNotEvenDate" | translate}}</span>
 </div>
 <div class="sections" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropSections($event)">
     <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes" [id]="section.id" 
