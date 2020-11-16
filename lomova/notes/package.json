@@ -23,6 +23,13 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-regular-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
+<<<<<<< HEAD
+=======
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
+    "classlist.js": "^1.1.20150312",
+    "ng-drag-drop": "^5.0.0",
+>>>>>>> Внесены правки
     "ngx-color-picker": "^10.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

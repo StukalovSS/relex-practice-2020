@@ -1,11 +1,19 @@
+<<<<<<< HEAD
+=======
+body {
+  margin: 0;
+}
+
+>>>>>>> Внесены правки
 .btn {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background-color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: transparent;
 }
 
 .icon {
+<<<<<<< HEAD
     font-size: 18px;
 }
 
@@ -19,3 +27,7 @@
     clip: rect(0 0 0 0);
     overflow: hidden;
 } */
+=======
+  font-size: 18px;
+}
+>>>>>>> Внесены правки
