@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoteComponent } from './note/note.component';
-import { SectionComponent } from './section.component';
+import { SectionComponent } from './section/section.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserModule } from '@angular/platform-browser';
 import { DataService } from '../data.service';
@@ -28,7 +28,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DragDropModule,
     HttpClientModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'en',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

@@ -5,10 +5,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ContainerComponent } from './container/container.component';
 import { DataService } from './data.service';
 import { ModalwindowModule } from './modalwindow/modalwindow.module';
+<<<<<<< HEAD
 import { SectionModule } from './section/section.module';
 <<<<<<< HEAD
 
 =======
+=======
+import { SectionModule } from './sectionmodule/section.module';
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -38,7 +42,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DragDropModule,
     HttpClientModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'en',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

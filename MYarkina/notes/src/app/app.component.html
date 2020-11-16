@@ -1,5 +1,10 @@
 <div class="h1-main">
-    <h1 class="h1__text">{{ title | translate }}</h1>
+  <h1 class="h1__text">{{ 'notes' | translate }}
+    <select id = 'lang-select' (change)="changeLang()">
+      <option value = 'en'>{{ 'lang2' | translate }}</option>
+      <option value = 'ru'>{{ 'lang1' | translate }}</option>
+    </select>
+  </h1>
 </div>
 <app-container></app-container>
 

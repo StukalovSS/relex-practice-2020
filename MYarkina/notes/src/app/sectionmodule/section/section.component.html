@@ -1,0 +1,40 @@
+<header class="note-section-header" [style.background] = "color">
+  <ng-content></ng-content>
+  <span class="name__section">{{name}}</span>
+    
+  <fa-icon class="icon__facogs" [icon]="icons[0]" (click)="openMenu(idOfElements.idDrop)"></fa-icon>
+  <div id = {{idOfElements.idDrop}} class="dropdown-content">
+    <button name = 'Переименовать' class="drop__sec" (click)="changeName()">{{ "rename" | translate }}</button><br>
+    <button name = 'Изменить цвет'class="drop__sec" [(colorPicker)] = "color">{{ "changecolor" | translate}}</button><br>
+
+    <button name = 'Сортировать' class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">{{ "sort" | translate}}</button><br>    
+    <div name = 'Меню сортировки' id = {{idOfElements.idDropSort}} class = "drop-sort">
+      <input class="custom-radio" type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
+      <label for={{idOfElements.idSortRise}}>{{ "ascending" | translate}}</label>
+
+      <input class="custom-radio" type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
+      <label for={{idOfElements.idSortLow}}>{{ "descending" | translate}}</label>
+    </div>
+
+    <button name = 'Фильтровать' class="drop__sec" (click)="openMenu(idOfElements.idDropFiltr)">{{ "filter" | translate}}</button><br>
+    <div name = 'Меню фильтрации' id = {{idOfElements.idDropFiltr}} class = "drop-filter">
+      <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterEven}} name="evendate" value="even">
+      <label for={{idOfElements.idFilterEven}}>{{ "evendates" | translate}}</label>
+
+      <input type="checkbox" class="custom-checkbox" id={{idOfElements.idFilterOdd}} name="odddate" value="odd">
+      <label for={{idOfElements.idFilterOdd}}>{{ "odddates" | translate}}</label>
+    </div>
+        
+    <button name = 'Удалить' id ="delete__span" class="drop__sec" (click)="dataService.deleteSection(id)">{{ "delete" | translate}}</button><br>
+  </div>
+</header>
+
+<div cdkDropList class="notes" (cdkDropListDropped)="drop($event)">
+  <app-note cdkDragHandle cdkDrag *ngFor="let item of arrayOfNotes" id = {{item.id}} (doEdit) = "openForm($event)" (doDelete) = "doDelete($event)" [id] = "item.id" [name] = "item.name" [nodeTxt] = "item.nodeTxt" [date] = "item.date">
+  </app-note>
+
+  <button class="button__newnode" (click)= "openForm(null)">
+    <span class="button__txt">+</span>
+  </button>
+</div>
+<template #modalWindowContainer></template>

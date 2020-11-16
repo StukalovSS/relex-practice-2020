@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <app-section *ngFor="let item of array" (changeNameSection)= "openForm($event,'Изменить')" (newNote) = "addNewNote($event)" (deleteNote) = "dataService.deleteNote($event)" [id] = "item.id" [name] = "item.name">
 </app-section>
 
@@ -5,6 +6,17 @@
     <fa-icon class="icon__faplus"  [icon]="faPlus"></fa-icon>
 </button>
 
+=======
+<div id = "main-container" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+  <app-section cdkDrag *ngFor="let item of array" (changeNameSection)= "openForm($event,'change')" (newNote) = "addNewNote($event)" [id] = "item.id" [name] = "item.name">
+    <fa-icon class="icon__faellipse" [icon]="icon[1]" cdkDragHandle></fa-icon>
+  </app-section>
+    
+  <button class = "button__newsection" (click)= "openForm(null,'add')">
+    <fa-icon class="icon__faplus"  [icon]="icon[0]"></fa-icon>
+  </button>
+</div>
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
 <template #modalWindowContainer></template>
 
 

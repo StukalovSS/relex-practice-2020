@@ -9,6 +9,7 @@ import { INote } from '../../container/note.interface';
   styleUrls: ['./modalwindownote.component.scss']
 })
 /**
+<<<<<<< HEAD
  * Класс модальное окно для создания новой заметки
  */
 export class ModalwindownoteComponent implements OnInit{
@@ -25,8 +26,25 @@ export class ModalwindownoteComponent implements OnInit{
 =======
   @Output() output = new EventEmitter();
   @Input() note: INote;
+=======
+ * Класс модальное окно добавления и редактирования заметки.
+ * Содержит форму для добавления или редактирования заметки
+ */
+export class ModalwindownoteComponent implements OnInit{
+
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
   myForm: FormGroup;
   statusForm: string;
+
+  @Input() note: INote;
+
+  @Output() output = new EventEmitter();
+
+  /**
+   * Создание формы для добавления или редактирования заметки
+   * @param name текущее имя заметки. Если заметка новая - null
+   * @param text текущее модержание заметки. Если заметка новая - null
+   */
   private createForm(name, text): void {
     const today = new DatePipe('en-US').transform(new Date(), 'dd.MM.yyyy HH:mm');
 >>>>>>> Добавлена возможность перетаскивание заметок внутри секции
@@ -47,10 +65,11 @@ export class ModalwindownoteComponent implements OnInit{
 =======
     if (this.note){
       this.createForm(this.note.name, this.note.nodeTxt);
-      this.statusForm = 'Изменить';
+      this.statusForm = 'change';
     }
     else{
       this.createForm('', '');
+<<<<<<< HEAD
       this.statusForm = 'Добавить';
 >>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     }
@@ -62,6 +81,24 @@ export class ModalwindownoteComponent implements OnInit{
   }
 
   closeForm(){
+=======
+      this.statusForm = 'add';
+    }
+  }
+
+  /**
+   * Реализует передачу новой заметки родителю.
+   * @param myForm форма, содержащая информаицю о добавляемой заметки.
+   */
+  public addNewNote(myForm): void{
+    this.output.emit(myForm);
+  }
+
+  /**
+   * Закрывает окно.
+   */
+  public closeForm(): void{
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     this.output.emit(false);
   }
   

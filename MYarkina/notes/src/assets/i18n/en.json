@@ -8,5 +8,13 @@
     "filter": "Filter",
     "evendates": "Even dates",
     "odddates": "Odd dates",
-    "delete": "Delete"
+    "delete": "Delete",
+    "lang1": "Russian",
+    "lang2": "English",
+    "name": "Name",
+    "notecontent": "Note content",
+    "date": "Date",
+    "change": "Change",
+    "close": "Close",
+    "add": "Add"
 }
