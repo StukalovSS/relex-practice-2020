@@ -1,4 +1,9 @@
 <div class="main-container">
+  <div class="title-container" [style.background-color]='section.color'>
+    <fa-icon [icon]="faEllipsisV" class="title-container_element"></fa-icon>
+    <div class="title-container_element">{{section.sectionTitle}}</div>
+    <fa-icon [icon]="faCogs" class="title-container_element" (click)="isVisible = isVisible?false : true"></fa-icon>
+  </div>
   <div class="dropdown-container" [ngStyle]="{display: isVisible ? 'flex' : 'none'}">
     <form [formGroup]="sectionForm" novalidate>
       <div class="form-group">
@@ -35,11 +40,6 @@
       <button type="button" class="form-btn-container_edit-btn" (click)="editSection ()">{{'section.edit'| translate}}</button>
       <button type="button" class="form-btn-container_delete-btn" (click)="deleteSection()">{{'section.delete'| translate}}</button>
     </div>
-  </div>
-  <div class="title-container" [style.background-color]='section.color'>
-    <fa-icon [icon]="faEllipsisV" class="title-container_element"></fa-icon>
-    <div class="title-container_element">{{section.sectionTitle}}</div>
-    <fa-icon [icon]="faCogs" class="title-container_element" (click)="isVisible = isVisible?false : true"></fa-icon>
   </div>
   <div class="notes-container" cdkDropList (cdkDropListDropped)="drop($event)">
     <app-note *ngFor="let note of section.notes; let i =index" [(sectionId)]='section.id'

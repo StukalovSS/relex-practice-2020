@@ -10,6 +10,38 @@
         margin-right: 7px;
         margin-bottom: 5px;
         background-color: $smoky-white;
+        &_edit-form {
+            font-size: 12pt;
+            color: $black;
+            font-family: "Fixedsys", monospace;
+            .form-group {
+                textarea {
+                    width: 98%;
+                    font-size: 12pt;
+                    color: $dull-gray;
+                    font-family: "Fixedsys", monospace;
+                }
+                input {
+                    font-size: 12pt;
+                    color: $dull-gray;
+                    font-family: "Fixedsys", monospace;
+                }
+            }
+            .btn-container {
+                display: flex;
+                justify-content: space-between;
+                .btn {
+                    background: none;
+                    border: none;
+                    outline: none;
+                    font-family: "Fixedsys", monospace;
+                    color: $black;
+                    font-size: 16pt;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                }
+            }
+        }
     }
     .content-container {
         display: flex;
@@ -42,7 +74,7 @@
         &_edit {
             margin-left: 80px;
             margin-right: 10px;
-            color:  $light-blue;
+            color: $light-blue;
             font-size: 18pt;
         }
         &_delete {

@@ -10,7 +10,7 @@
             <fa-icon class="info-managing-container_delete" [icon]="faTrashAlt" (click)=deleteNote()></fa-icon>
         </div>
     </div>
-    <form [formGroup]="noteForm" [ngStyle]="{display: isEdit ? 'block' : 'none'}">
+    <form [formGroup]="noteForm" [ngStyle]="{display: isEdit ? 'block' : 'none'}" class="main-container_edit-form">
         <div class="form-group">
             <label>Заголовок заметки: </label>
             <input class="form-control" name="noteHeader" formControlName="noteHeader" />
@@ -22,7 +22,9 @@
         <div class="form-group">
             <input type="datetime-local" formControlName='noteCreationDate' />
         </div>
-        <button type="button" class="modal-window_add-btn" (click) = editNote()>Изменить</button>
-        <button type="button" class="modal-window_add-btn" (click)="isEdit = false">Отмена</button>
+        <div class="btn-container">
+            <button type="button" class="btn" (click)=editNote()>Изменить</button>
+            <button type="button" class="btn" (click)="isEdit = false">Отмена</button>
+        </div>
     </form>
 </div>
