@@ -1,26 +1,27 @@
-import { by, element, promise } from 'protractor';
+import { browser, by, element, promise } from 'protractor';
+import { AppPage } from './app.po';
 
 describe('Сортировка заметок.', () => {
+    const page = new AppPage();
 
     beforeAll(async () => {
         for (let i = 1; i < 20; i++) {
-            const section = element(by.tagName('app-section'));
+            const section = await element(by.tagName('app-section'));
             const note = {
                 header: `note ${i}`,
                 content: 'text',
-                date: `${('0' + Math.floor(1 + Math.random() * 12)).slice(-2)}/
-                    ${('0' + Math.floor(1 + Math.random() * 28)).slice(-2)}/2020`
+                date: `${('0' + Math.floor(1 + Math.random() * 12)).slice(-2)}/${('0' + Math.floor(1 + Math.random() * 28)).slice(-2)}/2020`
             };
 
-            section.element(by.name('add-btn')).click();
-            const appModalInput = section.element(by.name('add-note-form'));
-            appModalInput.element(by.name('header')).clear();
-            appModalInput.element(by.name('header')).sendKeys(note.header);
-            appModalInput.element(by.name('text')).clear();
-            appModalInput.element(by.name('text')).sendKeys(note.content);
-            appModalInput.element(by.name('date')).clear();
-            appModalInput.element(by.name('date')).sendKeys(note.date);
-            appModalInput.element(by.name('form-container__add-btn')).click();
+            await section.element(by.name('add-btn')).click();
+            const appModalInput = await section.element(by.name('add-note-form'));
+            await appModalInput.element(by.name('header')).clear();
+            await appModalInput.element(by.name('header')).sendKeys(note.header);
+            await appModalInput.element(by.name('text')).clear();
+            await appModalInput.element(by.name('text')).sendKeys(note.content);
+            await appModalInput.element(by.name('date')).clear();
+            await appModalInput.element(by.name('date')).sendKeys(note.date);
+            await appModalInput.element(by.name('form-container__add-btn')).click();
 
             // await page.addNoteInSection(element(by.tagName('app-section')), {
             //     header: `note ${i}`,
@@ -65,10 +66,9 @@ describe('Сортировка заметок.', () => {
         const dropDownMenu = section.element(by.tagName('app-drop-down-menu'));
         dropDownMenu.all(by.tagName('label')).get(0).click();
         const dates = section.all(by.tagName('app-note'))
-            .map(note => note.element(by.cssContainingText('span', /[0-2]\d \D\S+ 2020, [0-22]\d:[0-5]\d/)).getText()
+            .map(note => note.element(by.cssContainingText('span', /[0-2]\d [а-я]+ 2020, [0-2]\d:[0-5]\d/)).getText()
                 .then(dateStr => {
-                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}
-                            -${dateStr.slice(0, 2)}`);
+                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}-${dateStr.slice(0, 2)}`);
                 }
                 ));
 
@@ -91,8 +91,7 @@ describe('Сортировка заметок.', () => {
         const dates = section.all(by.tagName('app-note'))
             .map(note => note.element(by.cssContainingText('span', /[0-2]\d [а-я]+ 2020, [0-2]\d:[0-5]\d/)).getText()
                 .then(dateStr => {
-                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}
-                            -${dateStr.slice(0, 2)}`);
+                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}-${dateStr.slice(0, 2)}`);
                 }
                 ));
 

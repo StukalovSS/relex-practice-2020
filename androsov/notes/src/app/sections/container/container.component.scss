@@ -48,7 +48,7 @@ $light_grey : #f7f7f7;
 
 .sections {
     display: flex;
-    height: calc(100% - 50px);
+    height: calc(100% - 30px);
     max-width: calc(100% - 130px);
     &__ellipsis {
         transform: rotate(90deg);

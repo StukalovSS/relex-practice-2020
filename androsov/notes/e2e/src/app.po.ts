@@ -18,7 +18,7 @@ export class AppPage {
      *    Объект, который хранит информацию о имени заметки, тексте внутри нее, и дате. Имеет параметры header, content, date типа String.
      *    date должен быть в виде mm/dd/yyyy
      */
-    async addNoteInSection(section: ElementFinder, note: any): Promise<void> {
+    public async addNoteInSection(section: ElementFinder, note: any): Promise<void> {
         section.element(by.name('add-btn')).click();
         const appModalInput = section.element(by.name('add-note-form'));
         appModalInput.element(by.name('header')).clear();
