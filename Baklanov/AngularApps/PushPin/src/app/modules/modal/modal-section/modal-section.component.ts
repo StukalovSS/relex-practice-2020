@@ -27,11 +27,10 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     translate: TranslateService
   ) {
-    //translate.use('ru');
     this.querySubscription = route.queryParams.subscribe();
     // заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.sectionForm = formBuilder.group({
-      sectionHeader: ['Название секции', [Validators.required]],
+      sectionHeader: [, [Validators.required]],
       sectionColor: ['#add19a', [Validators.required]]
     });
   }

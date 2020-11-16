@@ -1,8 +1,8 @@
 <div class="main-container">
     <div [ngStyle]="{display: isEdit ? 'none' : 'inline'}">
         <div class="content-container">
-            <p class="content-container_note-title"><b>{{note.noteHeader}}</b></p>
-            <p class="content-container_note-text">{{note.noteContent}}</p>
+            <p class="content-container_note-title"><b name="note-header-in-component">{{note.noteHeader}}</b></p>
+            <p class="content-container_note-text" name="note-content-in-component">{{note.noteContent}}</p>
         </div>
         <div class="info-managing-container">
             <p class="info-managing-container_date">{{note.noteCreationDate | date: "dd.MM.yyyy HH:mm"}}</p>

@@ -10,17 +10,17 @@ import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 export class AppComponent {
   faLanguage = faLanguage;
   title = 'PushPin';
-  rusLang = true;
+  lang: string = 'RU';
   constructor(public translate: TranslateService) {
     translate.use('ru');
   }
   changeLang(): void {
-    if (this.rusLang) {
-      this.rusLang = false;
+    if (this.lang == 'RU') {
       this.translate.use('en');
-    } 
+      this.lang = 'EN';
+    }
     else {
-      this.rusLang = true;
+      this.lang = 'RU';
       this.translate.use('ru');
     }
   }

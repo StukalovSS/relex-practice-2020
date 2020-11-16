@@ -1,4 +1,4 @@
-import { ElementFinder, browser, by, element } from 'protractor';
+import { ElementFinder, browser, by, element, ElementArrayFinder } from 'protractor';
 
 export class SectionPage {
     navigateTo(): Promise<unknown> {
@@ -22,11 +22,14 @@ export class SectionPage {
     getModalFormSubmit(): ElementFinder {
         return element(by.name('modal-add-section'));
     }
-    inputSectionTitle(title: string): void {
-        element(by.name('section-header')).clear();
-        element(by.name('section-header')).sendKeys(title);
+    public async inputSectionTitle(title: string): Promise<void> {
+       await this.getInputForSectionTitle().clear();
+       await this.getInputForSectionTitle().sendKeys(title);
     }
-    getValueOfSectionHeader(): any {
-        return element(by.name('section-header')).getAttribute('value');
+    public async getValueOfSectionTitleInp(): Promise<string> {
+        return this.getInputForSectionTitle().getAttribute('value');
+    }
+    getAllSections(): ElementArrayFinder {
+        return element.all(by.tagName('app-section'));
     }
 }

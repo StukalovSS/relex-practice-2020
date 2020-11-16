@@ -49,15 +49,16 @@ export class DataService {
     localStorage.setItem('sectionId', String(this.sectionId));
     localStorage.setItem('noteId', String(this.noteId));
   }
-  private fixDateOfNotes(section: ISection): void {
+  private fixDataOfNotes(section: ISection): void {
     section.notes.map(note => {
       note.noteCreationDate = new Date(Date.parse(String(note.noteCreationDate)));
+      note.sectionId = +note.sectionId;
     });
   }
   private getStateFromLocalSt(): void {
     if (localStorage.getItem('sections')) {
       this.sections = JSON.parse(localStorage.getItem('sections'));
-      this.sections.map(this.fixDateOfNotes);
+      this.sections.map(this.fixDataOfNotes);
       this.noteId = +localStorage.getItem('noteID');
       this.sectionId = +localStorage.getItem('sectionId');
     }
@@ -79,7 +80,7 @@ export class DataService {
   }
   getNote(sectionId: number, noteId: number): INote {
     const section: ISection = this.getSectionById(sectionId);
-    return section.notes.find(note => note.id === noteId);
+    return (section.notes.find(note => note.id === noteId));
 
   }
   addNoteBySectionId(sectionId: number, note: INote): void {

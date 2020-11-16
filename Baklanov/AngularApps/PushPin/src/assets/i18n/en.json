@@ -13,12 +13,15 @@
         "title" : "Section creation",
         "header" : "Section header:",
         "color" : "Section color:",
-        "addBtn" : "Add"
+        "addBtn" : "Add",
+        "headerPlaceholder": "Enter section header"
     },
     "modal-note": {
         "title" : "Note creation",
         "header" :"Note header:",
         "content" : "Note text:",
-        "addBtn" : "Add"
+        "addBtn" : "Add",
+        "headerPlaceholder": "Enter note header",
+        "contentPlaceholder": "Enter note text"
     }
 }

@@ -20,6 +20,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
+    SELENIUM_PROMISE_MANAGER: false,
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
@@ -29,7 +30,7 @@ exports.config = {
     });
     jasmine.getEnv().addReporter(new SpecReporter({
       spec: {
-        displayStacktrace: StacktraceOption.PRETTY
+        displayStacktrace: StacktraceOption.PRETTY,
       }
     }));
   }

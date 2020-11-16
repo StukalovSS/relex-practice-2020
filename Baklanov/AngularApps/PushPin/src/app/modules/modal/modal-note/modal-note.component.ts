@@ -28,7 +28,6 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     translate: TranslateService
   ) {
-    //translate.use('ru');
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         this.sectionId = queryParam.sectionId;
@@ -36,8 +35,8 @@ export class ModalNoteComponent implements OnInit, OnDestroy {
     );
     // заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.noteForm = formBuilder.group({
-      noteHeader: ['Введите название', [Validators.required]],
-      noteContent: ['Напишите текст заметки'],
+      noteHeader: [, [Validators.required]],
+      noteContent: [],
     });
   }
   closeModalWindow(): void {

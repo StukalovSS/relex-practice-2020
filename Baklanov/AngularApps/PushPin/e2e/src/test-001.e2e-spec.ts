@@ -5,7 +5,7 @@ describe('Добавление секции:', () => {
     beforeAll(async () => {
         await page.navigateTo();
     });
-    it('Отображение модального окна', async () => {
+    it('Отображение модального окна типа секция', async () => {
         await page.getModalOpenBtn().click();
         expect(page.getModalForSectionComponent()?.isPresent()).toBeTruthy(
             'Отсутсвие компонента модального окна типа секция'
@@ -25,9 +25,18 @@ describe('Добавление секции:', () => {
             'кнопка отправки формы не отображается'
         );
     });
-    it('Заполнение полей модального окна', async () => {
-        await page.inputSectionTitle('Введите название секции');
-        expect(page.getValueOfSectionHeader()).toEqual(
-            'Введите название секции', 'Введённое название секции не соответствует заданному');
+    it('Закрытие модального окна без добавления секции', async () => {
+        await page.getModalCloseBtn().click();
+        expect(page.getAllSections().count()).toBe(0, 'Количество секций изменилось');
     });
-})
+    it('Добавление секции', async () => {
+        await page.getModalOpenBtn().click();
+        await page.inputSectionTitle('Введите название секции');
+        expect(page.getValueOfSectionTitleInp()).toBe(
+            'Введите название секции', 'Введённое название секции не соответствует');
+        await page.getModalFormSubmit().click();
+        expect(page.getModalForSectionComponent()?.isPresent()).toBeFalsy('Модальное окно закрылось');
+        expect(page.getAllSections().count()).toBe(1, 'Секция не добавилась');
+        expect(page.getAllSections().get(0).getText()).toBe('Введите название секции', 'Заголовок не добавился');
+    });
+});
