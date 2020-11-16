@@ -1,4 +1,4 @@
-import { browser, by, element, promise } from 'protractor';
+import { by, element, promise } from 'protractor';
 import { AppPage } from './app.po';
 
 describe('Сортировка заметок.', () => {
@@ -10,7 +10,8 @@ describe('Сортировка заметок.', () => {
             const note = {
                 header: `note ${i}`,
                 content: 'text',
-                date: `${('0' + Math.floor(1 + Math.random() * 12)).slice(-2)}/${('0' + Math.floor(1 + Math.random() * 28)).slice(-2)}/2020`
+                date: `${('0' + Math.floor(1 + Math.random() * 12)).slice(-2)}/` +
+                    `${('0' + Math.floor(1 + Math.random() * 28)).slice(-2)}/2020`
             };
 
             await section.element(by.name('add-btn')).click();
@@ -68,7 +69,8 @@ describe('Сортировка заметок.', () => {
         const dates = section.all(by.tagName('app-note'))
             .map(note => note.element(by.cssContainingText('span', /[0-2]\d [а-я]+ 2020, [0-2]\d:[0-5]\d/)).getText()
                 .then(dateStr => {
-                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}-${dateStr.slice(0, 2)}`);
+                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}` +
+                        `-${dateStr.slice(0, 2)}`);
                 }
                 ));
 
@@ -91,7 +93,8 @@ describe('Сортировка заметок.', () => {
         const dates = section.all(by.tagName('app-note'))
             .map(note => note.element(by.cssContainingText('span', /[0-2]\d [а-я]+ 2020, [0-2]\d:[0-5]\d/)).getText()
                 .then(dateStr => {
-                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}-${dateStr.slice(0, 2)}`);
+                    return new Date(`2020-${('0' + (months.indexOf(dateStr.match(/[а-я]{3}/)[0]) + 1)).slice(-2)}` +
+                        `-${dateStr.slice(0, 2)}`);
                 }
                 ));
 
