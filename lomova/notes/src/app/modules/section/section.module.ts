@@ -7,14 +7,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 import { NoteComponent } from '../section/note/note.component';
-<<<<<<< HEAD
-=======
 import { SectionComponent } from '../section/section/section.component';
 
 const appRoutes: Routes = [
   { path: '', component: SectionComponent }
 ];
->>>>>>> Внесены правки
 
 @NgModule({
   declarations: [
@@ -24,14 +21,10 @@ const appRoutes: Routes = [
   imports: [
     CommonModule,
     FontAwesomeModule,
-<<<<<<< HEAD
-    ColorPickerModule
-=======
     ColorPickerModule,
     RouterModule.forRoot(appRoutes),
     DragDropModule,
     TranslateModule
->>>>>>> Внесены правки
   ],
   exports: [
     SectionComponent,
