@@ -4,7 +4,7 @@ import { ModalSectionComponent } from './modal-section/modal-section.component';
 import { ModalNoteComponent } from './modal-note/modal-note.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -12,7 +12,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'ru'
+    })
   ],
   exports: [
     ModalSectionComponent,

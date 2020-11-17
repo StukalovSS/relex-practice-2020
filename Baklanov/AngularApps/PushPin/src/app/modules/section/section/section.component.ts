@@ -9,6 +9,8 @@ import { ISection } from './section.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {TranslateService} from '@ngx-translate/core';
+
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
@@ -27,7 +29,11 @@ export class SectionComponent implements OnInit {
   section: ISection;
   isVisible = false;
   sectionForm: FormGroup;
-  constructor(private service: DataService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private service: DataService,
+              private formBuilder: FormBuilder,
+              private router: Router,
+              translate: TranslateService) {
+
   }
   addNewNote(): void {
     this.isVisible = false;

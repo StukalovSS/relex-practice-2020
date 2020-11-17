@@ -1,4 +1,5 @@
 @import '../../../colors.scss';
+<<<<<<< HEAD
 
 .notes__item {
     display: flex;
@@ -10,30 +11,43 @@
     font-size: 12px;
     color: $main-text;
     background-color: $background-note;
+=======
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 122px;
+  margin-bottom: 10px;
+  padding: 15px 9px 7px 9px;
+  border: 1px solid $black;
+  font-size: 12px;
+  color: $main-text;
+  background-color: $background-note;
+>>>>>>> Внесены правки
 }
 
 .note__title {
-    margin: 0 0 15px 6px;
-    font-size: 18px;
-    color: $black;
+  margin: 0 0 15px 6px;
+  font-size: 18px;
+  color: $black;
 }
 
 .note__content {
-    margin: 0;
-    height: 100%;
-    text-align: left;
+  margin: 0;
+  height: 100%;
+  text-align: left;
 }
 
 .notes__bottom {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .note__date {
-    margin: 0;
+  margin: 0;
 }
 
 .icon__edit {
+<<<<<<< HEAD
     stroke: $edit-icon;
     color: $edit-icon;
     .note__edit:hover &{
@@ -49,4 +63,21 @@
         stroke: $trash-icon-hover;
         color: $trash-icon-hover;
     }
+=======
+  stroke: $edit-icon;
+  color: $edit-icon;
+  .note__edit:hover & {
+    stroke: $edit-icon-hover;
+    color: $edit-icon-hover;
+  }
+}
+
+.icon__trash {
+  stroke: $trash-icon;
+  color: $trash-icon;
+  .note__delete:hover & {
+    stroke: $trash-icon-hover;
+    color: $trash-icon-hover;
+  }
+>>>>>>> Внесены правки
 }

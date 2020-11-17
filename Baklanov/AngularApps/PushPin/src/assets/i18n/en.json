@@ -1,0 +1,27 @@
+{
+    "section": {
+        "title": "Section header:",
+        "color": "Section color:",
+        "filter": "Filtration:",
+        "byDate": "By date:",
+        "even": "Even numbers",
+        "odd": "Odd numbers",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "modal-section": {
+        "title" : "Section creation",
+        "header" : "Section header:",
+        "color" : "Section color:",
+        "addBtn" : "Add",
+        "headerPlaceholder": "Enter section header"
+    },
+    "modal-note": {
+        "title" : "Note creation",
+        "header" :"Note header:",
+        "content" : "Note text:",
+        "addBtn" : "Add",
+        "headerPlaceholder": "Enter note header",
+        "contentPlaceholder": "Enter note text"
+    }
+}

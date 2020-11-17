@@ -6,6 +6,7 @@ import { DataService } from '../../../services/data.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-modal-section',
@@ -19,20 +20,19 @@ export class ModalSectionComponent implements OnInit, OnDestroy {
   sectionForm: FormGroup;
   noteForm: FormGroup;
   faWindowClose = faWindowClose;
-  title: string;
   private querySubscription: Subscription;
   constructor(
     private formBuilder: FormBuilder, private service: DataService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    translate: TranslateService
   ) {
     this.querySubscription = route.queryParams.subscribe();
     // заполняем поля формы значениями по умолчанию, чтобы пользователь понял что от него требуют
     this.sectionForm = formBuilder.group({
-      sectionHeader: ['Название секции', [Validators.required]],
+      sectionHeader: [, [Validators.required]],
       sectionColor: ['#add19a', [Validators.required]]
     });
-    this.title = 'Создание секции';
   }
   closeModalWindow(): void {
     this.router.navigate(['/']);

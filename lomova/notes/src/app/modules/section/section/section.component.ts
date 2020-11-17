@@ -1,52 +1,93 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewContainerRef, ViewChild, ComponentFactoryResolver, AfterViewInit } from '@angular/core';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ComponentFactoryResolver,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { faCogs, faEllipsisV, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { TranslateService } from '@ngx-translate/core';
+import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
-import { faCogs } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
-import { title } from 'process';
-import { INote } from '../note/inote';
 import { DataService } from '../../../services/data.service';
+import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component';
+import { ModalSectionComponent } from '../../modal/modal-section/modal-section.component';
+import { INote } from '../note/inote';
 import { ISection } from './isection';
 
-import { ModalSectionComponent } from '../../modal/modal-section/modal-section.component';
-import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component';
-
+<<<<<<< HEAD
 import { Observable, fromEvent, merge } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 
 /**
  * Класс компонента секции.
  */
+=======
+
+>>>>>>> Внесены правки
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })
 export class SectionComponent implements OnInit, AfterViewInit {
-  iconProperty = faEllipsisV;
-  iconCogs = faCogs;
-  iconPlus = faPlus;
-  color = '#9786bd';
+  public icons = {
+    plus: faPlus,
+    cogs: faCogs,
+    points: faEllipsisV
+  };
+  public color = '#9786bd';
 
   @Input() sectionId: number;
+<<<<<<< HEAD
   currSection: ISection;
   notes: INote[] = [];
   idNote = 0;
+=======
+>>>>>>> Внесены правки
 
-  idInputs = { filterEven: '', filterUneven: '', sortOld: '', sortNew: '' };
+  public currSection: ISection;
+  public notes: INote[] = [];
+  public idInputs = { filterEven: '', filterUneven: '', sortOld: '', sortNew: '' };
 
-  even = false;
-  uneven = false;
-  sortMinToMax = true;
-  notes$: Observable<INote[]>;
-  mergeEvents$: Observable<any>;
+  private even = false;
+  private uneven = false;
+  private sortMinToMax = true;
 
+<<<<<<< HEAD
   @Output() outRemoveSection = new EventEmitter<number>();
   @ViewChild('modalForSection', { read: ViewContainerRef }) containerSection;
   @ViewChild('modalForNote', { read: ViewContainerRef }) containerNote;
 
   constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) { }
+=======
+  private notes$: Observable<INote[]>;
+  private mergeEvents$: Observable<any>;
+  private querySubscription: Subscription;
+  private dateParam: string;
+
+  @Output() outDeleteSection = new EventEmitter<number>();
+  @ViewChild('modalForSection', { read: ViewContainerRef }) containerSection;
+  @ViewChild('modalForNote', { read: ViewContainerRef }) containerNote;
+
+  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver, private route: ActivatedRoute,
+              private translate: TranslateService) {
+    this.querySubscription = route.queryParams.subscribe(
+      (queryParam: any) => {
+        this.dateParam = queryParam.date;
+        this.urlDate();
+      }
+    );
+  }
+>>>>>>> Внесены правки
 
   ngOnInit(): void {
     this.currSection = this.dataService.getSection(this.sectionId);
@@ -70,18 +111,42 @@ export class SectionComponent implements OnInit, AfterViewInit {
     );
     this.mergeEvents$.pipe(
       switchMap(
-        (combine: any) => {
+        (value: any) => {
           return this.notes$;
         }
       )
     ).subscribe(
       (value: INote[]) => {
         this.notes = value;
+<<<<<<< HEAD
+=======
+        console.log(this.notes);
+        this.urlDate();
       }
     );
   }
 
-  setIdInputs(): void {
+  private urlDate(): void {
+    if (this.dateParam) {
+      const day = this.dateParam.substring(0, 2);
+      const month = this.dateParam.substring(3, 5);
+      const year = this.dateParam.substring(6, 10);
+      this.notes = this.notes.filter(n =>
+        n.noteDate.getDate() === +day && n.noteDate.getMonth() + 1 === +month && n.noteDate.getFullYear() === +year);
+    }
+  }
+
+  private update(): void {
+    this.notes$.subscribe(
+      (value: INote[]) => {
+        this.notes = value;
+        this.urlDate();
+>>>>>>> Внесены правки
+      }
+    );
+  }
+
+  private setIdInputs(): void {
     this.idInputs.filterEven = 'filter-even-' + this.sectionId;
     this.idInputs.filterUneven = 'filter-uneven-' + this.sectionId;
     this.idInputs.sortOld = 'sort-old-' + this.sectionId;
@@ -91,11 +156,10 @@ export class SectionComponent implements OnInit, AfterViewInit {
   /**
    * Создание динамического компонента модального окна для редактирования секции.
    */
-  renameSection(): void {
+  public renameSection(): void {
     this.containerSection.clear();
     const modalFactorySection = this.resolver.resolveComponentFactory(ModalSectionComponent);
     const s = this.containerSection.createComponent(modalFactorySection);
-
     s.instance.idSection = this.sectionId;
     s.instance.rename = true;
     s.instance.currTitle = this.currSection.sectionTitle;
@@ -107,22 +171,20 @@ export class SectionComponent implements OnInit, AfterViewInit {
     });
   }
 
-  removeSection(): void {
-    this.outRemoveSection.emit(this.currSection.sectionId);
+  public deleteSection(): void {
+    this.outDeleteSection.emit(this.currSection.sectionId);
   }
 
   /**
    * Создание динамического компонента модального окна для добавления заметки.
    */
-  addNote(): void {
+  public addNote(): void {
     this.containerNote.clear();
     const modalFactoryNote = this.resolver.resolveComponentFactory(ModalNoteComponent);
     const n = this.containerNote.createComponent(modalFactoryNote);
-
     n.instance.sectionId = this.sectionId;
     n.instance.noteId = this.idNote++;
     n.instance.edit = false;
-
     n.instance.closeModal.subscribe(() => {
       this.containerNote.clear();
     });
@@ -136,12 +198,29 @@ export class SectionComponent implements OnInit, AfterViewInit {
     });
   }
 
-  removeNote(idNote: number): void {
+  public removeNote(idNote: number): void {
     this.dataService.removeNote(this.sectionId, idNote);
+<<<<<<< HEAD
     this.notes$.subscribe(
       (value: INote[]) => {
         this.notes = value;
       }
     );
+=======
+    this.update();
+  }
+
+  public dropNotes(event: CdkDragDrop<string[]>): void {
+    if (event.container.id === event.previousContainer.id) {
+      moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
+    }
+    else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+    this.dataService.updateLocalStorage();
+>>>>>>> Внесены правки
   }
 }
