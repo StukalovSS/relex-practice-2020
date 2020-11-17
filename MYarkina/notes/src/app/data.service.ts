@@ -31,6 +31,7 @@ export class DataService {
   array = JSON.parse(JSON.stringify(this.arrayOfSection));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   findSectionPosById(id:number){
     return this.arrayOfSection.findIndex(section => section.id == id);
   }
@@ -39,27 +40,30 @@ export class DataService {
     return this.arrayOfSection[idSection].arrayOfNotes.findIndex(note => note.id == idNote);
 =======
   getArrayOfNotes(idSection: number): Observable<INote[]>{
+=======
+  public getArrayOfNotes(idSection: number): Observable<INote[]>{
+>>>>>>> Исправлены некоторые ошибки
     return of(JSON.parse(JSON.stringify(this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes)));
   }
 
-  findSectionPosById(id: number): number{
+  public findSectionPosById(id: number): number{
     return this.arrayOfSection.findIndex(section => section.id === id);
   }
 
-  findNotePosById(idSection: number, idNote: number): number{
+  public findNotePosById(idSection: number, idNote: number): number{
     return this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes.findIndex(note => note.id === idNote);
   }
 
-  checkLocalStorage(): ISection[]{
+  public checkLocalStorage(): ISection[]{
     const sec = JSON.parse(window.localStorage.getItem('sections'));
     return sec;
   }
 
-  updateLocalStorage(): void {
+  public updateLocalStorage(): void {
     localStorage.setItem('sections', JSON.stringify(this.arrayOfSection));
   }
 
-  idSection(): number{
+  public idSection(): number{
     let max = 0;
     for (const section of this.arrayOfSection){
       if (section.id > max){
@@ -69,7 +73,7 @@ export class DataService {
     return max + 1;
   }
 
-  idNote(): number{
+  public idNote(): number{
     let max = 1000;
     for (const section of this.arrayOfSection){
       for (const note of section.arrayOfNotes){
@@ -82,7 +86,11 @@ export class DataService {
 >>>>>>> Добавлена возможность перетаскивание заметок внутри секции
   }
 
+<<<<<<< HEAD
   addNewSection(form:FormGroup){
+=======
+  public addNewSection(form: FormGroup): void{
+>>>>>>> Исправлены некоторые ошибки
     this.arrayOfSection.push({
       id:this.idSection++,
       name:form.value.name,
@@ -91,7 +99,11 @@ export class DataService {
     this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
   }
 
+<<<<<<< HEAD
   addNewNote(newNode:INote){
+=======
+  public addNewNote(newNode: INote): void{
+>>>>>>> Исправлены некоторые ошибки
     this.arrayOfSection = JSON.parse(JSON.stringify(this.array));
 <<<<<<< HEAD
     let pos = this.findSectionPosById(newNode.id);
@@ -104,18 +116,29 @@ export class DataService {
     this.array[pos].arrayOfNotes.push(newNode);
   }
 
+<<<<<<< HEAD
   changeNameSection(id:number,form:FormGroup){
     let pos = this.findSectionPosById(id);
+=======
+  public changeNameSection(id: number, form: FormGroup): void{
+    const pos = this.findSectionPosById(id);
+>>>>>>> Исправлены некоторые ошибки
     this.arrayOfSection[pos].name = form.value.name;
     this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
   }
 
+<<<<<<< HEAD
   deleteSection(id:number){
     this.arrayOfSection.splice(this.findSectionPosById(id),1);
+=======
+  public deleteSection(id: number): void{
+    this.arrayOfSection.splice(this.findSectionPosById(id), 1);
+>>>>>>> Исправлены некоторые ошибки
     this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
 <<<<<<< HEAD
   } 
 
+<<<<<<< HEAD
     deleteNote(posNote:number,idSection:number){
       this.arrayOfSection[idSection].arrayOfNotes.splice(posNote,1);
       this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
@@ -141,6 +164,11 @@ export class DataService {
       this.arrayOfSection[posSec].arrayOfNotes[posNote] = newEdit;
       this.array[posSec].arrayOfNotes[posNote] =  newEdit;
 =======
+=======
+  public deleteNote(posNote: number, idSection: number): void{
+    this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes.splice(posNote, 1);
+    this.array = JSON.parse(JSON.stringify(this.arrayOfSection));
+>>>>>>> Исправлены некоторые ошибки
     this.updateLocalStorage();
   }
 
@@ -151,7 +179,7 @@ export class DataService {
    * @param idSection - уникальный id секции, в которой находится заметка
    * @param editNote - данные с формы редактирования заметки
    */
-  editNote(idNote: number, idSection: number, editNote: any): void{
+  public editNote(idNote: number, idSection: number, editNote: any): void{
     const posSec = this.findSectionPosById(idSection);
     const posNote = this.findNotePosById(idSection, idNote);
     const newEdit: INote = {
@@ -174,7 +202,7 @@ export class DataService {
    * @param flagEven - флаг о типе фильтрации
    * @param sortMinToMax - флаг для сортировки массива
    */
-  filterNote(idSection: number, array: INote[], flagOdd: boolean, flagEven: boolean, sortMinToMax: boolean): INote[]{
+  public filterNote(idSection: number, array: INote[], flagOdd: boolean, flagEven: boolean, sortMinToMax: boolean): INote[]{
     if ((flagEven && flagOdd) || (!flagOdd && !flagEven)){
       array = JSON.parse(JSON.stringify(this.arrayOfSection[this.findSectionPosById(idSection)].arrayOfNotes));
 >>>>>>> Добавлена возможность перетаскивание заметок внутри секции
@@ -255,7 +283,7 @@ export class DataService {
    * @param array - массив с заметками, которые нужно сортировать
    * @param sortMinToMax - флаг для сортировки массива
    */
-  sortNote(sortMinToMax: boolean, array: INote[]): INote[]{
+  public sortNote(sortMinToMax: boolean, array: INote[]): INote[]{
     if (sortMinToMax){
       for (let i = 0; i < array.length - 1; i++){
         const date1 = Number(array[i].date.substr(0, 2));

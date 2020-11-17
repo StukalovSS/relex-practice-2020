@@ -9,10 +9,10 @@
 
     <button name = 'Сортировать' class="drop__sec" (click)="openMenu(idOfElements.idDropSort)">{{ "sort" | translate}}</button><br>    
     <div name = 'Меню сортировки' id = {{idOfElements.idDropSort}} class = "drop-sort">
-      <input class="custom-radio" type="radio" id={{idOfElements.idSortRise}} name ={{idOfElements.nameSort}}>
+      <input class="custom-radio" type="radio" id={{idOfElements.idSortRise}} name = {{idOfElements.nameSort}}>
       <label for={{idOfElements.idSortRise}}>{{ "ascending" | translate}}</label>
 
-      <input class="custom-radio" type="radio" id={{idOfElements.idSortLow}} name ={{idOfElements.nameSort}}>
+      <input class="custom-radio" type="radio" id={{idOfElements.idSortLow}} name = {{idOfElements.nameSort}}>
       <label for={{idOfElements.idSortLow}}>{{ "descending" | translate}}</label>
     </div>
 

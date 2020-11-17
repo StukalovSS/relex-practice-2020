@@ -15,8 +15,14 @@ export class AppComponent implements OnInit {
   constructor(private translateService: TranslateService){}
 
   ngOnInit(): void {
-    this.translateService.setDefaultLang(window.localStorage.getItem('lang'));
-    (document.getElementById('lang-select') as HTMLSelectElement).value = window.localStorage.getItem('lang');
+    if (window.localStorage.getItem('lang')){
+      this.translateService.setDefaultLang(window.localStorage.getItem('lang'));
+      (document.getElementById('lang-select') as HTMLSelectElement).value = window.localStorage.getItem('lang');
+    }
+    else{
+      this.translateService.setDefaultLang('ru');
+      (document.getElementById('lang-select') as HTMLSelectElement).value = 'ru';
+    }
   }
 
   /**

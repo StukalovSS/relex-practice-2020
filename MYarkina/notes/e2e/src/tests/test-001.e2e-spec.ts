@@ -35,17 +35,17 @@ describe('Процесс добавления новой секции', () => {
     await page.getInputName().sendKeys(testData.section.name);
     expect(await page.getInputName().getAttribute('value')).toEqual(testData.section.name);
 
-    expect(page.getNewSection().count()).toBe(0);
+    expect(await page.getNewSection().count()).toBe(0);
     await page.getAddNewSectionButton().click();
-    expect(page.getFormNewSection().isPresent()).toBeFalsy('Форма для добавления новой секции не закрылась');
-    expect(page.getNewSection().count()).toBe(1);
-    expect(page.getNewSection().getAttribute('ng-reflect-name')).toEqual([ testData.section.name ]);
+    expect(await page.getFormNewSection().isPresent()).toBeFalsy('Форма для добавления новой секции не закрылась');
+    expect(await page.getNewSection().count()).toBe(1);
+    expect(await page.getNewSection().getAttribute('ng-reflect-name')).toEqual([ testData.section.name ]);
   });
 
   it('Закрытие формы добавления новой секции', async () => {
     await page.getNewSectionButton().click();
     await page.getCloseFormNewSection().click();
-    expect(page.getInputName().isPresent()).toBeFalsy('Форма для добавления новой секции не закрылась');
+    expect(await page.getInputName().isPresent()).toBeFalsy('Форма для добавления новой секции не закрылась');
   });
 
   afterEach(async () => {

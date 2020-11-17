@@ -13,50 +13,50 @@ describe('Процесс фильтрации заметок', () => {
   it('Проверка элементов меню фильтрации', async () => {
     await page.getMenuButton().click();
     await page.getElementByName('Фильтровать').click();
-    expect(page.getElementByName('Меню фильтрации').getCssValue('display')).toEqual([ 'block' ]);
-    expect(page.getCheckEven().isPresent()).toBeTruthy('Кнопка фильтрации по четным датам отсутсвует');
-    expect(page.getCheckOdd().isPresent()).toBeTruthy('Кнопка фильтрации по нечетным датам отсутсвует');
+    expect(await page.getElementByName('Меню фильтрации').getCssValue('display')).toEqual([ 'block' ]);
+    expect(await page.getCheckEven().isPresent()).toBeTruthy('Кнопка фильтрации по четным датам отсутсвует');
+    expect(await page.getCheckOdd().isPresent()).toBeTruthy('Кнопка фильтрации по нечетным датам отсутсвует');
 
-    expect(page.getCheckEven().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по четным датам выбрана');
-    expect(page.getCheckOdd().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по нечетным датам выбрана');
+    expect(await page.getCheckEven().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по четным датам выбрана');
+    expect(await page.getCheckOdd().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по нечетным датам выбрана');
   });
 
   it('Закрытие меню сортировки', async () => {
     await page.getMenuButton().click();
     await page.getElementByName('Фильтровать').click();
     await page.getElementByName('Фильтровать').click();
-    expect(page.getElementByName('Меню фильтрации').getCssValue('display')).toEqual([ 'none' ]);
+    expect(await page.getElementByName('Меню фильтрации').getCssValue('display')).toEqual([ 'none' ]);
   });
 
   it('Проверка заметок на фильтрацию, когда оба чекбокса не выбраны', async () => {
-    expect(page.getNotes().get(0).isDisplayed()).toBeTruthy('Не все заметки отображаются');
-    expect(page.getNotes().get(1).isDisplayed()).toBeTruthy('Не все заметки отображаются');
+    expect(await page.getNotes().get(0).isDisplayed()).toBeTruthy('Не все заметки отображаются');
+    expect(await page.getNotes().get(1).isDisplayed()).toBeTruthy('Не все заметки отображаются');
   });
 
   it('Проверка заметок на фильтрацию, когда оба чекбокса выбраны', async () => {
     await page.getMenuButton().click();
     await page.getElementByName('Фильтровать').click();
 
-    browser.executeScript('arguments[0].click();', page.getCheckEven());
-    browser.executeScript('arguments[0].click();', page.getCheckOdd());
+    await browser.executeScript('arguments[0].click();', page.getCheckEven());
+    await browser.executeScript('arguments[0].click();', page.getCheckOdd());
 
-    expect(page.getCheckEven().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по четным датам не выбрана');
-    expect(page.getCheckOdd().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по нечетным датам не выбрана');
+    expect(await page.getCheckEven().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по четным датам не выбрана');
+    expect(await page.getCheckOdd().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по нечетным датам не выбрана');
 
-    expect(page.getNotes().get(0).isDisplayed()).toBeTruthy('Не все заметки отображаются');
-    expect(page.getNotes().get(1).isDisplayed()).toBeTruthy('Не все заметки отображаются');
+    expect(await page.getNotes().get(0).isDisplayed()).toBeTruthy('Не все заметки отображаются');
+    expect(await page.getNotes().get(1).isDisplayed()).toBeTruthy('Не все заметки отображаются');
   });
 
   it('Проверка заметок на фильтрацию, когда выбран только чекбокс четные даты', async () => {
     await page.getMenuButton().click();
     await page.getElementByName('Фильтровать').click();
 
-    browser.executeScript('arguments[0].click();', page.getCheckEven());
+    await browser.executeScript('arguments[0].click();', page.getCheckEven());
 
-    expect(page.getCheckEven().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по четным датам не выбрана');
-    expect(page.getCheckOdd().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по нечетным датам выбрана');
+    expect(await page.getCheckEven().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по четным датам не выбрана');
+    expect(await page.getCheckOdd().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по нечетным датам выбрана');
 
-    expect(page.getNotes().getAttribute('ng-reflect-date')).toEqual([ testData.section.arrayOfNotes[0].date ]);
+    expect(await page.getNotes().getAttribute('ng-reflect-date')).toEqual([ testData.section.arrayOfNotes[0].date ]);
   });
 
   it('Проверка заметок на фильтрацию, когда выбран только чекбокс нечетные даты', async () => {
@@ -65,10 +65,10 @@ describe('Процесс фильтрации заметок', () => {
 
     browser.executeScript('arguments[0].click();', page.getCheckOdd());
 
-    expect(page.getCheckEven().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по четным датам выбрана');
-    expect(page.getCheckOdd().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по нечетным датам не выбрана');
+    expect(await page.getCheckEven().getAttribute('checked')).toBeFalsy('Кнопка фильтрации по четным датам выбрана');
+    expect(await page.getCheckOdd().getAttribute('checked')).toBeTruthy('Кнопка фильтрации по нечетным датам не выбрана');
 
-    expect(page.getNotes().getAttribute('ng-reflect-date')).toEqual([ testData.section.arrayOfNotes[1].date ]);
+    expect(await page.getNotes().getAttribute('ng-reflect-date')).toEqual([ testData.section.arrayOfNotes[1].date ]);
   });
 
 
