@@ -14,6 +14,9 @@ class Circle {
     }
 }
 
+/**
+ * Точка на двумерной плоскости.
+ */
 class Point {
     constructor(x, y) {
         this.x = x;
@@ -25,11 +28,20 @@ class Point {
         this.y += dy;
     }
 
+    /**
+     * Поворот точки вокруг центра координат.
+     * @param {number} angle Угол в радианах, на который поворачивается точка.
+     */
     rotate(angle) {
-        this.x = this.x * Math.cos(angle) + this.y * Math.cos(angle);
-        this.x = this.x * Math.sin(angle) - this.y * Math.sin(angle);
+        this.x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+        this.x = this.x * Math.sin(angle) + this.y * Math.cos(angle);
     }
 
+    /**
+     * Поворот вокруг другой точки.
+     * @param {Point} point Точка, вокруг которой поворачивается текущая точка.
+     * @param {number} angle Угол, на который поворачивается текущая точка.
+     */
     rotateOverPoint(point, angle) {
         this.move(-point.x, -point.y);
         this.rotate(angle);
@@ -56,10 +68,10 @@ class Segment {
      * @returns {boolean} True усли точка лежит на отрезке.
      */
     isPointOnSegment(point) {
-        return Math.min(point1.x, point2.x) < point.x &&
-            Math.max(point1.x, point2.x) > point.x &&
-            Math.min(point1.y, point2.y) < point.y &&
-            Math.max(point1.y, point2.y) > point.y &&
+        return Math.min(point1.x, point2.x) <= point.x &&
+            Math.max(point1.x, point2.x) >= point.x &&
+            Math.min(point1.y, point2.y) <= point.y &&
+            Math.max(point1.y, point2.y) >= point.y &&
             Math.abs(this.a * point.x + this.b * point.b + this.c) <= 1e-10;
     }
 
@@ -156,6 +168,10 @@ class Rectangle {
     }
 }
 
+/**
+ * Класс двумерного вектора для работы с движущимеся объектами.
+ * Вектор строится от центра координат.
+ */
 class Vector {
     constructor(x, y) {
         this.x = x;
@@ -195,21 +211,6 @@ class Vector {
     angleBetweenVectors(vect) {
         return Math.acos(this.scalarMultiply(vect) / (this.length * vect.length));
     }
-
-    lerp(vect, delta) {
-        delta = delta > 1 ? 1 : delta;
-        delta = delta < 0 ? 0 : delta;
-
-        let dAngle = this.angleBetweenVectors(vect) * delta;
-
-        if ( (vect.y > 0 && this.angle > vect.angle && this.angle < vect.angle + Math.PI) ||
-                (vect.y < 0 && (this.angle > vect.angle || this.angle < vect.angle - Math.PI)) ) {
-            
-            this.angle -= dAngle;
-        } else {
-            this.angle += dAngle;
-        }
-    }
 }
 
 class Player extends Circle {
@@ -223,6 +224,11 @@ class Player extends Circle {
         return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
 
+    /**
+     * Смещение игрока.
+     * @param {number} dx изменение положения игрока относительно оси 0X.
+     * @param {number} dy изменение положения игрока относительно оси 0Y.
+     */
     update(dx, dy) {
         this.prevX = this.x;
         this.prevY = this.y
@@ -267,7 +273,6 @@ class Player extends Circle {
     }
 
     isEated() {
-
     }
 }
 
@@ -277,6 +282,10 @@ class Food extends Circle {
             random(- 1990, 1990) , 10);
     }
 
+    /**
+     * Поедание еды.
+     * При поедании объект изменяет свое полдожение.
+     */
     isEated() {
         this.x = random(-1990, 1990);
         this.y = random(-1990, 1990);
