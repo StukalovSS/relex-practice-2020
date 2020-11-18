@@ -58,6 +58,7 @@ export class NoteComponent implements OnInit {
     });
     modal.instance.submitForm.subscribe(() => {
       this.containerModal.clear();
+      this.dataService.updateLocalStorage();
     });
   }
 }

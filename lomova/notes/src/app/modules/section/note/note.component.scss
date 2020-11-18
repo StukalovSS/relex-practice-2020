@@ -1,17 +1,4 @@
 @import '../../../colors.scss';
-<<<<<<< HEAD
-
-.notes__item {
-    display: flex;
-    flex-direction: column;
-    height: 122px;
-    margin-bottom: 10px;
-    padding: 15px 9px 7px 9px;
-    border: 1px solid $black;
-    font-size: 12px;
-    color: $main-text;
-    background-color: $background-note;
-=======
 :host {
   display: flex;
   flex-direction: column;
@@ -22,7 +9,6 @@
   font-size: 12px;
   color: $main-text;
   background-color: $background-note;
->>>>>>> Внесены правки
 }
 
 .note__title {
@@ -47,23 +33,6 @@
 }
 
 .icon__edit {
-<<<<<<< HEAD
-    stroke: $edit-icon;
-    color: $edit-icon;
-    .note__edit:hover &{
-        stroke: $edit-icon-hover;
-        color:  $edit-icon-hover;
-    }
-}
-
-.icon__trash {
-    stroke: $trash-icon;
-    color: $trash-icon;
-    .note__delete:hover &{
-        stroke: $trash-icon-hover;
-        color: $trash-icon-hover;
-    }
-=======
   stroke: $edit-icon;
   color: $edit-icon;
   .note__edit:hover & {
@@ -79,5 +48,4 @@
     stroke: $trash-icon-hover;
     color: $trash-icon-hover;
   }
->>>>>>> Внесены правки
 }

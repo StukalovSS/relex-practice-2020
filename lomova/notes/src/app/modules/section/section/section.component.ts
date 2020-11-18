@@ -23,16 +23,7 @@ import { ModalSectionComponent } from '../../modal/modal-section/modal-section.c
 import { INote } from '../note/inote';
 import { ISection } from './isection';
 
-<<<<<<< HEAD
-import { Observable, fromEvent, merge } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
 
-/**
- * Класс компонента секции.
- */
-=======
-
->>>>>>> Внесены правки
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
@@ -47,12 +38,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
   public color = '#9786bd';
 
   @Input() sectionId: number;
-<<<<<<< HEAD
-  currSection: ISection;
-  notes: INote[] = [];
-  idNote = 0;
-=======
->>>>>>> Внесены правки
 
   public currSection: ISection;
   public notes: INote[] = [];
@@ -62,13 +47,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
   private uneven = false;
   private sortMinToMax = true;
 
-<<<<<<< HEAD
-  @Output() outRemoveSection = new EventEmitter<number>();
-  @ViewChild('modalForSection', { read: ViewContainerRef }) containerSection;
-  @ViewChild('modalForNote', { read: ViewContainerRef }) containerNote;
-
-  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver) { }
-=======
   private notes$: Observable<INote[]>;
   private mergeEvents$: Observable<any>;
   private querySubscription: Subscription;
@@ -87,7 +65,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
       }
     );
   }
->>>>>>> Внесены правки
 
   ngOnInit(): void {
     this.currSection = this.dataService.getSection(this.sectionId);
@@ -97,9 +74,7 @@ export class SectionComponent implements OnInit, AfterViewInit {
         return this.dataService.sortNotes(this.dataService.parityFilterNotes(this.currSection, this.even, this.uneven), this.sortMinToMax);
       }),
     );
-    this.notes$.subscribe(
-      (value: INote[]) => { this.notes = value; }
-    );
+    this.update();
   }
 
   ngAfterViewInit(): void {
@@ -118,8 +93,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
     ).subscribe(
       (value: INote[]) => {
         this.notes = value;
-<<<<<<< HEAD
-=======
         console.log(this.notes);
         this.urlDate();
       }
@@ -141,7 +114,6 @@ export class SectionComponent implements OnInit, AfterViewInit {
       (value: INote[]) => {
         this.notes = value;
         this.urlDate();
->>>>>>> Внесены правки
       }
     );
   }
@@ -168,6 +140,7 @@ export class SectionComponent implements OnInit, AfterViewInit {
     });
     s.instance.submitForm.subscribe(() => {
       this.containerSection.clear();
+      this.dataService.updateLocalStorage();
     });
   }
 
@@ -183,30 +156,18 @@ export class SectionComponent implements OnInit, AfterViewInit {
     const modalFactoryNote = this.resolver.resolveComponentFactory(ModalNoteComponent);
     const n = this.containerNote.createComponent(modalFactoryNote);
     n.instance.sectionId = this.sectionId;
-    n.instance.noteId = this.idNote++;
     n.instance.edit = false;
     n.instance.closeModal.subscribe(() => {
       this.containerNote.clear();
     });
     n.instance.submitForm.subscribe(() => {
       this.containerNote.clear();
-      this.notes$.subscribe(
-        (value: INote[]) => {
-          this.notes = value;
-        }
-      );
+      this.update();
     });
   }
 
   public removeNote(idNote: number): void {
     this.dataService.removeNote(this.sectionId, idNote);
-<<<<<<< HEAD
-    this.notes$.subscribe(
-      (value: INote[]) => {
-        this.notes = value;
-      }
-    );
-=======
     this.update();
   }
 
@@ -221,6 +182,5 @@ export class SectionComponent implements OnInit, AfterViewInit {
         event.currentIndex);
     }
     this.dataService.updateLocalStorage();
->>>>>>> Внесены правки
   }
 }

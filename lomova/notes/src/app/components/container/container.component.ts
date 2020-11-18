@@ -4,12 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { ModalSectionComponent } from '../../modules/modal/modal-section/modal-section.component';
 import { ISection } from '../../modules/section/section/isection';
-<<<<<<< HEAD
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
-=======
 import { DataService } from '../../services/data.service';
->>>>>>> Внесены правки
 
 @Component({
   selector: 'app-container',
@@ -17,18 +12,11 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./container.component.scss']
 })
 export class ContainerComponent implements OnInit {
-<<<<<<< HEAD
-  iconPlus = faPlus;
-
-  sections: ISection[] = [];
-  sectionId = 0;
-=======
   public icons = {
     plus: faPlus
   };
   public showLangList = false;
   public sections: ISection[] = [];
->>>>>>> Внесены правки
 
   @ViewChild('modalForSection', { read: ViewContainerRef }) container;
 
@@ -37,9 +25,7 @@ export class ContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getAllSections().subscribe(value => {
-      this.sections = value;
-    });
+    this.update();
   }
 
   public openLangList(): void {
@@ -58,34 +44,22 @@ export class ContainerComponent implements OnInit {
     this.container.clear();
     const modalFactory = this.resolver.resolveComponentFactory(ModalSectionComponent);
     const component = this.container.createComponent(modalFactory);
-<<<<<<< HEAD
-
-    component.instance.idSection = this.sectionId++;
-=======
->>>>>>> Внесены правки
     component.instance.rename = false;
     component.instance.closeModal.subscribe( () => {
       this.container.clear();
     });
     component.instance.submitForm.subscribe( () => {
       this.container.clear();
-      this.dataService.getAllSections().subscribe(value => {
-        this.sections = value;
-      });
+      this.update();
     });
   }
 
-<<<<<<< HEAD
-  removeSection(id: number): void {
-    this.dataService.removeSection(id);
-=======
   public deleteSection(id: number): void {
     this.dataService.deleteSection(id);
     this.update();
   }
 
   private update(): void {
->>>>>>> Внесены правки
     this.dataService.getAllSections().subscribe(value => {
       this.sections = value;
     });

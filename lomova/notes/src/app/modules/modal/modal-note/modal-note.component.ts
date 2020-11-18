@@ -54,34 +54,15 @@ export class ModalNoteComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-  editDate(date: any): Date {
-    if (typeof date === 'object') {
-      return date;
-    }
-    else {
-      return new Date(this.form.value.noteDate);
-    }
-  }
-
-=======
->>>>>>> Внесены правки
   /**
    * Обрабатывает событие отправки формы в зависимости от добавления или редактирования заметки.
    */
   public onNote(): void {
     if (!this.edit) {
       this.dataService.addNote(this.sectionId, {
-<<<<<<< HEAD
-        noteId: this.noteId,
-        noteTitle: this.form.value.noteTitle,
-        noteText: this.form.value.noteText,
-        noteDate: this.editDate(this.form.value.noteDate)
-=======
         title: this.form.value.noteTitle,
         text: this.form.value.noteText,
         date: this.toDate(this.form.value.noteDate)
->>>>>>> Внесены правки
       });
       console.log(this.toDate(this.form.value.noteDate));
     }

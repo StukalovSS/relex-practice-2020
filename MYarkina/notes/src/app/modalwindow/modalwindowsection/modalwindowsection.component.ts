@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./modalwindowsection.component.scss']
 })
 /**
+<<<<<<< HEAD
  * Класс модальное окно для создания новой секции.
  */
 export class ModalwindowsectionComponent implements OnInit {
@@ -19,6 +20,25 @@ export class ModalwindowsectionComponent implements OnInit {
    */
   form:FormGroup;
   private createForm(name:string) {
+=======
+ * Класс модальное окно добавления и редактирования секции.
+ * Содержит форму для добавления или редактирования секции
+ */
+export class ModalwindowsectionComponent implements OnInit {
+
+  form: FormGroup;
+
+  @Input() nameSection;
+  @Input() formStatus;
+
+  @Output() output = new EventEmitter();
+
+  /**
+   * Создание формы для добавления или редактирования секции
+   * @param name текущее имя секции. Если секция новая - null
+   */
+  private createForm(name: string): void{
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     this.form = new FormGroup({
       'name': new FormControl(name,Validators.required)
     })
@@ -29,6 +49,7 @@ export class ModalwindowsectionComponent implements OnInit {
   }
 
   /**
+<<<<<<< HEAD
    * Родительскому компоненту передается информация о отредактированной или новой секции 
    */
   @Output() output = new EventEmitter();
@@ -37,6 +58,19 @@ export class ModalwindowsectionComponent implements OnInit {
   }
 
   closeForm(){
+=======
+   * Реализует передачу новой секции родителю.
+   * @param form форма, содержащая информаицю о добавляемой секции.
+   */
+  public clickOnFormStatus(form): void{
+    this.output.emit(form);
+  }
+
+  /**
+   * Закрывает окно.
+   */
+  public closeForm(): void{
+>>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     this.output.emit(false);
   }
 

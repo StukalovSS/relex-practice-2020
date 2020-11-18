@@ -1,3 +1,4 @@
+const polyfill = require('./polyfill.js');
 const Zooming = require('./zooming.min.js');
 const css = require('../css/main.css')
 const pic1 = require('../img/picture1.jpg');
@@ -264,10 +265,8 @@ function positionImg(){
 	for (let i=0; i < countOfImg; i++){
 		if(!removeImg.includes(i)){
 			let widthImgpx=ii*widthImg + 'px';
-			console.log(widthImgpx);
 			arrayOfImg[i].style.left = widthImgpx;
 			let bottomImg = Math.sqrt((1-(zero*zero/250000))*2500) + 'px';
-			console.log(bottomImg);
 			arrayOfImg[i].style.bottom = bottomImg;
 			zero+=widthImg;
 			ii++;

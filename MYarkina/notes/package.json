@@ -19,9 +19,16 @@
     "@angular/platform-browser": "~10.1.4",
     "@angular/platform-browser-dynamic": "~10.1.4",
     "@angular/router": "~10.1.4",
+    "@biesbjerg/ngx-translate-extract": "^7.0.3",
     "@fortawesome/angular-fontawesome": "^0.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
+<<<<<<< HEAD
+=======
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
+    "ng-drag-drop": "^5.0.0",
+>>>>>>> Добавлена возможность выбора языка - русский, английский
     "ngx-color-picker": "^10.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

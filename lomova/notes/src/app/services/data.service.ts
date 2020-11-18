@@ -9,18 +9,11 @@ import { ISection } from '../modules/section/section/isection';
  * Сервис для секций и заметок.
  */
 export class DataService {
-<<<<<<< HEAD
-    private sections: ISection[] = [];
-
-    getAllSections(): Observable<ISection[]> {
-        return of(this.sections);
-=======
   public sections: ISection[] = [];
 
   public getAllSections(): Observable<ISection[]> {
     if (JSON.parse(localStorage.getItem('sections')) === null) {
       this.sections = [];
->>>>>>> Внесены правки
     }
     else {
       this.sections = JSON.parse(localStorage.getItem('sections'));
@@ -28,22 +21,6 @@ export class DataService {
     return of(this.sections);
   }
 
-<<<<<<< HEAD
-    addSection(newSection: ISection): void {
-        this.sections.push(newSection);
-    }
-
-    removeSection(id: number): void {
-        this.sections.splice(this.sections.findIndex(s => s.sectionId === id), 1);
-    }
-
-    getAllNotes(idSection: number): Observable<INote[]> {
-        return of(this.getSection(idSection).notes);
-    }
-
-    getNote(idSection: number, idNote: number): INote {
-        return this.sections.find(s => s.sectionId === idSection).notes.find(n => n.noteId === idNote);
-=======
   public getSection(id: number): ISection {
     return this.sections.find(s => s.sectionId === id);
   }
@@ -71,22 +48,10 @@ export class DataService {
     if (JSON.parse(localStorage.getItem('sections'))[indCurrSection].notes) {
       currSection.notes = JSON.parse(localStorage.getItem('sections'))[indCurrSection].notes;
       currSection.notes.map(n => n.noteDate = new Date(n.noteDate));
->>>>>>> Внесены правки
     }
     return of(this.getSection(idSection).notes);
   }
 
-<<<<<<< HEAD
-    addNote(idSection: number, newNote: INote): void {
-        this.sections.find(s => s.sectionId === idSection).notes.push(newNote);
-    }
-
-    removeNote(idSection: number, idNote: number): void {
-        const currSection = this.sections.find(s => s.sectionId === idSection);
-        const i = currSection.notes.findIndex(n => n.noteId === idNote);
-        currSection.notes.splice(i, 1);
-    }
-=======
   public getNote(idSection: number, idNote: number): INote {
     return this.getSection(idSection).notes.find(n => n.noteId === idNote);
   }
@@ -103,7 +68,6 @@ export class DataService {
     );
     this.updateLocalStorage();
   }
->>>>>>> Внесены правки
 
   public removeNote(idSection: number, idNote: number): void {
     const currSection = this.getSection(idSection);
@@ -116,22 +80,6 @@ export class DataService {
     localStorage.setItem('sections', JSON.stringify(this.sections));
   }
 
-<<<<<<< HEAD
-    /**
-     * Сортировка массива заметок.
-     *
-     * @param notes массив заметок
-     * @param flag флаг для сортировки по возрастанию или убыванию
-     */
-    sortNotes(notes: INote[], flag: boolean): INote[] {
-        if (flag) {
-            return this.quickSort(notes, 0, notes.length - 1);
-        }
-        else {
-            return this.quickSort(notes, 0, notes.length - 1).reverse();
-        }
-        // return notes.sort(function(a,b){return a.noteDate.getTime() - b.noteDate.getTime()});
-=======
   /**
    * Реализует фильтр заметок по четным и нечетным датам.
    * @param s секция
@@ -162,7 +110,6 @@ export class DataService {
     }
     else {
       return this.quickSort(notes, 0, notes.length - 1).reverse();
->>>>>>> Внесены правки
     }
   }
 
