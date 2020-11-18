@@ -1,5 +1,5 @@
 class Circle {
- constructor(x, y, r) {
+    constructor(x, y, r) {
         this.x = x;
         this.y = y;
         this.r = r; 
@@ -11,6 +11,148 @@ class Circle {
 
     get square() {
         return Math.PI * (this.r ** 2);
+    }
+}
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    move(dx, dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    rotate(angle) {
+        this.x = this.x * Math.cos(angle) + this.y * Math.cos(angle);
+        this.x = this.x * Math.sin(angle) - this.y * Math.sin(angle);
+    }
+
+    rotateOverPoint(point, angle) {
+        this.move(-point.x, -point.y);
+        this.rotate(angle);
+        this.move(point.x, point.y);
+    }
+}
+
+
+/**
+ * Отрезок вида ax + by + c = 0 между 2-умя точками.
+ */
+class Segment {
+    constructor(point1, point2) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.a = point2.y - point1.y;
+        this.b = point1.x - point2.x;
+        this.c = point2.x * point1.y - point1.x * point2.y;
+    }
+
+    /**
+     * Проверка точки на принадлежность отрезку.
+     * @param {Point} point Точка, которая проверяется на принадлежность отрезку.
+     * @returns {boolean} True усли точка лежит на отрезке.
+     */
+    isPointOnSegment(point) {
+        return Math.min(point1.x, point2.x) < point.x &&
+            Math.max(point1.x, point2.x) > point.x &&
+            Math.min(point1.y, point2.y) < point.y &&
+            Math.max(point1.y, point2.y) > point.y &&
+            Math.abs(this.a * point.x + this.b * point.b + this.c) <= 1e-10;
+    }
+
+    /**
+     * Проверка точки на принадлежность области над отрезком.
+     * @param {Point} point Точка, которая проверяется на принадлежность области над отрезком.
+     * @returns {boolean} True усли точка лежит над отрезком.
+     */
+    isPointAbove(point) {
+        return this.b != 0 && this.a * point.x + this.b * point.b + this.c < 0;
+    }
+}
+
+/**
+ * Прямоугольник вида:
+ * A -------- B
+ *   |      |
+ *   |      |
+ *   |      |
+ *  C--------D
+ */
+class Rectangle {
+    constructor(leftUpPoint, width, height) {
+        this.pointA = leftUpPoint;
+        this.pointB = new Point(leftUpPoint.x + width, leftUpPoint.y);
+        this.pointC = new Point(leftUpPoint.x, leftUpPoint.y - height);
+        this.pointD = new Point(leftUpPoint.x + width, leftUpPoint.y - height);
+    }
+
+    /**
+     * Повернуть прямоугольник вокруг определенной точки.
+     * @param {Point} point Точка, вокруг которой вращается прямоугольник.
+     * @param {number} angle Угол в радианах, на который вращается прямоугольник.
+     */
+    rotateOverPoint(point, angle) {
+        this.pointA.rotateOverPoint(point, angle);
+        this.pointB.rotateOverPoint(point, angle);
+        this.pointC.rotateOverPoint(point, angle);
+        this.pointD.rotateOverPoint(point, angle);
+    }
+
+    /**
+     * Проверить точку на принадлежность прямоугольнику.
+     * @param {Point} point Точка, которая проверется на принадлежность прямоугольнику.
+     * @returns {boolean} True если точка внутри прямоугольника.
+     */
+    isPointIn(point) {
+        if (this.pointA.x === this.pointB.x || this.pointA.x === this.pointD.x) {
+            return this.isPointInStraightRectangle(point);
+        }
+
+        return (new Segment(this.downPoint, this.leftPoint).isPointAbove(point)) &&
+            (!new Segment(this.leftPoint, this.upPoint).isPointAbove(point)) &&
+            (!new Segment(this.upPoint, this.rightPoint).isPointAbove(point)) &&
+            (new Segment(this.downPoint, this.rightPoint).isPointAbove(point));
+    }
+
+    get downPoint() {
+        const p1 = this.pointA.y < this.pointB.y ? this.pointA : this.pointB,
+            p2 = this.pointC.y < this.pointD.y ? this.pointC : this.pointD;
+        return p1.y < p2.y ? p1 : p2;
+    }
+
+    get upPoint() {
+        const p1 = this.pointA.y > this.pointB.y ? this.pointA : this.pointB,
+            p2 = this.pointC.y > this.pointD.y ? this.pointC : this.pointD;
+        return p1.y > p2.y ? p1 : p2;
+    }
+
+    get leftPoint() {
+        const p1 = this.pointA.x < this.pointB.x ? this.pointA : this.pointB,
+            p2 = this.pointC.x < this.pointD.x ? this.pointC : this.pointD;
+        return p1.x < p2.x ? p1 : p2;
+    }
+
+    get rightPoint() {
+        const p1 = this.pointA.x > this.pointB.x ? this.pointA : this.pointB,
+            p2 = this.pointC.x > this.pointD.x ? this.pointC : this.pointD;
+        return p1.x > p2.x ? p1 : p2;
+    }
+
+    /**
+     * Проверить точку на принадлежность прямоугольнику, стороны которого лежат паралельо осям координат.
+     * @param {Point} point Точка, которая проверется на принадлежность прямоугольнику.
+     * @returns {boolean} True если точка внутри прямоугольника.
+     */
+    isPointInStraightRectangle(point) {
+        const leftX = Math.min(this.pointA.x, this.pointC.x),
+            rightX = Math.max(this.pointA.x, this.pointC.x),
+            downY = Math.min(this.pointA.y, this.pointC.y),
+            upY = Math.min(this.pointA.y, this.pointC.y);
+
+        return point.x >= leftX && point.x <= rightX && point.y >= downY && point.y <= upY;
     }
 }
 
@@ -82,6 +224,9 @@ class Player extends Circle {
     }
 
     update(dx, dy) {
+        this.prevX = this.x;
+        this.prevY = this.y
+
         const vect = new Vector(dx, dy),
             dist = (Date.now() - this.prevResponceTime) * 0.1;
         this.prevResponceTime = Date.now();
@@ -94,21 +239,31 @@ class Player extends Circle {
         this.y += vect.y;
     }
 
+    /**
+     * Поедание другого круга, если он находится на плоскости перемещения. 
+     * У круга вызывается метод isEated, если поедание выполнено успешно.
+     * @param {Circle} other Еда или другой игрок, которого текущий игрок пытается съесть.
+     * @returns {boolean} True, усли поедание выполнено успешно.
+     */
     eat(other) {
-        let d = this.distanceFromAnotherCircle(other);
         if (other === this || this.r <= other.r) {
             return false;
         }
+        
+        let d = this.distanceFromAnotherCircle(other);
+        const vect = new Vector(this.x - this.prevX, this.y - this.prevY);
+        const area = new Rectangle(new Point(this.prevX, this.prevY + this.r), vect.length, this.r * 2);
+        area.rotateOverPoint(new Point(this.prevX, this.prevY), vect.angle);
 
-        if (d < this.r + other.r) {
+        if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
             let sum = this.square + other.square;
             this.r = Math.sqrt(sum / Math.PI);
             other.isEated();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
+        
     }
 
     isEated() {
