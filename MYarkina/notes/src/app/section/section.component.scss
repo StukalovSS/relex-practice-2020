@@ -45,8 +45,15 @@
         padding: 10px;
         background-color:white;           
         .drop__sec{
-            padding-bottom: 20px;
-            cursor: pointer;
+          outline: none;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          font: {
+            family: fixedsys;
+            size: 16px;
+            weight: normal;
+        }
         }
         #delete__span{
             color: red;

@@ -1,12 +1,12 @@
 <form [formGroup]="form" novalidate>
-    <div class="form-group">
-        <label>Название  </label><br>
-        <input id = "nameId"class="form-field" formControlName="name" />
-    </div>
+  <div class="form-group">
+    <label>{{'name' | translate}}  </label><br>
+    <input id = "nameId"class="form-field" formControlName="name" />
+  </div>
 
-    <div class="form-group">          
-        <button id = "btnform" [disabled]="form.invalid" class="btn-form" (click)="clickOnFormStatus(form)">{{formStatus}}</button>
-        <button class="btn-form" (click)= "closeForm()">Закрыть</button>
-    </div>
+  <div class="form-group">          
+    <button id = "btnform" [disabled]="form.invalid" class="btn-form" (click)="clickOnFormStatus(form)">{{formStatus | translate}}</button>
+    <button id = "closeform" class="btn-form" (click)= "closeForm()">{{'close' | translate}}</button>
+  </div>
 </form>
 
