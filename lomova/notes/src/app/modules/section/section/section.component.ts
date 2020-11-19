@@ -1,11 +1,11 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -15,27 +15,31 @@ import { ActivatedRoute } from '@angular/router';
 import { faCogs, faEllipsisV, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
 import { fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-
-import { DataService } from '../../../services/data.service';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { INote } from '../../../shared/interfaces/inote';
+import { ISection } from '../../../shared/interfaces/isection';
+import { DataService } from '../../../shared/services/data.service';
 import { ModalNoteComponent } from '../../modal/modal-note/modal-note.component';
 import { ModalSectionComponent } from '../../modal/modal-section/modal-section.component';
-import { INote } from '../note/inote';
-import { ISection } from './isection';
 
 
+/**
+ * Компонент секции.
+ */
 @Component({
   selector: 'app-section',
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.scss']
 })
-export class SectionComponent implements OnInit, AfterViewInit {
-  public icons = {
+export class SectionComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public readonly icons = {
     plus: faPlus,
     cogs: faCogs,
     points: faEllipsisV
   };
-  public color = '#9786bd';
+
+  public color = '#9786bd'; // цвет шапки секции
 
   @Input() sectionId: number;
 
@@ -49,21 +53,26 @@ export class SectionComponent implements OnInit, AfterViewInit {
 
   private notes$: Observable<INote[]>;
   private mergeEvents$: Observable<any>;
+  private unsubscribe$ = new Subject<void>();
   private querySubscription: Subscription;
-  private dateParam: string;
+  private dateParam: string; // дата в параметрах URL
 
   @Output() outDeleteSection = new EventEmitter<number>();
   @ViewChild('modalForSection', { read: ViewContainerRef }) containerSection;
   @ViewChild('modalForNote', { read: ViewContainerRef }) containerNote;
 
-  constructor(private dataService: DataService, private resolver: ComponentFactoryResolver, private route: ActivatedRoute,
-              private translate: TranslateService) {
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.dateParam = queryParam.date;
-        this.urlDate();
-      }
-    );
+  constructor(private dataService: DataService,
+              private resolver: ComponentFactoryResolver,
+              private route: ActivatedRoute,
+              private translate: TranslateService
+            )
+    {
+      this.querySubscription = route.queryParams.subscribe(
+        (queryParam: any) => {
+          this.dateParam = queryParam.date;
+          this.urlDate();
+        }
+      );
   }
 
   ngOnInit(): void {
@@ -90,7 +99,7 @@ export class SectionComponent implements OnInit, AfterViewInit {
           return this.notes$;
         }
       )
-    ).subscribe(
+    ).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (value: INote[]) => {
         this.notes = value;
         console.log(this.notes);
@@ -99,6 +108,9 @@ export class SectionComponent implements OnInit, AfterViewInit {
     );
   }
 
+  /**
+   * Отображает заметки с датой, содержащейся в параметрах URL.
+   */
   private urlDate(): void {
     if (this.dateParam) {
       const day = this.dateParam.substring(0, 2);
@@ -126,7 +138,8 @@ export class SectionComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Создание динамического компонента модального окна для редактирования секции.
+   * Создает динамический компонент модального окна для секции.
+   * Подписывается на события модального окна: его закрытие и редактирование секции.
    */
   public renameSection(): void {
     this.containerSection.clear();
@@ -144,12 +157,16 @@ export class SectionComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Передает родительскому компоненту id удаляемой секции.
+   */
   public deleteSection(): void {
     this.outDeleteSection.emit(this.currSection.sectionId);
   }
 
   /**
-   * Создание динамического компонента модального окна для добавления заметки.
+   * Создает динамический компонент модального окна для заметки.
+   * Подписывается на события модального окна: его закрытие и добавление заметки.
    */
   public addNote(): void {
     this.containerNote.clear();
@@ -172,15 +189,12 @@ export class SectionComponent implements OnInit, AfterViewInit {
   }
 
   public dropNotes(event: CdkDragDrop<string[]>): void {
-    if (event.container.id === event.previousContainer.id) {
-      moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
-    }
-    else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
+    moveItemInArray(this.notes, event.previousIndex, event.currentIndex);
     this.dataService.updateLocalStorage();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

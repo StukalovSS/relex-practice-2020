@@ -1,4 +1,4 @@
-@import '../../../colors.scss';
+@import '../../../styles/colors.scss';
 :host {
   min-width: 320px;
   border: 1px solid $black;
@@ -17,7 +17,7 @@
   background-color: $section-header;
 }
 
-.section__property {
+.section__drop {
   margin-left: 2px;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .icon__setting,
-.icon__property {
+.icon__drop {
   stroke: $white;
   color: $white;
   font-size: 21px;

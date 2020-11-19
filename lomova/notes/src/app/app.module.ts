@@ -5,11 +5,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { AppComponent } from './app.component';
-import { ContainerComponent } from './components/container/container.component';
+import { ContainerComponent } from './container-component/container.component';
 import { ModalModule } from './modules/modal/modal.module';
 import { SectionModule } from './modules/section/section.module';
+
 
 @NgModule({
   declarations: [

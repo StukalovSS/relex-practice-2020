@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { INote } from '../interfaces/inote';
+import { ISection } from '../interfaces/isection';
 
-import { INote } from '../modules/section/note/inote';
-import { ISection } from '../modules/section/section/isection';
 
-@Injectable({ providedIn: 'root' })
 /**
  * Сервис для секций и заметок.
  */
+@Injectable({ providedIn: 'root' })
 export class DataService {
   public sections: ISection[] = [];
 

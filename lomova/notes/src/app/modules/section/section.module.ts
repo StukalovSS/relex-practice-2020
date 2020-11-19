@@ -5,9 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 import { ColorPickerModule } from 'ngx-color-picker';
-
 import { NoteComponent } from '../section/note/note.component';
 import { SectionComponent } from '../section/section/section.component';
+
 
 const appRoutes: Routes = [
   { path: '', component: SectionComponent }

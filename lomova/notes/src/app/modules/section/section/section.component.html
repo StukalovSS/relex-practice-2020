@@ -1,6 +1,6 @@
 <div class="section__header" [style.background]="color">
-  <button class="btn section__property" type="button" aria-label="Перетаскивание секций">
-    <fa-icon class="icon icon__property" [icon]="icons.points"></fa-icon>
+  <button class="btn section__drop" type="button" cdkDragHandle aria-label="Перетаскивание секций">
+    <fa-icon class="icon icon__drop" [icon]="icons.points"></fa-icon>
   </button>
   <h2 class="section__title">{{currSection.sectionTitle}}</h2>
   <a class="btn section__setting" type="button" aria-label="Настройки" name="section-settings-btn">
@@ -41,12 +41,7 @@
   </a>
 </div>
 <div class="notes">
-  <div 
-    class="notes__list" 
-    [cdkDropListData]="notes" 
-    cdkDropList [cdkDropListConnectedTo]="['cdk-drop-list-1', 'cdk-drop-list-2']" 
-    (cdkDropListDropped)="dropNotes($event)"
-    >
+  <div class="notes__list" cdkDropList (cdkDropListDropped)="dropNotes($event)">
     <app-note *ngFor="let n of notes" [sectionId]="sectionId" [noteId]="n.noteId" (outRemoveNote)="removeNote($event)" cdkDrag>
     </app-note>
   </div>
@@ -57,6 +52,3 @@
 
 <ng-template #modalForNote></ng-template>
 <ng-template #modalForSection></ng-template>
-
-
-<!-- ['cdk-drop-list-1', 'cdk-drop-list-2'] -->
