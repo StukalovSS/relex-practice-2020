@@ -1,13 +1,27 @@
 <div class="buttons">
     <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved"
-    (click)="changeAllSectionsViewFromat()" checked>
-    <span class="buttons_right-moved">Сортировать по возрастанию даты</span>
-    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()">
-    <span class="buttons_right-moved">Сортировать по убыванию даты</span>
-    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
-    <span class="buttons_right-moved">Показывать четные даты</span>
-    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFromat()" checked>
-    <span>Показывать нечетные даты</span>
+    (click)="changeAllSectionsViewFormat()" checked>
+    <span class="buttons_right-moved">{{"SortAscending" | translate}}</span>
+    <input type="radio" name="all-sections-sort-ascending" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()">
+    <span class="buttons_right-moved">{{"ReverseSortAscending" | translate}}</span>
+    <input type="checkbox" id="all-sections-even" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()" checked>
+    <span class="buttons_right-moved">{{'ShowEvenDate' | translate}}</span>
+    <input type="checkbox" id="all-sections-not-even" class="buttons_right-moved" (click)="changeAllSectionsViewFormat()" checked>
+    <span>{{"ShowNotEvenDate" | translate}}</span>
+    <span class="language" (click)="changeLangListvisibillity()">
+        <span>lang</span>
+        <div class="language__list" [ngClass]="{'invisible': languagesListInvisible}">
+            <div class="language__list_btn">
+                <input type="radio" name="lang" value="ru" (change)="changeLanguage($event)" checked>
+                <label for="lang">ru</label>
+            </div>
+            <div class="language__list_btn" (change)="changeLanguage($event)">
+                <input type="radio" name="lang" value="en">
+                <label for="lang">en</label>
+            </div>
+        </div>
+    </span>
+    
 </div>
 <div class="sections" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropSections($event)">
     <app-section *ngFor="let section of data.sections | mapValues" [header]="section.header" [notes]="section.notes" [id]="section.id" 
@@ -15,21 +29,21 @@
     >
         <span class="sections__ellipsis" cdkDragHandle>...</span>
     </app-section>
-    <button class="sections__add-btn">
+    <button class="sections__add-btn" name="sections__add-btn">
         <form [formGroup]="sectionHeaderInput" class="sections__form" [ngClass]="{'invisible': invisible}"
         (ngSubmit)="addSection()">
             <div class="sections__form_form-element">
-                <label class="sections__form_head">Название секции</label>
-                <input name="header" formControlName="sectionHeader" class="sections__form_input">
+                <label class="sections__form_head" name="sections__form_head">Название секции</label>
+                <input name="header" formControlName="sectionHeader" class="sections__form_input" name="sections__form_input">
             </div>
-            <button [disabled]="sectionHeaderInput.invalid" class="sections__form_btn">
+            <button [disabled]="sectionHeaderInput.invalid" class="sections__form_btn" name="sections__form_btn">
                 Добавить секцию
             </button>
         </form>
-        <fa-icon [icon]="faTimesCircle" class="sections__add-btn_times-circle" [ngClass]="{'invisible': invisible}"
+        <fa-icon [icon]="icons.faTimesCircle" class="sections__add-btn_times-circle" [ngClass]="{'invisible': invisible}" name="sections__add-btn_times-circle"
         (click)="changeVisibillity()">
         </fa-icon>
-        <fa-icon [icon]="faPlus" class="sections__add-btn_plus" [ngClass]="{'invisible': !invisible}"
+        <fa-icon [icon]="icons.faPlus" name="sections__add-btn_plus" class="sections__add-btn_plus" [ngClass]="{'invisible': !invisible}"
         (click)="changeVisibillity()">
         </fa-icon>
     </button>

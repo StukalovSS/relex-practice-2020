@@ -5,14 +5,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { AppComponent } from './app.component';
-import { ContainerComponent } from './components/container/container.component';
+import { ContainerComponent } from './container-component/container.component';
 import { ModalModule } from './modules/modal/modal.module';
-<<<<<<< HEAD
-=======
 import { SectionModule } from './modules/section/section.module';
->>>>>>> Внесены правки
+
 
 @NgModule({
   declarations: [
@@ -23,9 +20,6 @@ import { SectionModule } from './modules/section/section.module';
     ModalModule,
     SectionModule,
     BrowserModule,
-<<<<<<< HEAD
-    FontAwesomeModule
-=======
     FontAwesomeModule,
     DragDropModule,
     HttpClientModule,
@@ -39,7 +33,6 @@ import { SectionModule } from './modules/section/section.module';
         defaultLanguage: 'ru'
       }
     )
->>>>>>> Внесены правки
   ],
   bootstrap: [AppComponent],
   exports: [TranslateModule]

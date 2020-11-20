@@ -1,21 +1,17 @@
-<<<<<<< HEAD
-import { Component } from '@angular/core';
-=======
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+import { DataService } from './shared/services/data.service';
 
-import { DataService } from './services/data.service';
->>>>>>> Внесены правки
 
+/**
+ * Корневой компонент приложения.
+ */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-<<<<<<< HEAD
-  title = 'notes';
-=======
 
   constructor(private dataService: DataService) {}
 
@@ -23,5 +19,4 @@ export class AppComponent {
     moveItemInArray(this.dataService.sections, event.previousIndex, event.currentIndex);
     this.dataService.updateLocalStorage();
   }
->>>>>>> Внесены правки
 }

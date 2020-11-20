@@ -1,14 +1,5 @@
-<<<<<<< HEAD
-<app-section *ngFor="let s of sections" [sectionId]="s.sectionId" (outRemoveSection)="removeSection($event)">
-</app-section>
-<div class="add-section" (click)="addSection()">
-    <fa-icon class="icon icon__plus" [icon]="iconPlus"></fa-icon>
-</div>
-
-<ng-template #modalForSection></ng-template>
-=======
 <div class="languages">
-  <button class="btn languages__open-list" type="button" (click)="openLangList()">{{'language' | translate}}</button>
+  <button class="btn languages__open-list" type="button" (click)="showLangList = true">{{'language' | translate}}</button>
   <ul class="languages__list" *ngIf="showLangList">
     <li>
       <button class="btn languages__change-btn" type="button" (click)="changeLang('ru')">Русский</button>
@@ -26,4 +17,3 @@
 </button>
 
 <ng-template #modalForSection></ng-template>
->>>>>>> Внесены правки
