@@ -1,25 +1,6 @@
 @import '../color';
 
 :host{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    overflow-y: hidden;
-    height: calc(100% - 100px);
-}
-
-#main-container{
->>>>>>> Добавлены тесты для добавления новой секции и добавления новой заметки
-    display: flex;
-    flex-grow: 1;
-}
-
-.button__newsection{
-    width: 300px; 
-    min-width: 300px;
-    background-color: $section-backgroung-color; 
-    border:1px solid $border-color;
-=======
   overflow-y: hidden;
   height: calc(100% - 100px);
 }
@@ -42,7 +23,6 @@
   background-color: $section-backgroung-color; 
   border:1px solid $border-color;
   cursor: pointer;
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     
   .icon__faplus{
     color: $text-color;
