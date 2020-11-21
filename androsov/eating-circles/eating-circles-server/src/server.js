@@ -34,7 +34,7 @@ class Point {
      */
     rotate(angle) {
         this.x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
-        this.x = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+        this.y = this.x * Math.sin(angle) + this.y * Math.cos(angle);
     }
 
     /**
@@ -72,7 +72,7 @@ class Segment {
             Math.max(point1.x, point2.x) >= point.x &&
             Math.min(point1.y, point2.y) <= point.y &&
             Math.max(point1.y, point2.y) >= point.y &&
-            Math.abs(this.a * point.x + this.b * point.b + this.c) <= 1e-10;
+            Math.abs(this.a * point.x + this.b * point.y + this.c) <= 1e-10;
     }
 
     /**
