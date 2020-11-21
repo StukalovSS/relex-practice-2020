@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import { Component,ComponentFactoryResolver,ComponentRef,OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import '@angular/platform-browser-dynamic';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-=======
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import '@angular/platform-browser-dynamic';
 import { faPlus, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
 import { DataService } from '../data.service';
 import { ModalwindowsectionComponent } from '../modalwindow/modalwindowsection/modalwindowsection.component';
 import { INote } from './note.interface';
@@ -20,15 +14,6 @@ import { INote } from './note.interface';
   styleUrls: ['./container.component.scss']
 })
 /**
-<<<<<<< HEAD
- * Класс контейнер, содержащий секции
- */
-export class ContainerComponent implements OnInit {
-  
-  array;
-  faPlus = faPlus;
-  constructor(private resolver: ComponentFactoryResolver,public dataService: DataService) {}
-=======
  * Класс главный контейнер приложения.
  */
 export class ContainerComponent implements OnInit, OnDestroy {
@@ -41,21 +26,11 @@ export class ContainerComponent implements OnInit, OnDestroy {
   componentRef: ComponentRef<any>;
 
   constructor(private resolver: ComponentFactoryResolver, public dataService: DataService) {}
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
 
   ngOnInit(): void {
     this.update();
   }
 
-<<<<<<< HEAD
-  /**
-   * Метод, создающий динамический компонент - форму для добавления новой секции.
-  */
-  @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
-  componentRef: ComponentRef<any>;
-  openForm(idSection,formStatus){
-    this.container.clear(); 
-=======
   ngOnDestroy(): void{
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -77,44 +52,25 @@ export class ContainerComponent implements OnInit, OnDestroy {
    */
   public openForm(idSection, formStatus): void{
     this.container.clear();
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     const factory = this.resolver.resolveComponentFactory(ModalwindowsectionComponent);
     this.componentRef = this.container.createComponent(factory);
-<<<<<<< HEAD
-    if(idSection){
-      this.componentRef.instance.nameSection = this.array[idSection].name;
-=======
     if (idSection){
       this.componentRef.instance.nameSection = this.dataService.arrayOfSection[this.dataService.findSectionPosById(idSection)].name;
->>>>>>> Добавлена возможность перетаскивание заметок внутри секции
     }
     this.componentRef.instance.formStatus = formStatus;
     this.componentRef.instance.output.subscribe(event => {
-      //если false - нажата кнопка закрытия формы
-      if(event != false){
-        if(idSection == null){
+      if (event !== false){
+        if (idSection == null){
           this.dataService.addNewSection(event);
         }
         else{
-          this.dataService.changeNameSection(idSection,event);
+          this.dataService.changeNameSection(idSection, event);
         }
       }
       this.componentRef.destroy();
     });
   }
 
-<<<<<<< HEAD
-  addNewNote(note:INote){
-    this.dataService.addNewNote(note);
-    this.update();
-  }
- 
-  /**
-   * Метод, реализующий подписку на данные с массивом секций.
-   */
-  update(){
-    this.dataService.observable$.subscribe(
-=======
   /**
    * Реализует добавление новой заметки.
    * @param note новая заметка
@@ -129,10 +85,9 @@ export class ContainerComponent implements OnInit, OnDestroy {
    */
   private update(): void{
     this.dataService.observable$.pipe(takeUntil(this.unsubscribe$)).subscribe(
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
       (vl) => {
-        this.array = vl
-      })
+        this.array = vl;
+      });
   }
-  
+
 }

@@ -1,22 +1,6 @@
 @import 'color';
 
 :host{
-<<<<<<< HEAD
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-}
-
-.h1-main{
-    text-align: center;
-    .h1__text{
-        font: {
-            family: fixedsys;
-            weight: 600;
-        }
-        color: $text-color;
-=======
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -33,7 +17,6 @@
     font: {
       family: fixedsys;
       weight: 600;
->>>>>>> Добавлен выпадающий список с выбором языка приложения. Добавлены модификаторы доступа у методов класса. Поправлены отступы
     }
 
     color: $text-color;
