@@ -6,7 +6,7 @@
         </div>
         <div class="info-managing-container">
             <p class="info-managing-container_date">{{note.noteCreationDate | date: "dd.MM.yyyy HH:mm"}}</p>
-            <fa-icon class="info-managing-container_edit" [icon]="faEdit" (click)="isEdit=true"></fa-icon>
+            <fa-icon class="info-managing-container_edit" [icon]="faEdit" (click)="isEdit=true" name="edit-note"></fa-icon>
             <fa-icon class="info-managing-container_delete" [icon]="faTrashAlt" (click)=deleteNote()></fa-icon>
         </div>
     </div>
@@ -20,10 +20,10 @@
             <p><textarea rows="3" cols="40" name="text" formControlName="noteContent"></textarea></p>
         </div>
         <div class="form-group">
-            <input type="datetime-local" formControlName='noteCreationDate' />
+            <input type="datetime-local" formControlName='noteCreationDate' name="date-input"/>
         </div>
         <div class="btn-container">
-            <button type="button" class="btn" (click)=editNote()>Изменить</button>
+            <button type="button" class="btn" (click)=editNote() name="save-changes">Изменить</button>
             <button type="button" class="btn" (click)="isEdit = false">Отмена</button>
         </div>
     </form>

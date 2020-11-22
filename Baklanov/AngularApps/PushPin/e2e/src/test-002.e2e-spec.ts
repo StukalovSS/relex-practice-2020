@@ -29,7 +29,7 @@ describe('Добавление заметки:', () => {
         await page.getModalCloseBtn().click();
         expect(page.getAllNotes().count()).toBe(0, 'Количество секций изменилось');
     });
-    it('Добавление заметки', async () => {
+    it('Создание и добавление заметки', async () => {
         await page.getModalOpenBtn().click();
         await page.inputNoteHeader('Название заметки');
         await page.inputNoteContent('Текст заметки');
@@ -40,6 +40,22 @@ describe('Добавление заметки:', () => {
         await page.getModalSubmitBtn().click();
         expect(page.getModalForNoteComponent()?.isPresent()).toBeFalsy('Модальное окно закрылось');
         expect(await page.getAllNotes().count()).toBe(1, 'Заметка не добавилась');
+        expect(page.getNoteHeader('note-header-in-component').getText()).toBe(
+            'Название заметки', 'Введённое название заметки не соответствует');
+        expect(page.getNoteContent('note-content-in-component').getText()).toBe(
+            'Текст заметки', 'Введённый текст заметки не соответствует');
+    });
+    it('Создание и добавление второй заметки', async () => {
+        await page.getModalOpenBtn().click();
+        await page.inputNoteHeader('Название заметки');
+        await page.inputNoteContent('Текст заметки');
+        expect(page.getInputForNoteHeader().getAttribute('value')).toBe(
+            'Название заметки', 'Введённое название заметки не соответствует');
+        expect(page.getInputForNoteContent().getAttribute('value')).toBe(
+            'Текст заметки', 'Введённый текст заметки не соответствует');
+        await page.getModalSubmitBtn().click();
+        expect(page.getModalForNoteComponent()?.isPresent()).toBeFalsy('Модальное окно закрылось');
+        expect(await page.getAllNotes().count()).toBe(2, 'Заметка не добавилась');
         expect(page.getNoteHeader('note-header-in-component').getText()).toBe(
             'Название заметки', 'Введённое название заметки не соответствует');
         expect(page.getNoteContent('note-content-in-component').getText()).toBe(

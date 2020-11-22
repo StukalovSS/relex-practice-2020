@@ -29,7 +29,7 @@ describe('Добавление секции:', () => {
         await page.getModalCloseBtn().click();
         expect(page.getAllSections().count()).toBe(0, 'Количество секций изменилось');
     });
-    it('Добавление секции', async () => {
+    it('Создание и добавление секции', async () => {
         await page.getModalOpenBtn().click();
         await page.inputSectionTitle('Введите название секции');
         expect(page.getValueOfSectionTitleInp()).toBe(
