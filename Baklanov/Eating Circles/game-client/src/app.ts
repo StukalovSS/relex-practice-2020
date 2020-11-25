@@ -1,7 +1,11 @@
 const p5 = require('../node_modules/p5/lib/p5');
 const http = require('http');
+const css = require('./styles.css');
+import { captureRejectionSymbol } from 'events';
+import { HtmlTagObject } from 'html-webpack-plugin';
+import { parse } from 'path';
 import { Circle } from './circle';
-import { LeaderBoard } from './leaderBoard'
+import { LeaderBoard } from './leaderBoard';
 
 const options = {
     hostname: '127.0.0.1',
@@ -22,6 +26,16 @@ let zoom: number = 1.8;//1.8
 let newzoom = zoom;
 let serverResp: any;
 let prevR: number;
+let nickname: string;
+let color: any;
+let form = document.getElementById('playerForm');
+form.addEventListener('submit', () => {
+    nickname = (<HTMLInputElement>document.getElementById("textInp")).value;
+    color =(<HTMLInputElement>document.getElementById("colorInp")).value.substr(1);
+    let formContainer = <HTMLElement>document.getElementById("form-container");
+    formContainer.classList.add('form-container-hide');
+    const sketchInst = new p5(sketch);
+});
 function sendData(mx: number, my: number) {
     options.path = '/get_state?id=' + playerId + '&x=' + mx + '&y=' + my;
     let req = http.request(options, (res: any) => {
@@ -41,7 +55,7 @@ const sketch = (s: typeof p5) => {
     let FixedsysFont: any;
     s.preload = () => {
         FixedsysFont = s.loadFont('./assets/Fixedsys.ttf');
-        s.loadJSON('http://127.0.0.1:3000/create_player', (response: any) => {
+        s.loadJSON(`http://127.0.0.1:3000/create_player?nickname=${nickname}&color=${color}`, (response: any) => {
             playerId = response.playerId;
             width = response.width;
             height = response.height;
@@ -50,6 +64,7 @@ const sketch = (s: typeof p5) => {
                 serverFood = response.food;
                 playerIndex = response.playerIndex;
                 serverPlayers = response.players;
+                console.log(serverPlayers)
             })
         });
     }
@@ -61,14 +76,14 @@ const sketch = (s: typeof p5) => {
     }
 
     s.draw = () => {
-        s.background(220);
+        s.background(250);
         food = [];
         for (let i = 0; i < serverFood.length; i++) {
-            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s);
+            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s,'', serverFood[i].color);
         }
         players = [];
         for (let i = 0; i < serverPlayers.length; i++) {
-            players[i] = new Circle(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s);
+            players[i] = new Circle(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s, serverPlayers[i].nickname,serverPlayers[i].color);
         }
         s.translate(s.width / 2, s.height / 2);
         if (prevR != serverPlayers[playerIndex].r) {
@@ -92,12 +107,10 @@ const sketch = (s: typeof p5) => {
         for (let i = players.length - 1; i >= 0; i--) {
             players[i].show();
         }
-        leadersBoard = new LeaderBoard('adfs',s);
-        leadersBoard.show(serverPlayers[playerIndex].x+serverPlayers[playerIndex].r,serverPlayers[playerIndex].y);
+        leadersBoard = new LeaderBoard('adfs', s);
+        leadersBoard.show(serverPlayers[playerIndex].x + serverPlayers[playerIndex].r, serverPlayers[playerIndex].y);
         prevR = serverPlayers[playerIndex].r;
         sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
     }
 
 }
-console.log(window.innerHeight, '  ', window.innerWidth);
-const sketchInst = new p5(sketch);

@@ -1,8 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const express = require("express");
 const app = express();
-const PlayerState = require('./Objects/playerState');
-const GameState = require('./Objects/gameState');
+const PlayerState = require('./States/playerState');
+const GameState = require('./States/gameState');
 app.use(function (require, response, next) {
     let origin = 'http://127.0.0.1/8080/';
     response.header('Access-Control-Allow-Origin', require.headers.origin);
@@ -11,13 +11,15 @@ app.use(function (require, response, next) {
     next();
 });
 const R_PLAYER = 30;
-const height = 937;
-const width = 2560;
+const height = 1041;
+const width = 2844;
 const foodSize = 18;
 const AmountOfFood = 300;
+const GRAINS_COLORS=['#00cff1','#fe0000','#26a733','#d5e64c','#f87421','#fffa78','#dbeaaf'];
+
 
 let gameSt = new GameState(width, height);
-gameSt.init(foodSize, AmountOfFood);
+gameSt.init(foodSize, AmountOfFood, GRAINS_COLORS);
 setInterval(() => gameSt.updateSt(), 15.625);
 app.get("/get_state", (request, response) => {
     let player_id = request.query.id;
@@ -32,7 +34,10 @@ app.get("/get_state", (request, response) => {
 });
 app.get("/create_player", (request, response) => {
     let playerId = uuidv4();
-    gameSt.addPlayer(playerId, R_PLAYER);
+    let playerNickname = request.query.nickname;
+    let playerColor ='#'+ request.query.color;
+    console.log(playerColor);
+    gameSt.addPlayer(playerId, R_PLAYER,playerNickname,playerColor);
     response.send(JSON.stringify({ "playerId": playerId, 'width': width, 'height': height }));
 });
 app.listen(3000, function () {

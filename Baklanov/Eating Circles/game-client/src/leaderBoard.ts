@@ -16,6 +16,5 @@ export class LeaderBoard {
         this.s.fill(255);
         this.s.textSize(26);
         //this.s.text('LeaderBoard', 0.0-innerWidth, 0.0 - innerHeight);
-        console.log(innerWidth, this.boardY);
     };
 }

@@ -2,12 +2,14 @@ const Circle = require('./circle');
 const lerp = require('lerp');
 
 module.exports = class Player extends Circle {
-    constructor(x, y, r) {
+    constructor(x, y, r,nickname, color) {
         super(x, y, r);
         this.vectorX = 0;
         this.vectorY = 0;
         this.isLife = true;
         this.speed = 8.1;
+        this.nickname = nickname;
+        this.color = color;
     }
     speedMin = 1.9;
     updatePosition(tarX, tarY, width, height) {

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <style>
-        *{
-            overflow: hidden;
-            margin: 0%;
-        }
-    </style>
     <meta charset="UTF-8">
     <title>Canvas</title>
 </head>
+
 <body>
+    <div class="form-container" id="form-container">
+        <div class="blur"></div>
+        <form id="playerForm" action="/#">
+            <h1 class="form-title">Eating Circles the game</h1>
+            <div class="form-group">
+                <input class="form-text-input" placeholder=" " required id="textInp" autocomplete="off" maxlength="20">
+                <label class="form-label-text-input">Введите ваш ник</label>
+            </div>
+            <div class="form-group">
+                <label class="form-label-color-input" name="colorInp">Выберите ваш цвет</label>
+                <input type="color" class="form-color-input" id="colorInp">
+            </div>
+            <button type="submit" class="form-button">Начать</button>
+        </form>
+    </div>
 </body>
+
 </html>

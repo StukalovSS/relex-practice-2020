@@ -1,5 +1,5 @@
-const Circle = require('./circle');
-const Player = require('./player');
+const Circle = require('../Objects/circle');
+const Player = require('../Objects/player');
 
 
 module.exports = class GameState {
@@ -18,15 +18,16 @@ module.exports = class GameState {
     addTargetCoords(player_id, tarX, tarY) {
         this.targets[this.map.get(player_id)] = { 'tarX': tarX, 'tarY': tarY };
     }
-    init(foodSize, AmountOfFood) {
+    init(foodSize, AmountOfFood, grainsColors) {
         for (let i = 0; i < AmountOfFood; i++) {
-            let grain = new Circle(this.random(-this.width, this.width), this.random(-this.height, this.height), foodSize);
+            let color = grainsColors[this.random(0,grainsColors.length)];
+            let grain = new Circle(this.random(-this.width, this.width), this.random(-this.height, this.height), foodSize, color);
             this.food.push(grain);
         }
     }
-    addPlayer(playerId, R_PLAYER) {
+    addPlayer(playerId, R_PLAYER, nickname,pColor) {
         this.map.set(playerId, this.index);
-        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, playerId);
+        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, nickname, pColor);
         this.players.push(player);
         this.targets.push({ 'tarX': player.x, 'tarY': player.y });
         this.index++;

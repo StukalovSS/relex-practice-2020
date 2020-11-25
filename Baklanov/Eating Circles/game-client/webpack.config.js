@@ -13,9 +13,19 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
               },
+              {
+                test: /\.(png|ttf|woff2|eot|svg|jpg|gif|jpe?g)$/,
+                use: [
+                    {
+                        options: { outputPath: "assets/" },
+                        loader: 'file-loader'
+                    }
+                ]
+            },
             {
                 test: /\.css$/i,
                 use: [
+                    
                     {
                         loader: 'style-loader',
                         options: {
