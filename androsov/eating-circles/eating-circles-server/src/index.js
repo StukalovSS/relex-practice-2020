@@ -1,7 +1,7 @@
 import express from 'express';
-import { Food } from './game-objects/food.js';
-import { Player } from './game-objects/player.js';
-import { random } from './utils/random.js';
+import { Food } from './app/game-objects/food.js';
+import { Player } from './app/game-objects/player.js';
+import { random } from './app/utils/random.js'
 
 
 const app = express();

@@ -1,48 +1,23 @@
 {
   "name": "eating-circles-server",
   "version": "1.0.0",
-  "description": "Игра \"кушающие кружочки\" с функционалом напоминающим Agar.io",
+  "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "babel -d ./dist ./src -s",
-    "dev": "node ./src/index.js"
+    "dev": "node src/index.js",
+    "start": "webpack"
   },
   "author": "mxzpytlk",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "express": "^4.17.1"
+    "cli": "^1.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.3",
+    "webpack": "^5.9.0",
+    "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
-    "eslint": "^7.14.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.22.1"
-  },
-  "eslintConfig": {
-    "root": true,
-    "extends": [
-      "airbnb-base",
-      "prettier"
-    ],
-    "env": {
-      "node": true
-    },
-    "import/extensions": "always"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
+    "webpack-node-externals": "^2.5.2"
   }
 }
