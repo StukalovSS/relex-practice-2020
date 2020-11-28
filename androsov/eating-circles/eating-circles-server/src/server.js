@@ -179,7 +179,7 @@ class Vector {
     }
 
     get length() {
-        return Math.sqrt(this.x ** 2 + this.y ** 2)
+        return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
 
     set length(length) {
@@ -231,7 +231,7 @@ class Player extends Circle {
      */
     update(dx, dy) {
         this.prevX = this.x;
-        this.prevY = this.y
+        this.prevY = this.y;
 
         const vect = new Vector(dx, dy),
             dist = (Date.now() - this.prevResponceTime) * 0.1;
