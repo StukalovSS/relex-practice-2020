@@ -1,11 +1,11 @@
 const p5 = require('../node_modules/p5/lib/p5');
 const http = require('http');
 const css = require('./styles.css');
-import { captureRejectionSymbol } from 'events';
-import { HtmlTagObject } from 'html-webpack-plugin';
-import { parse } from 'path';
 import { Circle } from './circle';
 import { LeaderBoard } from './leaderBoard';
+
+window.location.href ='/?#';
+const leaderBoard = new LeaderBoard();
 
 const options = {
     hostname: '127.0.0.1',
@@ -13,7 +13,6 @@ const options = {
     path: '',
     method: 'Get'
 }
-let leadersBoard: any;
 let playerId: string;
 let width: number;
 let height: number;
@@ -33,7 +32,7 @@ form.addEventListener('submit', () => {
     nickname = (<HTMLInputElement>document.getElementById("textInp")).value;
     color =(<HTMLInputElement>document.getElementById("colorInp")).value.substr(1);
     let formContainer = <HTMLElement>document.getElementById("form-container");
-    formContainer.classList.add('form-container-hide');
+    formContainer.classList.add('hide');
     const sketchInst = new p5(sketch);
 });
 function sendData(mx: number, my: number) {
@@ -44,6 +43,7 @@ function sendData(mx: number, my: number) {
             playerIndex = serverResp.playerIndex;
             serverFood = serverResp.food;
             serverPlayers = serverResp.players;
+            leaderBoard.players = serverResp.leadersBoardPlayers;
         });
         res.on('end', () => {
             console.log('req');
@@ -64,19 +64,20 @@ const sketch = (s: typeof p5) => {
                 serverFood = response.food;
                 playerIndex = response.playerIndex;
                 serverPlayers = response.players;
-                console.log(serverPlayers)
+                leaderBoard.players = response.leadersBoardPlayers;
             })
         });
     }
     s.setup = () => {
         s.createCanvas(width, height);
-        s.background(220);
+        s.background('#f2fbff');
         s.frameRate(64);
         s.textFont(FixedsysFont);
+        leaderBoard.showBoard(nickname);
     }
 
     s.draw = () => {
-        s.background(250);
+        s.background('#f2fbff');
         food = [];
         for (let i = 0; i < serverFood.length; i++) {
             food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s,'', serverFood[i].color);
@@ -94,11 +95,11 @@ const sketch = (s: typeof p5) => {
         s.translate(-serverPlayers[playerIndex].x, -serverPlayers[playerIndex].y);
         for (let i = -s.width; i < s.width; i = i + 50) {
             s.line(i, -s.height, i, s.height);
-            s.stroke(126);
+            s.stroke('#c8d0d3');
         }
         for (let i = -s.height; i < s.height; i = i + 50) {
             s.line(-s.width, i, s.width, i);
-            s.stroke(126);
+            s.stroke('#c8d0d3');
         }
 
         for (let i = 0; i < food.length; i++) {
@@ -107,9 +108,8 @@ const sketch = (s: typeof p5) => {
         for (let i = players.length - 1; i >= 0; i--) {
             players[i].show();
         }
-        leadersBoard = new LeaderBoard('adfs', s);
-        leadersBoard.show(serverPlayers[playerIndex].x + serverPlayers[playerIndex].r, serverPlayers[playerIndex].y);
         prevR = serverPlayers[playerIndex].r;
+        leaderBoard.update();
         sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
     }
 

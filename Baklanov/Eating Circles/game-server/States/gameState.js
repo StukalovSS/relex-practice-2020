@@ -27,7 +27,7 @@ module.exports = class GameState {
     }
     addPlayer(playerId, R_PLAYER, nickname,pColor) {
         this.map.set(playerId, this.index);
-        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, nickname, pColor);
+        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, nickname, pColor,0);
         this.players.push(player);
         this.targets.push({ 'tarX': player.x, 'tarY': player.y });
         this.index++;

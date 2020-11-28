@@ -9,7 +9,7 @@
 <body>
     <div class="form-container" id="form-container">
         <div class="blur"></div>
-        <form id="playerForm" action="/#">
+        <form id="playerForm">
             <h1 class="form-title">Eating Circles the game</h1>
             <div class="form-group">
                 <input class="form-text-input" placeholder=" " required id="textInp" autocomplete="off" maxlength="20">
@@ -17,10 +17,27 @@
             </div>
             <div class="form-group">
                 <label class="form-label-color-input" name="colorInp">Выберите ваш цвет</label>
-                <input type="color" class="form-color-input" id="colorInp">
+                <input type="color" class="form-color-input" id="colorInp" list="colors">
             </div>
             <button type="submit" class="form-button">Начать</button>
         </form>
+        <datalist id="colors">
+
+            <option value="#ff0734">
+
+            <option value="#6b07ff">
+
+            <option value="#e7ff07">
+
+            <option value="#caff07">
+
+        </datalist>
+    </div>
+    <div class="leader-board-container" id="leader-board-container">
+        <h1>Leaders Board</h1>
+        <div class="leader-board" id="leader-board-players">
+       
+        </div>
     </div>
 </body>
 

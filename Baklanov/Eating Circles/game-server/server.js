@@ -36,7 +36,6 @@ app.get("/create_player", (request, response) => {
     let playerId = uuidv4();
     let playerNickname = request.query.nickname;
     let playerColor ='#'+ request.query.color;
-    console.log(playerColor);
     gameSt.addPlayer(playerId, R_PLAYER,playerNickname,playerColor);
     response.send(JSON.stringify({ "playerId": playerId, 'width': width, 'height': height }));
 });

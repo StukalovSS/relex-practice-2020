@@ -2,7 +2,7 @@ const Circle = require('./circle');
 const lerp = require('lerp');
 
 module.exports = class Player extends Circle {
-    constructor(x, y, r,nickname, color) {
+    constructor(x, y, r,nickname, color,points) {
         super(x, y, r);
         this.vectorX = 0;
         this.vectorY = 0;
@@ -10,6 +10,7 @@ module.exports = class Player extends Circle {
         this.speed = 8.1;
         this.nickname = nickname;
         this.color = color;
+        this.points = points;
     }
     speedMin = 1.9;
     updatePosition(tarX, tarY, width, height) {
@@ -28,6 +29,7 @@ module.exports = class Player extends Circle {
     eatingGrains(grain) {
         let line = Math.sqrt(Math.pow(this.x - grain.x, 2) + Math.pow(this.y - grain.y, 2));
         if (line < this.r + grain.r) {
+            this.points +=16;
             let sPlayer = Math.pow(this.r, 2) * Math.PI + Math.pow(grain.r, 2) * Math.PI;
             this.r = Math.sqrt(sPlayer / Math.PI);
             if (this.speed > this.speedMin) {
