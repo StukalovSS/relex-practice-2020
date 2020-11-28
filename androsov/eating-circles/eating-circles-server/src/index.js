@@ -1,13 +1,13 @@
+import express from 'express';
 import { Food } from './game-objects/food.js';
 import { Player } from './game-objects/player.js';
 import { random } from './utils/random.js';
 
 
-import express from 'express';
 const app = express();
 
-const players = new Map(),
-    food = [];
+const players = new Map();
+const food = [];
 
 for (let i = 0; i < 1000; i++) {
     food.push(new Food( random(-2000, 2000), random(-2000, 2000) ));
