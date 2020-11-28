@@ -4,12 +4,16 @@
   "description": "Игра \"кушающие кружочки\" с функционалом напоминающим Agar.io",
   "main": "index.js",
   "scripts": {
+    "start": "babel -d ./dist ./src -s",
     "dev": "node ./src/index.js"
   },
   "author": "mxzpytlk",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
@@ -26,6 +30,19 @@
     ],
     "env": {
       "node": true
-    }
+    },
+    "import/extensions": "always"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   }
 }
