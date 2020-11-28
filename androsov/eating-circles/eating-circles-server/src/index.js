@@ -2,7 +2,7 @@ import express from 'express';
 import { Food } from './app/game-objects/food.js';
 import { Player } from './app/game-objects/player.js';
 import { random } from './app/utils/random.js'
-
+const webpack = require('webpack');
 
 const app = express();
 

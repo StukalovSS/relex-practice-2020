@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "node src/index.js",
-    "start": "webpack"
+    "build": "webpack"
   },
   "author": "mxzpytlk",
   "license": "ISC",
@@ -18,6 +17,7 @@
     "webpack-cli": "^4.2.0"
   },
   "devDependencies": {
+    "webpack-dev-server": "^3.11.0",
     "webpack-node-externals": "^2.5.2"
   }
 }
