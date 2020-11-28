@@ -1,18 +1,4 @@
-class Circle {
-    constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r; 
-    }
-
-    distanceFromAnotherCircle(circle) {
-        return Math.sqrt((this.x - circle.x) ** 2 + (this.y - circle.y) ** 2);
-    }
-
-    get square() {
-        return Math.PI * (this.r ** 2);
-    }
-}
+import { Circle } from './geometry-objects/circle.js'
 
 /**
  * Точка на двумерной плоскости.
@@ -297,7 +283,7 @@ function random(min, max) {
 }
 
 
-const express = require('express');
+import express from 'express';
 const app = express();
 
 const players = new Map(),
