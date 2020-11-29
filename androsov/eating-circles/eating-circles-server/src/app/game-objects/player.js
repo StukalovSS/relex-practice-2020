@@ -1,6 +1,7 @@
 import { Circle } from '../geometry-objects/circle.js';
 import { Vector } from '../geometry-objects/vector.js';
 import { Rectangle } from '../geometry-objects/rectangle.js';
+import { Point } from '../geometry-objects/point.js';
 
 export class Player extends Circle {
   constructor(x, y, id) {
