@@ -3,11 +3,16 @@ import { Vector } from '../geometry-objects/vector.js';
 import { Rectangle } from '../geometry-objects/rectangle.js';
 import { Point } from '../geometry-objects/point.js';
 
+/**
+ * Игрок ,перемещающийся по игровому полю и поедающий других игроков и еду.
+ */
 export class Player extends Circle {
-  constructor(x, y, id) {
+  constructor(x, y, fieldWidth, fieldHeight, id) {
       super(x, y, 36);
+      this.fieldWidth = fieldWidth;
+      this.fieldHeight = fieldHeight;
       this.id = id;
-      this.prevResponceTime = Date.now();
+      this.speed = 0.1;
   }
 
   get distanceFromCentre() {
@@ -16,19 +21,19 @@ export class Player extends Circle {
 
   /**
    * Смещение игрока.
-   * @param {number} dx изменение положения игрока относительно оси 0X.
-   * @param {number} dy изменение положения игрока относительно оси 0Y.
+   * @param {number} dx Изменение положения игрока относительно оси 0X.
+   * @param {number} dy Изменение положения игрока относительно оси 0Y.
+   * @param {number} time Время, за которое игрок должен переместится.
    */
-  update(dx, dy) {
+  update(dx, dy, time) {
       this.prevX = this.x;
       this.prevY = this.y;
 
       const vect = new Vector(dx, dy),
-          dist = (Date.now() - this.prevResponceTime) * 0.1;
-      this.prevResponceTime = Date.now();
+          dist = time * this.speed;
       vect.length = dist;
-      if ((this.x + vect.x > 2000 && vect.x > 0) || (this.x + vect.x < -2000 && vect.x < 0) ||
-      (this.y + vect.y > 2000 && vect.y > 0) || (this.y + vect.y < -2000 && vect.y < 0)) {
+      if ((this.x + vect.x > this.fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this.fieldWidth / 2 && vect.x < 0) ||
+      (this.y + vect.y > this.fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this.fieldHeight / 2 && vect.y < 0)) {
           return;
       }
       this.x += vect.x;
@@ -54,14 +59,13 @@ export class Player extends Circle {
       if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
           let sum = this.square + other.square;
           this.r = Math.sqrt(sum / Math.PI);
-          other.isEated();
+          if (other.isEated) {
+              other.isEated();
+          }
           return true;
       } else {
           return false;
       }
       
-  }
-
-  isEated() {
   }
 }

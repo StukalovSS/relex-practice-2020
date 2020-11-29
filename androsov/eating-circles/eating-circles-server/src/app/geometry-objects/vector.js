@@ -1,5 +1,7 @@
+import { EPSILON } from '../utils/constants.js';
+
 /**
- * Класс двумерного вектора для работы с движущимеся объектами.
+ * Двумерный вектор.
  * Вектор строится от центра координат.
  */
 export class Vector {
@@ -19,7 +21,7 @@ export class Vector {
   }
 
   get angle() {
-      if (this.length === 0) {
+      if (this.length < EPSILON) {
           return 0;
       } else if (this.y > 0) {
           return Math.acos(this.x / this.length);
@@ -39,6 +41,10 @@ export class Vector {
   }
 
   angleBetweenVectors(vect) {
-      return Math.acos(this.scalarMultiply(vect) / (this.length * vect.length));
+    if (this.length < EPSILON || vect/length) {
+      throw new Error('Нельзя найти угол между векторами, если один из них нулевой.\n' + this + '\n' + vect);
+    }
+    
+    return Math.acos(this.scalarMultiply(vect) / (this.length * vect.length));
   }
 }

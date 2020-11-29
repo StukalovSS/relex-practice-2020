@@ -1,5 +1,6 @@
 import { Segment } from './segment.js';
-import { Point } from './point.js'
+import { Point } from './point.js';
+import { EPSILON } from '../utils/constants.js';
 
 /**
  * Прямоугольник вида:
@@ -10,6 +11,13 @@ import { Point } from './point.js'
  *  C--------D
  */
 export class Rectangle {
+
+  /**
+   * Создает прямоугольник, стороны которого паралельны осям координат.
+   * @param {Point} leftUpPoint Верхняя левая точка.
+   * @param {number} width Ширина прямоугольника.
+   * @param {number} height Высота прямоугольника.
+   */
   constructor(leftUpPoint, width, height) {
       this.pointA = leftUpPoint;
       this.pointB = new Point(leftUpPoint.x + width, leftUpPoint.y);
@@ -19,6 +27,8 @@ export class Rectangle {
 
   /**
    * Повернуть прямоугольник вокруг определенной точки.
+   * 
+   * Каждая точка прямоугольника поворачивается относительно выбранной точки.
    * @param {Point} point Точка, вокруг которой вращается прямоугольник.
    * @param {number} angle Угол в радианах, на который вращается прямоугольник.
    */
@@ -35,7 +45,7 @@ export class Rectangle {
    * @returns {boolean} True если точка внутри прямоугольника.
    */
   isPointIn(point) {
-      if (this.pointA.x === this.pointB.x || this.pointA.x === this.pointD.x) {
+      if (Math.abs(this.pointA.x - this.pointB.x) < EPSILON || Math.abs(this.pointA.x - this.pointD.x) < EPSILON) {
           return this.isPointInStraightRectangle(point);
       }
 
