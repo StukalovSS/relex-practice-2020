@@ -95,6 +95,11 @@ export class Game {
     this.returnStateToClient(player, response);
   }
 
+  /**
+   * Вернуть клиенту информацию о состоянии игры.
+   * @param {Player} player Игрок, отправивший запрос.
+   * @param {any} response Объект ответа сервера.
+   */
   returnStateToClient(player, response) {
     let answer = JSON.stringify({
       player: {
@@ -121,6 +126,12 @@ export class Game {
     response.send(answer);
   }
 
+  /**
+   * Разрешить доступ к игре всем клиентам.
+   * @param {any} require Запрос с клиента. 
+   * @param {any} response Ответ сервера.
+   * @param {any} next Функция, которая передает управление приложением дальше по цепочке.
+   */
   allowOrigin(require, response, next) {
     response.header('Access-Control-Allow-Origin', require.headers.origin);
     response.header('Access-Control-Allow-Origin-Methods', 'GET');

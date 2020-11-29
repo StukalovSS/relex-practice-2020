@@ -3,6 +3,7 @@ var path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports={
+    target: "web",
     entry:'./src/scripts/app.ts',
     output:{ 
         filename:'main.js',

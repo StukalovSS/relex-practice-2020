@@ -24,6 +24,8 @@ async function sendResponse(path: string, args: object, callback: (req: any) => 
 
     const req = http.request(options, (res: any) => {
         res.on('data', (body: any) => {
+            console.log(new TextDecoder("utf-8").decode(body));
+            
             let decode = new TextDecoder("utf-8").decode(body),
                 fromJSON = JSON.parse(decode);
             
