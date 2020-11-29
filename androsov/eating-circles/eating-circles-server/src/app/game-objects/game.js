@@ -16,6 +16,9 @@ export class Game {
     }
   }
 
+  /**
+   * Запустить игру.
+   */
   start() {
     const app = express();
     app.use(this.allowOrigin);
@@ -31,6 +34,10 @@ export class Game {
     });
   }
 
+  /**
+   * Создание и отправка нового игрока на клиент.
+   * @param {any} response Объект ответа с сервера.
+   */
   sendNewPlayerToClient(response) {
     let player = new Player(random(-this.fieldWidth / 2, this.fieldWidth / 2), random(-this.fieldHeight / 2, this.fieldHeight / 2),
       this.fieldWidth, this.fieldHeight, this.players.size);
