@@ -14,6 +14,7 @@ export class Game {
       this.food.push(new Food(random(-fieldWidth / 2, fieldWidth / 2), random(-fieldHeight / 2, fieldHeight / 2),
         fieldWidth, fieldHeight));
     }
+    this.playerId = 0;
   }
 
   /**
@@ -39,13 +40,14 @@ export class Game {
    * @param {any} response Объект ответа с сервера.
    */
   sendNewPlayerToClient(response) {
+    const id = this.createNewPlayerId();
     let player = new Player(random(-this.fieldWidth / 2, this.fieldWidth / 2), random(-this.fieldHeight / 2, this.fieldHeight / 2),
-      this.fieldWidth, this.fieldHeight, this.players.size);
-    this.players.set(this.players.size, player);
-    this.responceTime.set(this.responceTime.size, Date.now());
+      this.fieldWidth, this.fieldHeight, id);
+    this.players.set(id, player);
+    this.responceTime.set(id, Date.now());
 
     response.send(JSON.stringify({
-      player: this.players.get(this.players.size - 1),
+      player: this.players.get(id),
       players: Array.from(this.players.values()).filter(obj => obj.id !== player.id)
         .map(obj => {
           obj.id = undefined;
@@ -137,5 +139,13 @@ export class Game {
     response.header('Access-Control-Allow-Origin-Methods', 'GET');
     response.header('Access-Control-Allow-Origin-Headers', 'Origin, X-Requested-Width, Content-Type, Accept');
     next();
+  }
+
+  /**
+   * Создать новый id для игрока
+   */
+  createNewPlayerId() {
+    this.playerId += 1;
+    return this.playerId;
   }
 }
