@@ -35,7 +35,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       }
     })
   ],
-  exports:[NoteComponent,SectionComponent],
+  exports: [ NoteComponent, SectionComponent],
   providers: [DataService, ColorPickerService],
 })
 export class SectionModule { }

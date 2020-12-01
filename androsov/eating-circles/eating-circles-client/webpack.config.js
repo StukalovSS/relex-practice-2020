@@ -1,7 +1,9 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports={
+    target: "web",
     entry:'./src/scripts/app.ts',
     output:{ 
         filename:'main.js',
@@ -37,5 +39,6 @@ module.exports={
       },
     plugins: [
         new HtmlWebpackPlugin({ template: './src/index.html'})
-    ]
+    ],
+    devtool: isDev ? 'source-map' : undefined
 }

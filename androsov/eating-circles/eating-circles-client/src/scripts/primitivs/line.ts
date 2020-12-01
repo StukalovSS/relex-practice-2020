@@ -1,4 +1,4 @@
-import { Point } from '../coordinates-conventer/screen-conventer';
+import { Point } from '../screen-conventer/screen-conventer';
 
 export default class Line {
     constructor(public p1: Point, public p2: Point) {}
