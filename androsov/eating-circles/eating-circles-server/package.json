@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --mode development && npm start",
+    "dev": "cross-env NODE_ENV=development webpack --mode development && node ./dist/main.js",
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "start": "node ./dist/main.js"
+    "start": "npm run build && node ./dist/main.js"
   },
   "author": "mxzpytlk",
   "license": "ISC",
