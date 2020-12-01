@@ -1,4 +1,4 @@
-module.exports = class Rectangle {
+export class Rectangle {
  constructor(playerCoord, playerR, otherR, a) {
    this.A = {
     x: playerCoord.x,

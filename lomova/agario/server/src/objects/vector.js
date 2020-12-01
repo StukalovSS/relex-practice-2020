@@ -1,4 +1,4 @@
-module.exports = class Vector {
+export class Vector {
   constructor(x, y) {
     this.x = x;
     this.y = y;
@@ -15,7 +15,7 @@ module.exports = class Vector {
     return this.x / this.length;
   }
 
-   /**
+  /**
    * Синус угла A между вектором и положительным направлением оси OX.
    */
   get sinA() {

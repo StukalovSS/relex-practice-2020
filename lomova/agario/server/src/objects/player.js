@@ -1,12 +1,10 @@
-const Circle = require('./circle');
-const lerp = require('lerp');
-const Vector = require('./vector');
-const Rectangle = require('./rectangle');
-const Point = require('./point');
+import { Circle } from './circle.js';
+import { Vector } from './vector.js';
+import lerp from 'lerp';
+import { Rectangle } from './rectangle';
+import Point from './point';
 
-module.exports = class Player extends Circle {
-  minSpeed = 2;
-  
+export class Player extends Circle {
   constructor(x, y, r, color, name) {
     super(x, y, r, color);
     this.name = name;
@@ -15,6 +13,7 @@ module.exports = class Player extends Circle {
     this.speed = 5.3;
     this.eaten = false;
     this.prevPos = new Point(x, y);
+    this.minSpeed = 2;
   }
 
   changeSpeed() {
@@ -115,7 +114,7 @@ module.exports = class Player extends Circle {
       return false;
     }
     if (this.r > other.r) {
-       this.r += other.r / 10;
+      this.r += other.r / 10;
       this.changeSpeed();
       return true;
     } else {

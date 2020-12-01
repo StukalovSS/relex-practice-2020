@@ -1,7 +1,7 @@
-const { v4: uuidv4 } = require('uuid');
-const express = require('express');
+import { v4 as uuidv4 } from 'uuid';
+import express from 'express';
 const app = express();
-const GameState = require('./objects/game-state');
+import { GameState } from './objects/game-state';
 
 app.use(function(req, res, next) {
   var origin = 'http://127.0.0.1:3000';

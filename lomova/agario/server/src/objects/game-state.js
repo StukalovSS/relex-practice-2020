@@ -1,18 +1,19 @@
-const Player = require('./player');
-const Circle = require('./circle');
-const Vector = require('./vector');
+import { Player } from './player.js'
+import { Circle } from './circle.js';
+import { Vector } from './vector.js';
 
-module.exports = class GameState {
-  food = [];
-  players = [];
-  index_player = 0;
-  targets = [];
-  map = new Map();
+export class GameState {
+  
 
   constructor(width, height, colors) {
     this.width = width;
     this.height = height;
     this.colors = colors;
+    this.food = [];
+    this.players = [];
+    this.index_player = 0;
+    this.targets = [];
+    this.map = new Map();
   }
 
   /**
