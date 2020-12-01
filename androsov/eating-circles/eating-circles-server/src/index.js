@@ -23,17 +23,17 @@ app.listen(3000, function () {
 });
 
 app.get("/new_player", (_request, response) => {
-  const player = game.createNewPlayer();
+  const curPlayer = game.createNewPlayer();
   response.send(JSON.stringify({
-    player: player,
-    players: Array.from(game.players.values()).filter(player => player !== player)
+    player: curPlayer,
+    players: Array.from(game.players.values()).filter(player => player !== curPlayer)
       .map(obj => {
         obj.id = undefined;
         obj.fieldHeight = undefined;
         obj.fieldWidth = undefined;
         return obj;
       }),
-    food: game.food.filter(obj => Math.sqrt((obj.x - player.x) ** 2 + (obj.y - player.y) ** 2) < 600
+    food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
     ).map(obj => {
       obj.fieldHeight = undefined;
       obj.fieldWidth = undefined;
@@ -45,21 +45,22 @@ app.get("/new_player", (_request, response) => {
 app.get("/get_state", (request, response) => {
   try {
     game.updateState(+request.query.id, +request.query.x, +request.query.y);
-    const player = game.getPlayer(+request.query.id)
+    const curPlayer = game.getPlayer(+request.query.id);
+
     response.send(JSON.stringify({
       player: {
-        x: player.x,
-        y: player.y,
-        r: player.r
+        x: curPlayer.x,
+        y: curPlayer.y,
+        r: curPlayer.r
       },
-      players: Array.from(game.players.values()).filter(player => player !== player)
+      players: Array.from(game.players.values()).filter(player => player !== curPlayer)
         .map(obj => {
           obj.id = undefined;
           obj.fieldHeight = undefined;
           obj.fieldWidth = undefined;
           return obj;
         }),
-      food: game.food.filter(obj => Math.sqrt((obj.x - player.x) ** 2 + (obj.y - player.y) ** 2) < 600
+      food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
       ).map(obj => {
         obj.fieldHeight = undefined;
         obj.fieldWidth = undefined;
