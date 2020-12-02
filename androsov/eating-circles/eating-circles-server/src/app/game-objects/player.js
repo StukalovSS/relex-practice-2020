@@ -9,10 +9,12 @@ import { Point } from '../geometry-objects/point.js';
 export class Player extends Circle {
   constructor(x, y, fieldWidth, fieldHeight, id) {
     super(x, y, 36);
+    this.START_RADIUS = 36;
     this._fieldWidth = fieldWidth;
     this._fieldHeight = fieldHeight;
     this.id = id;
     this.speed = 0.1;
+    this.MIN_SPEED = 0.05;
   }
 
   get distanceFromCentre() {
@@ -60,6 +62,9 @@ export class Player extends Circle {
     if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
       let sum = this.square + other.square;
       this.r = Math.sqrt(sum / Math.PI);
+      if (this.speed > this.MIN_SPEED) {
+        this.speed *= Math.pow(this.START_RADIUS / this.r, 0.001);
+      }
       if (other.isEated) {
         other.isEated();
       }
