@@ -67,6 +67,5 @@ export class Player extends Circle {
     } else {
       return false;
     }
-
   }
 }

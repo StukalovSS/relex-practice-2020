@@ -35,8 +35,8 @@ app.get("/new_player", (_request, response) => {
       }),
     food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
     ).map(obj => {
-      obj.fieldHeight = undefined;
-      obj.fieldWidth = undefined;
+      obj._fieldHeight = undefined;
+      obj._fieldWidth = undefined;
       return obj;
     })
   }));
@@ -62,8 +62,8 @@ app.get("/get_state", (request, response) => {
         }),
       food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
       ).map(obj => {
-        obj.fieldHeight = undefined;
-        obj.fieldWidth = undefined;
+        obj._fieldHeight = undefined;
+        obj._fieldWidth = undefined;
         return obj;
       })
     }));

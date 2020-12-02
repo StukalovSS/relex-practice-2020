@@ -3,6 +3,9 @@ import { Player } from './player.js';
 import { random } from '../utils/random';
 import { PlayerNotExisrError } from './game-errors.js';
 
+/**
+ * Игра "кушающие кружочки".
+ */
 export class Game {
   constructor(fieldWidth, fieldHeight) {
     this.fieldWidth = fieldWidth;
@@ -17,6 +20,9 @@ export class Game {
     this.playerId = 0;
   }
 
+  /**
+   * Создать нового игрока с уникальным id.
+   */
   createNewPlayer() {
     const id = this.createNewPlayerId();
     let player = new Player(random(-this.fieldWidth / 2, this.fieldWidth / 2), random(-this.fieldHeight / 2, this.fieldHeight / 2),
@@ -27,11 +33,14 @@ export class Game {
   }
 
   /**
- * Обновлить состояние игры в соответствии с отправленными с клиента данными.
- * @param {any} request Запрос с игрового клиента на сервер. Должен содержать информацию об id игрока, и координатами x y 
- * в сторону которых он будет перемещаться.
- * @return Игрок, принадлежащий клиенту.
- */
+   * Обновить состояние всей игры.
+   * 
+   * Изменить положение игрока. Изменить положение еды, если игрок ее коснулся. Удалить других игроков, если они меньше текущего и 
+   * текущий игрок к ним прикоснулся.
+   * @param {number} id Уникальный id игрока, который будет совершать перемещение.
+   * @param {number} dx Изменение положения игрока по оси OX.
+   * @param {number} dy Изменение положения игрока по оси OY.
+   */
   updateState(id, dx, dy) {
     const player = this.getPlayer(id);
     player.update(dx, dy, Date.now() - this.playersResponceTime.get(id));
@@ -47,6 +56,10 @@ export class Game {
     }
   }
 
+  /**
+   * Получить игрока по его id.
+   * @param {number} id Уникальный id игрока.
+   */
   getPlayer(id) {
     if (this.players.has(id)) {
       return this.players.get(id);
