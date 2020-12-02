@@ -8,15 +8,15 @@ import { Point } from '../geometry-objects/point.js';
  */
 export class Player extends Circle {
   constructor(x, y, fieldWidth, fieldHeight, id) {
-      super(x, y, 36);
-      this.fieldWidth = fieldWidth;
-      this.fieldHeight = fieldHeight;
-      this.id = id;
-      this.speed = 0.1;
+    super(x, y, 36);
+    this._fieldWidth = fieldWidth;
+    this._fieldHeight = fieldHeight;
+    this.id = id;
+    this.speed = 0.1;
   }
 
   get distanceFromCentre() {
-      return Math.sqrt(this.x ** 2 + this.y ** 2);
+    return Math.sqrt(this.x ** 2 + this.y ** 2);
   }
 
   /**
@@ -26,18 +26,19 @@ export class Player extends Circle {
    * @param {number} time Время, за которое игрок должен переместится.
    */
   update(dx, dy, time) {
-      this.prevX = this.x;
-      this.prevY = this.y;
+    this.prevX = this.x;
+    this.prevY = this.y;
 
-      const vect = new Vector(dx, dy),
-          dist = time * this.speed;
-      vect.length = dist;
-      if ((this.x + vect.x > this.fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this.fieldWidth / 2 && vect.x < 0) ||
-      (this.y + vect.y > this.fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this.fieldHeight / 2 && vect.y < 0)) {
-          return;
-      }
+    const vect = new Vector(dx, dy),
+      dist = time * this.speed;
+    vect.length = dist;
+    if ((this.x + vect.x > this._fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this._fieldWidth / 2 && vect.x < 0) ||
+      (this.y + vect.y > this._fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this._fieldHeight / 2 && vect.y < 0)) {
+      return;
+    } else {
       this.x += vect.x;
       this.y += vect.y;
+    }
   }
 
   /**
@@ -47,25 +48,25 @@ export class Player extends Circle {
    * @returns {boolean} True, усли поедание выполнено успешно.
    */
   eat(other) {
-      if (other === this || this.r <= other.r) {
-          return false;
-      }
-      
-      let d = this.distanceFromAnotherCircle(other);
-      const vect = new Vector(this.x - this.prevX, this.y - this.prevY);
-      const area = new Rectangle(new Point(this.prevX, this.prevY + this.r), vect.length, this.r * 2);
-      area.rotateOverPoint(new Point(this.prevX, this.prevY), vect.angle);
+    if (other === this || this.r <= other.r) {
+      return false;
+    }
 
-      if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
-          let sum = this.square + other.square;
-          this.r = Math.sqrt(sum / Math.PI);
-          if (other.isEated) {
-              other.isEated();
-          }
-          return true;
-      } else {
-          return false;
+    let d = this.distanceFromAnotherCircle(other);
+    const vect = new Vector(this.x - this.prevX, this.y - this.prevY);
+    const area = new Rectangle(new Point(this.prevX, this.prevY + this.r), vect.length, this.r * 2);
+    area.rotateOverPoint(new Point(this.prevX, this.prevY), vect.angle);
+
+    if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
+      let sum = this.square + other.square;
+      this.r = Math.sqrt(sum / Math.PI);
+      if (other.isEated) {
+        other.isEated();
       }
-      
+      return true;
+    } else {
+      return false;
+    }
+
   }
 }

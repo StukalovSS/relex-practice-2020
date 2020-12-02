@@ -6,9 +6,9 @@ import { random } from '../utils/random.js';
  */
 export class Food extends Circle {
   constructor(x, y, fieldWidth, fieldHeight) {
-      super(x, y , 10);
-      this.fieldWidth = fieldWidth;
-      this.fieldHeight = fieldHeight;
+    super(x, y, 10);
+    this.fieldWidth = fieldWidth;
+    this.fieldHeight = fieldHeight;
   }
 
   /**
@@ -16,7 +16,7 @@ export class Food extends Circle {
    * При поедании объект изменяет свое положение.
    */
   isEated() {
-      this.x = random(-this.fieldWidth / 2, this.fieldWidth / 2);
-      this.y = random(-this.fieldHeight / 2, this.fieldHeight / 2);
+    this.x = random(-this.fieldWidth / 2, this.fieldWidth / 2);
+    this.y = random(-this.fieldHeight / 2, this.fieldHeight / 2);
   }
 }

@@ -6,21 +6,21 @@ import { Point } from "./point";
 export class Circle {
 
 
-    constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r; 
-    }
+  constructor(x, y, r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
 
-    get center() {
-        return new Point(this.x, this.y);
-    }
+  get center() {
+    return new Point(this.x, this.y);
+  }
 
-    distanceFromAnotherCircle(circle) {
-        return this.center.findDistanceFromAnotherPoint(circle.center);
-    }
+  distanceFromAnotherCircle(circle) {
+    return this.center.findDistanceFromAnotherPoint(circle.center);
+  }
 
-    get square() {
-        return Math.PI * (this.r ** 2);
-    }
+  get square() {
+    return Math.PI * (this.r ** 2);
+  }
 }

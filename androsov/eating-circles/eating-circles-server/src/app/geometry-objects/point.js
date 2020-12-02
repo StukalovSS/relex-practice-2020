@@ -3,8 +3,8 @@
  */
 export class Point {
   constructor(x, y) {
-      this.x = x;
-      this.y = y;
+    this.x = x;
+    this.y = y;
   }
 
   /**
@@ -17,8 +17,8 @@ export class Point {
   }
 
   move(dx, dy) {
-      this.x += dx;
-      this.y += dy;
+    this.x += dx;
+    this.y += dy;
   }
 
   /**
@@ -37,8 +37,8 @@ export class Point {
    * @param {number} angle Угол в радианах, на который поворачивается точка.
    */
   rotate(angle) {
-      this.x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
-      this.y = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+    this.x = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+    this.y = this.x * Math.sin(angle) + this.y * Math.cos(angle);
   }
 
   /**
@@ -50,8 +50,8 @@ export class Point {
    * @param {number} angle Угол, на который поворачивается текущая точка.
    */
   rotateOverPoint(point, angle) {
-      this.move(-point.x, -point.y);
-      this.rotate(angle);
-      this.move(point.x, point.y);
+    this.move(-point.x, -point.y);
+    this.rotate(angle);
+    this.move(point.x, point.y);
   }
 }
