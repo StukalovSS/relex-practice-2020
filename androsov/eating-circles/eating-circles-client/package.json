@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
     "build": "cross-env NODE_ENV=production webpack --mode production"
   },
   "author": "",
@@ -12,7 +12,6 @@
   "dependencies": {
     "css-loader": "^4.3.0",
     "html-webpack-plugin": "^4.5.0",
-    "http": "0.0.1-security",
     "p5": "^1.1.9",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.2",
