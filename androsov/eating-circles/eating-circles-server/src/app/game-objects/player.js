@@ -10,15 +10,11 @@ export class Player extends Circle {
   constructor(x, y, fieldWidth, fieldHeight, id) {
     super(x, y, 36);
     this.START_RADIUS = 36;
-    this._fieldWidth = fieldWidth;
-    this._fieldHeight = fieldHeight;
+    this.fieldWidth = fieldWidth;
+    this.fieldHeight = fieldHeight;
     this.id = id;
     this.speed = 0.1;
     this.MIN_SPEED = 0.05;
-  }
-
-  get distanceFromCentre() {
-    return Math.sqrt(this.x ** 2 + this.y ** 2);
   }
 
   /**
@@ -34,8 +30,8 @@ export class Player extends Circle {
     const vect = new Vector(dx, dy),
       dist = time * this.speed;
     vect.length = dist;
-    if ((this.x + vect.x > this._fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this._fieldWidth / 2 && vect.x < 0) ||
-      (this.y + vect.y > this._fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this._fieldHeight / 2 && vect.y < 0)) {
+    if ((this.x + vect.x > this.fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this.fieldWidth / 2 && vect.x < 0) ||
+      (this.y + vect.y > this.fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this.fieldHeight / 2 && vect.y < 0)) {
       return;
     } else {
       this.x += vect.x;
@@ -45,7 +41,7 @@ export class Player extends Circle {
 
   /**
    * Поедание другого круга, если он находится на плоскости перемещения. 
-   * У круга вызывается метод isEated, если поедание выполнено успешно.
+   * У круга вызывается метод isEated, если поедание выполнено успешно. При поедании у игрока увеличивается радиус и уменьшается скорость.
    * @param {Circle} other Еда или другой игрок, которого текущий игрок пытается съесть.
    * @returns {boolean} True, усли поедание выполнено успешно.
    */
