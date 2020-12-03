@@ -1,10 +1,10 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports={
-    entry:'./src/app.ts',
+    entry:'./src/scripts/app.ts',
     devtool: 'inline-source-map',
     output:{ 
-        filename:'client/main.js'
+        filename:'main.js'
     },
     module:{
         rules: [
@@ -33,7 +33,7 @@ module.exports={
       },
     plugins: [
         new HtmlWebpackPlugin({ 
-            filename: 'client/index.html',
+            filename: 'index.html',
             template: './src/index.html'})
     ]
 }

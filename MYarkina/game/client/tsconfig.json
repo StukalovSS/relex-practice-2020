@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./dist/client",
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true,

@@ -1,23 +1,27 @@
 const http = require("http");
-const p5 = require('../node_modules/p5/lib/p5');
+const p5 = require('../../node_modules/p5/lib/p5');
 const Circle = require('./circle');
 
 const namePlayer = prompt('Введите ваше имя');
-var players:any = [];
-var eat:any = [];
-var zoom = 1;
+let players: any = [];
+let eat: any = [];
+let zoom = 1;
 
 
-let code:string;
-let width:number;
-let height:number;
+let code: string;
+let width: number;
+let height: number;
 let options = {
     hostname:'127.0.0.1',
     port:'3000',
-    path:`/createPlayer?name=${namePlayer}&ww=${window.innerWidth}&wh=${window.innerHeight}`,
+    path:`/createPlayer?name=${namePlayer}`,
     method:'GET'
 };
 
+/**
+ * Первый запрос на сервер.
+ * Получает уникальный код игрока на сервере, размер поля.
+ */
 let reqFirst = http.request( options, function(res:any){
     res.on('data', function(body:any){
         code = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).code : {};
@@ -25,7 +29,6 @@ let reqFirst = http.request( options, function(res:any){
         height = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).height : {};
     });
     res.on('end',function(){
-        console.log(" Уникальный код игрока получен");
         options.path = `/getState?code=${code}&x=500&y=500`;
         reqToServer();
     });
@@ -36,11 +39,17 @@ reqFirst.end();
 let arrayEat:any;
 let arrayPlayers:any;
 let currentPlayerIndex:any;
+
+/**
+ * Запрос на сервер для обновления данных.
+ * Передает уникальный код клиента, целевые координаты.
+ * Получает координады еды, игроков, индекс позиции клиента для отображения.
+ */
 function reqToServer()
 {
-    let req = http.request(options,function(res:any){
+    const req = http.request(options,function(res:any){
         res.on('data',function(body:any){
-            let dataFromServer =  body != "" ? JSON.parse(new TextDecoder("utf-8").decode(body)) : {};
+            const dataFromServer =  body != "" ? JSON.parse(new TextDecoder("utf-8").decode(body)) : {};
             arrayEat = dataFromServer.eat;
             arrayPlayers = dataFromServer.players;
             currentPlayerIndex = dataFromServer.currentPlayerIndex;
@@ -64,7 +73,7 @@ const sketch = (s:typeof p5) => {
 
         players = [];
         for (let i = 0; i < arrayPlayers.length; i++) {
-            players[i] = new Circle(arrayPlayers[i].x, arrayPlayers[i].y, arrayPlayers[i].r, s,arrayPlayers[i].living, arrayPlayers[i].name);
+            players[i] = new Circle(arrayPlayers[i].x, arrayPlayers[i].y, arrayPlayers[i].r, s, arrayPlayers[i].living, arrayPlayers[i].name);
         }
   
         s.background('#191970');
@@ -89,12 +98,12 @@ const sketch = (s:typeof p5) => {
         }
 
         for (let i = players.length - 1; i >= 0; i--) {
-            if(players[i].living){
+            if(players[i].visible){
                 players[i].show();
             }
         }
 
-        options.path = `/getState?code=${code}&x=${s.mouseX}&y=${s.mouseY}`;
+        options.path = `/getState?code=${code}&x=${s.mouseX - window.innerWidth/2}&y=${s.mouseY - window.innerHeight/2}`;
         reqToServer();      
     }
 }

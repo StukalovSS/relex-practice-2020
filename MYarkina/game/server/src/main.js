@@ -1,8 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const express = require("express");
 const app = express();
-const GameState = require('./classes/gameState');
-
+const GameState = require('./classes/game-objects/gameState');
 
 
 // Координаты поля
@@ -21,7 +20,7 @@ app.use(function (require, response, next) {
     response.header('Access-Control-Allow-Origin-Methods', 'GET');
     response.header('Access-Control-Allow-Origin-Headers', 'Origin, X-Requested-Width, Content-Type, Accept');
     next();
-});
+}); 
 
 
 /**
@@ -31,7 +30,7 @@ app.use(function (require, response, next) {
  */
 app.get("/createPlayer", (request, response) => {
     let code = uuidv4();
-    gameState.addNewPlayer(R_PLAYER, request.query.name,code, request.query.ww, request.query.wh);
+    gameState.addNewPlayer(R_PLAYER, request.query.name,code);
     const obj = { 
         code: code,
         width: Math.abs(x2 - x1),
