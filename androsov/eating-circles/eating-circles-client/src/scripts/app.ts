@@ -14,6 +14,8 @@ const http = require('http');
  *  Аргументы запроса.
  * @param callback 
  *  Функция, которая обрабатывае ответ сервера. В качестве аргумента принимает ответ.
+ * @param errCallback
+ *  Функция, обрабатывающая ошибку.
  */
 async function sendResponse(path: string,
   args: object,
