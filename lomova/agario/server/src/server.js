@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import express from 'express';
 const app = express();
-import { GameState } from './objects/game-state';
+import { GameState } from './game-objects/game-state';
 
 app.use(function(req, res, next) {
   var origin = 'http://127.0.0.1:3000';

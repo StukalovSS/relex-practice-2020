@@ -1,3 +1,6 @@
+/**
+ * Прямоугольник, часть области поедания.
+ */
 export class Rectangle {
  constructor(playerCoord, playerR, otherR, a) {
    this.A = {
@@ -24,7 +27,7 @@ export class Rectangle {
  /**
   * Проверка точки на принадлежность прямоугольнику.
   * Возвращает true, если точка принадлежит прямоугольнику, иначе - false.
-  * @param {*} point точка
+  * @param {object} point точка
   */
  isPointInRectangle(point) {
    return point.x >= Math.min(this.B.x, this.D.x) && point.x <= Math.max(this.B.x, this.D.x) 

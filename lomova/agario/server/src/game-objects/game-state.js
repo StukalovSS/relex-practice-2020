@@ -1,10 +1,11 @@
 import { Player } from './player.js'
 import { Circle } from './circle.js';
-import { Vector } from './vector.js';
+import { Vector } from '../geometry-objects/vector';
 
+/**
+ * Состояние игры.
+ */
 export class GameState {
-  
-
   constructor(width, height, colors) {
     this.width = width;
     this.height = height;
@@ -50,13 +51,11 @@ export class GameState {
    */
   addPlayer(codePlayer, namePlayer, rPlayer) {
     this.map.set(codePlayer, this.index_player);
-
     let x_0 = this.random(-this.width + rPlayer, this.width - rPlayer),
       y_0 = this.random(-this.height + rPlayer, this.height - rPlayer);
 
     this.players.push(new Player(x_0, y_0, rPlayer, this.getColor(), namePlayer));
     this.targets.push(new Vector(x_0, y_0));
-
     this.index_player++;
   }
 
