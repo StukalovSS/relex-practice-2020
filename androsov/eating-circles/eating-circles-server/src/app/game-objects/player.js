@@ -50,12 +50,13 @@ export class Player extends Circle {
       return false;
     }
 
-    let d = this.distanceFromAnotherCircle(other);
+    const distance = this.distanceFromAnotherCircle(other);
+    const prevDistance = new Point(this.prevX, this.prevY).findDistanceFromAnotherPoint(other.center);
     const vect = new Vector(this.x - this.prevX, this.y - this.prevY);
     const area = new Rectangle(new Point(this.prevX, this.prevY + this.r), vect.length, this.r * 2);
     area.rotateOverPoint(new Point(this.prevX, this.prevY), vect.angle);
 
-    if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
+    if (area.isPointIn(new Point(other.x, other.y)) || distance < this.r || prevDistance < this.r) {
       let sum = this.square + other.square;
       this.r = Math.sqrt(sum / Math.PI);
       if (this.speed > this.MIN_SPEED) {
