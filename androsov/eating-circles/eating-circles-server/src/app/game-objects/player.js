@@ -10,15 +10,11 @@ export class Player extends Circle {
   constructor(x, y, fieldWidth, fieldHeight, id) {
     super(x, y, 36);
     this.START_RADIUS = 36;
-    this._fieldWidth = fieldWidth;
-    this._fieldHeight = fieldHeight;
+    this.fieldWidth = fieldWidth;
+    this.fieldHeight = fieldHeight;
     this.id = id;
     this.speed = 0.1;
     this.MIN_SPEED = 0.05;
-  }
-
-  get distanceFromCentre() {
-    return Math.sqrt(this.x ** 2 + this.y ** 2);
   }
 
   /**
@@ -34,8 +30,8 @@ export class Player extends Circle {
     const vect = new Vector(dx, dy),
       dist = time * this.speed;
     vect.length = dist;
-    if ((this.x + vect.x > this._fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this._fieldWidth / 2 && vect.x < 0) ||
-      (this.y + vect.y > this._fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this._fieldHeight / 2 && vect.y < 0)) {
+    if ((this.x + vect.x > this.fieldWidth / 2 && vect.x > 0) || (this.x + vect.x < -this.fieldWidth / 2 && vect.x < 0) ||
+      (this.y + vect.y > this.fieldHeight / 2 && vect.y > 0) || (this.y + vect.y < -this.fieldHeight / 2 && vect.y < 0)) {
       return;
     } else {
       this.x += vect.x;
@@ -45,7 +41,7 @@ export class Player extends Circle {
 
   /**
    * Поедание другого круга, если он находится на плоскости перемещения. 
-   * У круга вызывается метод isEated, если поедание выполнено успешно.
+   * У круга вызывается метод isEated, если поедание выполнено успешно. При поедании у игрока увеличивается радиус и уменьшается скорость.
    * @param {Circle} other Еда или другой игрок, которого текущий игрок пытается съесть.
    * @returns {boolean} True, усли поедание выполнено успешно.
    */
@@ -54,12 +50,13 @@ export class Player extends Circle {
       return false;
     }
 
-    let d = this.distanceFromAnotherCircle(other);
+    const distance = this.distanceFromAnotherCircle(other);
+    const prevDistance = new Point(this.prevX, this.prevY).findDistanceFromAnotherPoint(other.center);
     const vect = new Vector(this.x - this.prevX, this.y - this.prevY);
     const area = new Rectangle(new Point(this.prevX, this.prevY + this.r), vect.length, this.r * 2);
     area.rotateOverPoint(new Point(this.prevX, this.prevY), vect.angle);
 
-    if (area.isPointIn(new Point(other.x, other.y)) || d < this.r + other.r) {
+    if (area.isPointIn(new Point(other.x, other.y)) || distance < this.r || prevDistance < this.r) {
       let sum = this.square + other.square;
       this.r = Math.sqrt(sum / Math.PI);
       if (this.speed > this.MIN_SPEED) {

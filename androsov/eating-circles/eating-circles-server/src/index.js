@@ -25,19 +25,27 @@ app.listen(3000, function () {
 app.get("/new_player", (_request, response) => {
   const curPlayer = game.createNewPlayer();
   response.send(JSON.stringify({
-    player: curPlayer,
+    player: {
+      x: curPlayer.x,
+      y: curPlayer.y,
+      r: curPlayer.r,
+      id: curPlayer.id
+    },
     players: Array.from(game.players.values()).filter(player => player !== curPlayer)
-      .map(obj => {
-        obj.id = undefined;
-        obj.fieldHeight = undefined;
-        obj.fieldWidth = undefined;
-        return obj;
+      .map(player => {
+        return {
+          x: player.x,
+          y: player.y,
+          r: player.r
+        };
       }),
     food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
     ).map(obj => {
-      obj._fieldHeight = undefined;
-      obj._fieldWidth = undefined;
-      return obj;
+      return {
+        x: obj.x,
+        y: obj.y,
+        r: obj.r
+      };
     })
   }));
 });
@@ -54,18 +62,21 @@ app.get("/get_state", (request, response) => {
         r: curPlayer.r
       },
       players: Array.from(game.players.values()).filter(player => player !== curPlayer)
-        .map(obj => {
-          obj.id = undefined;
-          obj.fieldHeight = undefined;
-          obj.fieldWidth = undefined;
-          return obj;
+        .map(player => {
+          return {
+            x: player.x,
+            y: player.y,
+            r: player.r
+          };
         }),
-      food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600
-      ).map(obj => {
-        obj._fieldHeight = undefined;
-        obj._fieldWidth = undefined;
-        return obj;
-      })
+      food: game.food.filter(obj => Math.sqrt((obj.x - curPlayer.x) ** 2 + (obj.y - curPlayer.y) ** 2) < 600)
+        .map(obj => {
+          return {
+            x: obj.x,
+            y: obj.y,
+            r: obj.r
+          };
+        })
     }));
   } catch (_) {
     response.send('error');
