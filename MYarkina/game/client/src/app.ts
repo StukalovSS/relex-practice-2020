@@ -2,22 +2,27 @@ const http = require("http");
 const p5 = require('../node_modules/p5/lib/p5');
 const Circle = require('./circle');
 
+const namePlayer = prompt('Введите ваше имя');
 var players:any = [];
 var eat:any = [];
 var zoom = 1;
 
 
 let code:string;
+let width:number;
+let height:number;
 let options = {
     hostname:'127.0.0.1',
     port:'3000',
-    path:`/createPlayer?name=Marina&ww=${window.innerWidth}&wh=${window.innerHeight}`,
+    path:`/createPlayer?name=${namePlayer}&ww=${window.innerWidth}&wh=${window.innerHeight}`,
     method:'GET'
 };
 
 let reqFirst = http.request( options, function(res:any){
     res.on('data', function(body:any){
         code = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).code : {};
+        width = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).width : {};
+        height = body != "" ? JSON.parse((new TextDecoder("utf-8").decode(body))).height : {};
     });
     res.on('end',function(){
         console.log(" Уникальный код игрока получен");
@@ -54,12 +59,12 @@ const sketch = (s:typeof p5) => {
     s.draw = () => {
         eat = [];
         for (let i = 0; i < arrayEat.length; i++) {
-            eat[i] = new Circle(arrayEat[i].x, arrayEat[i].y, arrayEat[i].r, s);
+            eat[i] = new Circle(arrayEat[i].x, arrayEat[i].y, arrayEat[i].r, s, '');
         }
 
         players = [];
         for (let i = 0; i < arrayPlayers.length; i++) {
-            players[i] = new Circle(arrayPlayers[i].x, arrayPlayers[i].y, arrayPlayers[i].r, s,arrayPlayers[i].living);
+            players[i] = new Circle(arrayPlayers[i].x, arrayPlayers[i].y, arrayPlayers[i].r, s,arrayPlayers[i].living, arrayPlayers[i].name);
         }
   
         s.background('#191970');
@@ -74,17 +79,14 @@ const sketch = (s:typeof p5) => {
           eat[i].show();
         }
       
-        for (let i = -2*arrayPlayers[currentPlayerIndex].r; i < 3000; i = i + 200) {
-            s.line(i, -2*arrayPlayers[currentPlayerIndex].r, i, 3000);
+        for (let i = -2*arrayPlayers[currentPlayerIndex].r; i < width; i = i + width/5) {
+            s.line(i, -2*arrayPlayers[currentPlayerIndex].r, i, width);
             s.stroke('#483D8B');
         }
-        for (let i = -2*arrayPlayers[currentPlayerIndex].r; i < 3000; i = i + 200) {
-            s.line(-2*arrayPlayers[currentPlayerIndex].r, i, 3000, i);
+        for (let i = -2*arrayPlayers[currentPlayerIndex].r; i < height; i = i + height/5) {
+            s.line(-2*arrayPlayers[currentPlayerIndex].r, i, height, i);
             s.stroke('#483D8B');
         }
-
-        arrayPlayers[currentPlayerIndex].x = s.constrain(arrayPlayers[currentPlayerIndex].x, 0, 3000);
-        arrayPlayers[currentPlayerIndex].y = s.constrain(arrayPlayers[currentPlayerIndex].y, 0, 3000);
 
         for (let i = players.length - 1; i >= 0; i--) {
             if(players[i].living){
