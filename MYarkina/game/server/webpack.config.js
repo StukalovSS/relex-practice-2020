@@ -5,7 +5,7 @@ module.exports = {
   target: "node",
   entry: path.resolve(__dirname, 'src/main.js'),
   output:{ 
-      filename:'main.js',
+      filename:'server/main.js',
       path: path.resolve(__dirname, 'dist')
   },
   devtool: "source-map"
