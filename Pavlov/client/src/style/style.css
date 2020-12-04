@@ -17,7 +17,7 @@ body {
   position: fixed;
   left: 50%;
   top: 50%;
-  padding: 114px 103px;
+  padding: 100px 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +33,7 @@ body {
   line-height: 98px;
   text-align: center;
   text-transform: uppercase;
-  color: #571e1e;
+  color: black;
 }
 
 .identWindow__input {
@@ -43,18 +43,18 @@ body {
   padding: 14px 69px 15px 15px;
   border: 1px solid black;
   border-radius: 20px;
-  background-color: rgba(232, 232, 232, 0.2);
+  background-color: rgba(200, 200, 200, 0.1);
   font-size: 18px;
   font-size: inherit;
   line-height: inherit;
 }
 
 .identWindow__input:hover {
-  border: 1px solid #5ce0fd;
+  border: 1px solid blue;
 }
 
 .identWindow__input:focus {
-  border: 1px solid #5ce0fd;
+  border: 1px solid #3a8899;
 }
 
 .identWindow__button {
@@ -64,12 +64,12 @@ body {
   padding: 16px;
   border: 1px solid black;
   border-radius: 20px;
-  background-color: rgba(232, 232, 232, 0.2);
+  background-color: rgba(92, 3, 3, 0.2);
   font-size: inherit;
   line-height: inherit;
   text-transform: uppercase;
 }
 
 .identWindow__button:hover {
-  background-color: #75f291;
+  background-color: #08aa2b;
 }
