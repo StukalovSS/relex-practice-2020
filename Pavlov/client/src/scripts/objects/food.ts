@@ -2,7 +2,7 @@ import { ICircle } from '../ICircle';
 
 export class Food implements ICircle {
   constructor(public x: number, public y: number, public r: number, public s: any, public color: string) { }
-
+  
   public show() {
     let c = this.s.color(this.color);
     this.s.fill(c);

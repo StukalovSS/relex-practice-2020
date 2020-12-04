@@ -13,7 +13,7 @@ export class Player implements ICircle {
     this.s.ellipse(this.x, this.y, this.r * 2, this.r * 2);
 
     this.s.textSize(this.r / 2);
-    const colorName = this.s.color('#393939');
+    const colorName = this.s.color('#12a212');
     this.s.fill(colorName);
     this.s.textAlign(this.s.CENTER, this.s.CENTER);
     this.s.text(this.name, this.x, this.y);
