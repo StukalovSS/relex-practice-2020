@@ -11,15 +11,18 @@ let key: string,
   food: any = [],
 
   ServerPlayers: any = [],
-  SFood: any = [],
-
-  currentID: number,
-  precRadius: number,
+  ServerFood: any = [],
 
   zoom: number = 1,
   newZoom = zoom,
+
   w: number,
-  h: number;
+  h: number,
+
+  currentID: number,
+  precRadius: number;
+
+
 
 const options = {
   hostname: '127.0.0.1',
@@ -29,23 +32,23 @@ const options = {
 };
 
 let namePlayer: string;
-let SData: any;
+let ServerData: any;
 
 /**
  * Обновление координат игрока.
- * @param mx положение курсора по оси OX
- * @param my положение курсора по оси OY
+ * @param mx координата OX курсора
+ * @param my координата OУ курсора
  */
 function updatePositionPlayer(mx: number, my: number) {
   options.path = `/getState?key=${key}&x=${mx}&y=${my}`;
   
   let req = http.request(options, (res: any) => {
     res.on('data', (body: any) => {
-      SData = JSON.parse(new TextDecoder("utf-8").decode(body));
+      ServerData = JSON.parse(new TextDecoder("utf-8").decode(body));
 
-      currentID = SData.currentPlayerIndex;
-      SFood = SData.playerState.food;
-      ServerPlayers = SData.playerState.players;
+      currentID = ServerData.currentPlayerIndex;
+      ServerFood = ServerData.playerState.food;
+      ServerPlayers = ServerData.playerState.players;
     });
     res.on('end', () => { });
   });
@@ -64,7 +67,7 @@ const sketch = (s: typeof p5) => {
 
       s.loadJSON(`http://127.0.0.1:3000/getState?key=${key}&x=0&y=0`, (data: any) => {
         currentID = data.currentPlayerIndex;
-        SFood = data.playerState.food;
+        ServerFood = data.playerState.food;
         ServerPlayers = data.playerState.players;
       })
     });
@@ -76,11 +79,13 @@ const sketch = (s: typeof p5) => {
   s.draw = () => {
     s.background(255);
 
+    // заполнение едой
     food = [];
-    for (let i = 0; i < SFood.length; i++) {
-      food[i] = new Food(SFood[i].x, SFood[i].y, SFood[i].r, s, SFood[i].color);
+    for (let i = 0; i < ServerFood.length; i++) {
+      food[i] = new Food(ServerFood[i].x, ServerFood[i].y, ServerFood[i].r, s, ServerFood[i].color);
     }
 
+    //заполнение игроков
     players = [];
     for (let i = 0; i < ServerPlayers.length; i++) {
       players[i] = new Player
@@ -90,15 +95,17 @@ const sketch = (s: typeof p5) => {
           s,
           ServerPlayers[i].color,
           ServerPlayers[i].name,
-          ServerPlayers[i].eaten
+          ServerPlayers[i].isEaten
         );
     }
 
     s.translate(s.width / 2, s.height / 2);
 
+
     if (precRadius != ServerPlayers[currentID].r) {
       newZoom -= 0.01; 
     }
+
     zoom = s.lerp(zoom, newZoom, 0.1);
     s.scale(zoom);
 
@@ -108,6 +115,7 @@ const sketch = (s: typeof p5) => {
       s.line(i, -s.height * 2, i, s.height * 2);
       s.stroke(126);
     }
+
     for (let i = -s.height * 2; i < s.height * 2; i = i + 50) {
       s.line(-s.width * 2, i, s.width * 2, i);
       s.stroke(126);
@@ -118,7 +126,7 @@ const sketch = (s: typeof p5) => {
     }
 
     for (let i = players.length - 1; i >= 0; i--) {
-      if (!players[i].eaten) {
+      if (!players[i].isEaten) {
         players[i].show();
       }
     }
@@ -130,35 +138,35 @@ const sketch = (s: typeof p5) => {
 
 
 /**
- * Создание модального окна для ввода имени игрока
+ * Создание модального окна для идентификации
  */
-const modal = document.createElement('div');
-document.body.appendChild(modal);
-modal.classList.add('modal');
+const identWindow = document.createElement('div');
+document.body.appendChild(identWindow);
+identWindow.classList.add('identWindow');
 
-const modalInner = document.createElement('div');
-modal.appendChild(modalInner);
-modalInner.classList.add('modal__inner');
+const identWindowInner = document.createElement('div');
+identWindow.appendChild(identWindowInner);
+identWindowInner.classList.add('identWindow__inner');
 
 const title = document.createElement('h2');
-modalInner.appendChild(title);
-title.classList.add('modal__title');
+identWindowInner.appendChild(title);
+title.classList.add('identWindow__title');
 title.innerHTML = 'Sign in';
 
-const nameField = document.createElement('input');
-modalInner.appendChild(nameField);
-nameField.classList.add('modal__input');
-nameField.setAttribute('placeholder', 'Your name');
+const nickName = document.createElement('input');
+identWindowInner.appendChild(nickName);
+nickName.classList.add('identWindow__input');
+nickName.setAttribute('placeholder', 'Enter Nick-Name');
 
-const setNamebutton = document.createElement('button');
-modalInner.appendChild(setNamebutton);
-setNamebutton.classList.add('modal__button');
-setNamebutton.innerHTML = 'gogogo!';
+const namebtn = document.createElement('button');
+identWindowInner.appendChild(namebtn);
+namebtn.classList.add('identWindow__button');
+namebtn.innerHTML = 'gogogo!';
 
-setNamebutton.addEventListener('click', () => {
-  if (nameField.value) {
-    namePlayer = nameField.value;
-    modal.remove();
+namebtn.addEventListener('click', () => {
+  if (nickName.value) {
+    namePlayer = nickName.value;
+    identWindow.remove();
     const sketchInst = new p5(sketch);
   }
 });

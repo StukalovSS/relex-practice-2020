@@ -11,12 +11,12 @@ app.use(function(req, res, next) {
   next();
 });
 
+const COLORS = ['#ADFF2F', '#7FFF00', '#32CD32', '#3CB371', '#008000', '#9ACD32', '#556B2F', '#9A2D32',, '#923D32', '#912D32'];
+
 const WIDTH = 2560/2,
   HEIGHT = 1440/2,
   RADIUSFOOD = 15,
   RADIUSPLAYER = 25;
-
-const COLORS = ['#ADFF2F', '#7FFF00', '#32CD32', '#3CB371', '#008000', '#9ACD32', '#556B2F', '#9A2D32',, '#923D32', '#912D32'];
 
 const gameState = new GameState(WIDTH, HEIGHT, COLORS);
 gameState.start(RADIUSFOOD);

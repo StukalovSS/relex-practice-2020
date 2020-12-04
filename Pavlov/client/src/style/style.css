@@ -4,7 +4,7 @@ body {
   line-height: 30px;
 }
 
-.modal {
+.identWindow {
   position: fixed;
   left: 0;
   top: 0;
@@ -13,7 +13,7 @@ body {
   background-color: rgba(0, 0, 0, 0.205);
 }
 
-.modal__inner {
+.identWindow__inner {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -26,7 +26,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.modal__title {
+.identWindow__title {
   margin-bottom: 36px;
   font-size: 72px;
   font-weight: 800;
@@ -36,7 +36,7 @@ body {
   color: #571e1e;
 }
 
-.modal__input {
+.identWindow__input {
   outline: none;
   width: 300px;
   margin-bottom: 44px;
@@ -49,15 +49,15 @@ body {
   line-height: inherit;
 }
 
-.modal__input:hover {
+.identWindow__input:hover {
   border: 1px solid #5ce0fd;
 }
 
-.modal__input:focus {
+.identWindow__input:focus {
   border: 1px solid #5ce0fd;
 }
 
-.modal__button {
+.identWindow__button {
   cursor: pointer;
   outline: none;
   width: 200px;
@@ -70,6 +70,6 @@ body {
   text-transform: uppercase;
 }
 
-.modal__button:hover {
+.identWindow__button:hover {
   background-color: #75f291;
 }
