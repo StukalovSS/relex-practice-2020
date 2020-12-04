@@ -1,6 +1,6 @@
 import { Player } from './player.js'
 import { Circle } from './circle.js';
-import { Vector } from '../geometry-objects/vector';
+import { Vector } from '../enviroment-elements/vector';
 
 /**
  * Класс отвечающий за текущее состояние игры.
@@ -50,12 +50,12 @@ export class GameState {
 
   /**
    * Добавляет нового игрока на поле.
-   * @param {string} codePlayer код игрока
+   * @param {string} keyPlayer код игрока
    * @param {string} namePlayer имя игрока
    * @param {number} radiusPlayer радиус игрока
    */
-  addPlayer(codePlayer, namePlayer, radiusPlayer) {
-    this.map.set(codePlayer, this.index_player);
+  addPlayer(keyPlayer, namePlayer, radiusPlayer) {
+    this.map.set(keyPlayer, this.index_player);
 
     let x0 = this.getRandom(-this.width + radiusPlayer, this.width - radiusPlayer);
     let y0 = this.getRandom(-this.height + radiusPlayer, this.height - radiusPlayer);
@@ -69,10 +69,10 @@ export class GameState {
    * Добавляет целевые координаты игрока.
    * @param {number} x1 целевая координата x
    * @param {number} y1 целевая координата y
-   * @param {string} code код игрока
+   * @param {string} key код игрока
    */
-  addTarget(x1, y1, code) {
-    this.targets[this.map.get(code)] = new Vector(x1, y1);
+  addTarget(x1, y1, key) {
+    this.targets[this.map.get(key)] = new Vector(x1, y1);
   }
 
   /**
@@ -81,12 +81,12 @@ export class GameState {
    */
   updateState() {
     for (let i = 0; i < this.players.length; i++) {
-      if (!this.players[i].eaten) {
+      if (!this.players[i].isEaten) {
         this.players[i].update(this.targets[i].x, this.targets[i].y, this.width, this.height);
       }
 
       this.food.forEach((foodItem, j) => {
-        if (!this.players[i].eaten) {
+        if (!this.players[i].isEaten) {
           if (this.players[i].eats(foodItem, 'food')) {
             this.food.splice(j, 1);
           }
@@ -94,9 +94,9 @@ export class GameState {
       });
 
       this.players.forEach((otheRadiusPlayer) => {
-        if (!otheRadiusPlayer.eaten) {
+        if (!otheRadiusPlayer.isEaten) {
           if (this.players[i].eats(otheRadiusPlayer, 'player')) {
-            otheRadiusPlayer.eaten = true;
+            otheRadiusPlayer.isEaten = true;
           }
         }
       });

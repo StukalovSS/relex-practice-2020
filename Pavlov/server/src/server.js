@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import express from 'express';
 const app = express();
-import { GameState } from './game-objects/GameState';
+import { GameState } from './gameplay-elements/GameState';
 
 app.use(function(req, res, next) {
   var origin = 'http://127.0.0.1:3000';
@@ -13,29 +13,29 @@ app.use(function(req, res, next) {
 
 const WIDTH = 2560,
   HEIGHT = 1440,
-  R_FOOD = 20,
-  R_PLAYER = 36;
+  RADIUSFOOD = 20,
+  RADIUSPLAYER = 36;
 
 const COLORS = ['#ADFF2F', '#7FFF00', '#32CD32', '#3CB371', '#008000', '#9ACD32', '#556B2F'];
 
 const gameState = new GameState(WIDTH, HEIGHT, COLORS);
-gameState.init(R_FOOD);
+gameState.init(RADIUSFOOD);
 setInterval(() => gameState.updateState(), 15);
 
 app.get('/createPlayer', (req, res) => {
-    let codePlayer = uuidv4();
-    gameState.addPlayer(codePlayer, req.query.name, R_PLAYER);
+    let keyPlayer = uuidv4();
+    gameState.addPlayer(keyPlayer, req.query.name, RADIUSPLAYER);
   
-    res.send(JSON.stringify({ "codePlayer": codePlayer, "w": WIDTH, "h": HEIGHT }));
+    res.send(JSON.stringify({ "keyPlayer": keyPlayer, "w": WIDTH, "h": HEIGHT }));
 });
 
 app.get('/getState', (req, res) => {
-  if (req.query.code) {
-    let codePlayer = req.query.code;
-      gameState.addTarget(+req.query.x, +req.query.y, codePlayer);
+  if (req.query.key) {
+    let keyPlayer = req.query.key;
+      gameState.addTarget(+req.query.x, +req.query.y, keyPlayer);
       res.send(JSON.stringify({
         "playerState": { "food": gameState.food, "players": gameState.players },
-        "currentPlayerIndex": gameState.map.get(codePlayer)
+        "currentPlayerIndex": gameState.map.get(keyPlayer)
       }));
   }
   else {

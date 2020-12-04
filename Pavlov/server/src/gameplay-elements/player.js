@@ -1,7 +1,7 @@
 import lerp from 'lerp';
 import { Circle } from './circle.js';
-import { Rectangle } from '../geometry-objects/rectangle';
-import { Vector } from '../geometry-objects/vector.js';
+import { Rectangle } from '../enviroment-elements/rectangle';
+import { Vector } from '../enviroment-elements/vector.js';
 
 /**
  * Игрок.
@@ -13,14 +13,14 @@ export class Player extends Circle {
     this.name = name;
     this.prevPos = {x: x, y: y};
     this.direction = new Vector(0, 0);
-    this.speed = 5.3;
-    this.minSpeed = 2;
-    this.eaten = false;
+    this.speed = 3;
+    this.minSpeed = 1.1;
+    this.isEaten = false;
   }
 
   changeSpeed() {
     if (this.speed > this.minSpeed) {
-      this.speed -= 0.05;
+      this.speed -= 0.1;
     }
     else {
       this.speed = this.minSpeed;
@@ -29,18 +29,18 @@ export class Player extends Circle {
 
   /**
    * Обновляет координаты игрока на поле.
-   * @param {number} x_0 целевая координата x
-   * @param {number} y_0 целевая координата y
+   * @param {number} x0 целевая координата x
+   * @param {number} y0 целевая координата y
    * @param {number} w ширина поля
    * @param {number} h высота поля
    */
-  update(x_0, y_0, w, h) {
-    let d = Math.sqrt(x_0 * x_0 + y_0 * y_0);
+  update(x0, y0, w, h) {
+    let d = Math.sqrt(x0 * x0 + y0 * y0);
     if (d == 0) {
       return;
     }
-    let nx = x_0 * this.speed / d;
-    let ny = y_0 * this.speed / d;
+    let nx = x0 * this.speed / d;
+    let ny = y0 * this.speed / d;
     this.direction.x = lerp(this.direction.x, nx, 0.1);
     this.direction.y = lerp(this.direction.y, ny, 0.1);
 
