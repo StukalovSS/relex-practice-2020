@@ -1,5 +1,5 @@
 /**
- * Общий класс для корма и игроков.
+ * Класс-предок еды и игрока.
  */
 export class Circle {
   constructor(x, y, r, color) {

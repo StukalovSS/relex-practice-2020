@@ -8,18 +8,21 @@ import { Vector } from '../enviroment-elements/vector';
 export class GameState {
   constructor(width, height, colors) {
 
+    // высота и ширина игрового поля
     this.width = width;
     this.height = height;
 
+    // массив цветов для игроков
     this.colors = colors;
 
+    // 
     this.food = [];
     this.players = [];
     this.index_player = 0;
-
-    this.targets = [];
     this.map = new Map();
 
+    //координаты движения
+    this.targets = [];
   }
 
   /**
@@ -40,17 +43,17 @@ export class GameState {
 
   /**
    * Инициализирует координаты корма на поле.
-   * @param {number} rFood радиус корма
+   * @param {number} radiusFood радиус корма
    */
-  init(rFood) {
+  start(radiusFood) {
     for (let i = 0; i < 100; i++) {
-      this.food.push(new Circle(this.getRandom(-this.width + rFood, this.width - rFood), this.getRandom(-this.height + rFood, this.height - rFood), rFood, this.getColor()));
+      this.food.push(new Circle(this.getRandom(-this.width + radiusFood, this.width - radiusFood), this.getRandom(-this.height + radiusFood, this.height - radiusFood), radiusFood, this.getColor()));
     }
   }
 
   /**
    * Добавляет нового игрока на поле.
-   * @param {string} keyPlayer код игрока
+   * @param {string} keyPlayer код игрока 
    * @param {string} namePlayer имя игрока
    * @param {number} radiusPlayer радиус игрока
    */

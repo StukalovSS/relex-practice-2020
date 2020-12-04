@@ -2,22 +2,24 @@ import '../style/style.css';
 import { Food } from './objects/food';
 import { Player } from './objects/player';
 
-
 const p5 = require('../../node_modules/p5/lib/p5');
 const http = require('http');
 
 
-let code: string,
+let key: string,
   players: any = [],
   food: any = [],
 
-  serverPlayers: any = [],
-  serverFood: any = [],
-  indCurrPlayer: number,
+  ServerPlayers: any = [],
+  SFood: any = [],
+
+  currentID: number,
+  precRadius: number,
+
   zoom: number = 1,
   newZoom = zoom,
-  w: number, h: number,
-  prevR: number;
+  w: number,
+  h: number;
 
 const options = {
   hostname: '127.0.0.1',
@@ -27,21 +29,23 @@ const options = {
 };
 
 let namePlayer: string;
-let serverData: any;
+let SData: any;
 
 /**
  * Обновление координат игрока.
  * @param mx положение курсора по оси OX
  * @param my положение курсора по оси OY
  */
-function updateCoordPlayer(mx: number, my: number) {
-  options.path = `/getState?code=${code}&x=${mx}&y=${my}`;
+function updatePositionPlayer(mx: number, my: number) {
+  options.path = `/getState?key=${key}&x=${mx}&y=${my}`;
+  
   let req = http.request(options, (res: any) => {
     res.on('data', (body: any) => {
-      serverData = JSON.parse(new TextDecoder("utf-8").decode(body));
-      indCurrPlayer = serverData.currentPlayerIndex;
-      serverFood = serverData.playerState.food;
-      serverPlayers = serverData.playerState.players;
+      SData = JSON.parse(new TextDecoder("utf-8").decode(body));
+
+      currentID = SData.currentPlayerIndex;
+      SFood = SData.playerState.food;
+      ServerPlayers = SData.playerState.players;
     });
     res.on('end', () => { });
   });
@@ -50,17 +54,18 @@ function updateCoordPlayer(mx: number, my: number) {
 
 const sketch = (s: typeof p5) => {
   /**
-   * Получение предварительных данных для отрисовки.
+   * Получение данных для первоначального отображения.
    */
   s.preload = () => {
     s.loadJSON(`http://127.0.0.1:3000/createPlayer?name=${namePlayer}`, (data: any) => {
-      code = data.codePlayer;
+      key = data.keyPlayer;
       w = data.w;
       h = data.h;
-      s.loadJSON(`http://127.0.0.1:3000/getState?code=${code}&x=0&y=0`, (d: any) => {
-        indCurrPlayer = d.currentPlayerIndex;
-        serverFood = d.playerState.food;
-        serverPlayers = d.playerState.players;
+
+      s.loadJSON(`http://127.0.0.1:3000/getState?key=${key}&x=0&y=0`, (data: any) => {
+        currentID = data.currentPlayerIndex;
+        SFood = data.playerState.food;
+        ServerPlayers = data.playerState.players;
       })
     });
   }
@@ -72,32 +77,32 @@ const sketch = (s: typeof p5) => {
     s.background(255);
 
     food = [];
-    for (let i = 0; i < serverFood.length; i++) {
-      food[i] = new Food(serverFood[i].x, serverFood[i].y, serverFood[i].r, s, serverFood[i].color);
+    for (let i = 0; i < SFood.length; i++) {
+      food[i] = new Food(SFood[i].x, SFood[i].y, SFood[i].r, s, SFood[i].color);
     }
 
     players = [];
-    for (let i = 0; i < serverPlayers.length; i++) {
+    for (let i = 0; i < ServerPlayers.length; i++) {
       players[i] = new Player
-        (serverPlayers[i].x,
-          serverPlayers[i].y,
-          serverPlayers[i].r,
+        (ServerPlayers[i].x,
+          ServerPlayers[i].y,
+          ServerPlayers[i].r,
           s,
-          serverPlayers[i].color,
-          serverPlayers[i].name,
-          serverPlayers[i].eaten
+          ServerPlayers[i].color,
+          ServerPlayers[i].name,
+          ServerPlayers[i].eaten
         );
     }
 
     s.translate(s.width / 2, s.height / 2);
 
-    if (prevR != serverPlayers[indCurrPlayer].r) {
-      newZoom -= 0.0065; 
+    if (precRadius != ServerPlayers[currentID].r) {
+      newZoom -= 0.01; 
     }
     zoom = s.lerp(zoom, newZoom, 0.1);
     s.scale(zoom);
 
-    s.translate(-serverPlayers[indCurrPlayer].x, -serverPlayers[indCurrPlayer].y);
+    s.translate(-ServerPlayers[currentID].x, -ServerPlayers[currentID].y);
 
     for (let i = -s.width * 2; i < s.width * 2; i = i + 50) {
       s.line(i, -s.height * 2, i, s.height * 2);
@@ -118,8 +123,8 @@ const sketch = (s: typeof p5) => {
       }
     }
 
-    prevR = serverPlayers[indCurrPlayer].r;
-    updateCoordPlayer(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
+    precRadius = ServerPlayers[currentID].r;
+    updatePositionPlayer(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
   }
 }
 
@@ -129,28 +134,28 @@ const sketch = (s: typeof p5) => {
  */
 const modal = document.createElement('div');
 document.body.appendChild(modal);
-modal.classList.add('modal-name');
+modal.classList.add('modal');
 
 const modalInner = document.createElement('div');
 modal.appendChild(modalInner);
-modalInner.classList.add('modal-name__inner');
+modalInner.classList.add('modal__inner');
 
 const title = document.createElement('h2');
 modalInner.appendChild(title);
-title.classList.add('modal-name__title');
+title.classList.add('modal__title');
 title.innerHTML = 'Sign in';
 
 const nameField = document.createElement('input');
 modalInner.appendChild(nameField);
-nameField.classList.add('modal-name__input');
+nameField.classList.add('modal__input');
 nameField.setAttribute('placeholder', 'Your name');
 
-const setNameBtn = document.createElement('button');
-modalInner.appendChild(setNameBtn);
-setNameBtn.classList.add('modal-name__btn');
-setNameBtn.innerHTML = 'Lets play!';
+const setNamebutton = document.createElement('button');
+modalInner.appendChild(setNamebutton);
+setNamebutton.classList.add('modal__button');
+setNamebutton.innerHTML = 'gogogo!';
 
-setNameBtn.addEventListener('click', () => {
+setNamebutton.addEventListener('click', () => {
   if (nameField.value) {
     namePlayer = nameField.value;
     modal.remove();

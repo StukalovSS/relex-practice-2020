@@ -23,9 +23,10 @@
     "webpack-cli": "^3.3.12"
   },
   "scripts": {
+    "dev": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
-    "start": "webpack-dev-server --mode development --open"
+    "start": "webpack --mode production --open"
   },
   "performance": {
     "hints": "false"

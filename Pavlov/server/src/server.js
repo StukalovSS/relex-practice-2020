@@ -11,15 +11,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-const WIDTH = 2560,
-  HEIGHT = 1440,
-  RADIUSFOOD = 20,
-  RADIUSPLAYER = 36;
+const WIDTH = 2560/2,
+  HEIGHT = 1440/2,
+  RADIUSFOOD = 15,
+  RADIUSPLAYER = 25;
 
-const COLORS = ['#ADFF2F', '#7FFF00', '#32CD32', '#3CB371', '#008000', '#9ACD32', '#556B2F'];
+const COLORS = ['#ADFF2F', '#7FFF00', '#32CD32', '#3CB371', '#008000', '#9ACD32', '#556B2F', '#9A2D32',, '#923D32', '#912D32'];
 
 const gameState = new GameState(WIDTH, HEIGHT, COLORS);
-gameState.init(RADIUSFOOD);
+gameState.start(RADIUSFOOD);
 setInterval(() => gameState.updateState(), 15);
 
 app.get('/createPlayer', (req, res) => {

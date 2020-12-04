@@ -1,10 +1,10 @@
 body {
   font-family: 'Open Sans', sans-serif;
-  font-size: 24px;
-  line-height: 33px;
+  font-size: 20px;
+  line-height: 30px;
 }
 
-.modal-name {
+.modal {
   position: fixed;
   left: 0;
   top: 0;
@@ -13,7 +13,7 @@ body {
   background-color: rgba(0, 0, 0, 0.205);
 }
 
-.modal-name__inner {
+.modal__inner {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -26,17 +26,17 @@ body {
   background-repeat: no-repeat;
 }
 
-.modal-name__title {
+.modal__title {
   margin-bottom: 36px;
   font-size: 72px;
   font-weight: 800;
   line-height: 98px;
   text-align: center;
   text-transform: uppercase;
-  color: #393939;
+  color: #571e1e;
 }
 
-.modal-name__input {
+.modal__input {
   outline: none;
   width: 300px;
   margin-bottom: 44px;
@@ -49,15 +49,15 @@ body {
   line-height: inherit;
 }
 
-.modal-name__input:hover {
+.modal__input:hover {
   border: 1px solid #5ce0fd;
 }
 
-.modal-name__input:focus {
+.modal__input:focus {
   border: 1px solid #5ce0fd;
 }
 
-.modal-name__btn {
+.modal__button {
   cursor: pointer;
   outline: none;
   width: 200px;
@@ -70,6 +70,6 @@ body {
   text-transform: uppercase;
 }
 
-.modal-name__btn:hover {
+.modal__button:hover {
   background-color: #75f291;
 }

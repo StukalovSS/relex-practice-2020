@@ -1,6 +1,6 @@
 import lerp from 'lerp';
 import { Circle } from './circle.js';
-import { Rectangle } from '../enviroment-elements/rectangle';
+import { Area } from '../enviroment-elements/gameplay-area';
 import { Vector } from '../enviroment-elements/vector.js';
 
 /**
@@ -78,9 +78,9 @@ export class Player extends Circle {
   eats(other, type) {
     const dist = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
     const moving = new Vector(this.x - this.prevPos.x, this.y - this.prevPos.y);
-    const rect = new Rectangle(this.newCoordinate(this, moving), this.r, other.r, moving);
+    const rect = new Area(this.newCoordinate(this, moving), this.r, other.r, moving);
 
-    if (rect.isPointInRectangle(this.newCoordinate(other, moving)) || dist < this.r + other.r) {
+    if (rect.isPointInArea(this.newCoordinate(other, moving)) || dist < this.r + other.r) {
       if (type === 'food') {
         return this.eatsFood(other);
       }
@@ -107,9 +107,9 @@ export class Player extends Circle {
   
   /**
    * Поедание игроком другого игрока.
-   * Если другой игрок съеден - изменяется радиус 
-   * и скорость текущего игрока, возвращается true, иначе - false.
-   * @param {Player} other другой игрок
+   * В случае поедание изменяется радиус и скорость игрока
+   * 
+   * @param {Player} other поедаемый игрок
    */
   eatsOtherPlayer(other) {
     if (this.r === other.r) {
