@@ -1,8 +1,10 @@
-const p5 = require('../node_modules/p5/lib/p5');
+const p5 = require('../../node_modules/p5/lib/p5');
 const http = require('http');
-const css = require('./styles.css');
+const documentStyles = require('../styles/document.css');
+const leadersBoardStyles = require('../styles/leaders-board.css')
+const startPageStyles = require('../styles/start-page.css')
 import { Circle } from './circle';
-import { LeaderBoard } from './leaderBoard';
+import { LeaderBoard } from './leaders-board';
 
 window.location.href ='/?#';
 const leaderBoard = new LeaderBoard();
@@ -109,7 +111,7 @@ const sketch = (s: typeof p5) => {
             players[i].show();
         }
         prevR = serverPlayers[playerIndex].r;
-        leaderBoard.update();
+        leaderBoard.update(nickname);
         sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
     }
 

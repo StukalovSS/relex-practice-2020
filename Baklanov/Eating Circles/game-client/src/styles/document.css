@@ -1,0 +1,8 @@
+* {
+    overflow: hidden;
+    margin: 0%;
+    font-family: fixedsys, sans-serif;
+}
+canvas {
+    z-index: -1;
+}

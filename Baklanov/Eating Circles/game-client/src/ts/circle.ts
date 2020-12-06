@@ -1,4 +1,4 @@
-const p5 = require('../node_modules/p5/lib/p5');
+const p5 = require('../../node_modules/p5/lib/p5');
 export class Circle {
     pos: any;
     r: any;

@@ -1,0 +1,7 @@
+game-server/node_modules
+game-server/dist
+game-server/package-lock.json
+
+game-client/node_modules
+game-client/dist
+game-client/package-lock.json
