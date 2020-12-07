@@ -2,8 +2,8 @@ module.exports = class PlayerState {
     constructor(food = [], players = [], playerIndex) {
         this.food = food;
         this.players = players;
-        this.leaderBoardPlayers = this.prepareToSort(this.players);
-        this.leadersBoardPlayers = Array.prototype.slice.call(this.leaderBoardPlayers).sort(this.compare('points',-1));
+        this.leadersBoardPlayers = this.prepareToSort(this.players);
+        this.leadersBoardPlayers = Array.prototype.slice.call(this.leadersBoardPlayers).sort(this.compare('points',-1));
         this.playerIndex = playerIndex;
     }
     compare(field, order) {

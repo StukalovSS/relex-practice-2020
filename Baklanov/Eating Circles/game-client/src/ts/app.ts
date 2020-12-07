@@ -5,8 +5,9 @@ const leadersBoardStyles = require('../styles/leaders-board.css')
 const startPageStyles = require('../styles/start-page.css')
 import { Circle } from './circle';
 import { LeaderBoard } from './leaders-board';
+import { Player } from './player'
 
-window.location.href ='/?#';
+window.location.href = '/?#';
 const leaderBoard = new LeaderBoard();
 
 const options = {
@@ -19,11 +20,11 @@ let playerId: string;
 let width: number;
 let height: number;
 let playerIndex: number;
-let food: any = [];
-let players: any = [];
-let serverPlayers: any = [];
-let serverFood: any = [];
-let zoom: number = 1.8;//1.8
+let food: any;
+let players: any;
+let serverPlayers: any;
+let serverFood: any;
+let zoom: number = 1.8;// оптимальное значение: 1.8
 let newzoom = zoom;
 let serverResp: any;
 let prevR: number;
@@ -32,7 +33,7 @@ let color: any;
 let form = document.getElementById('playerForm');
 form.addEventListener('submit', () => {
     nickname = (<HTMLInputElement>document.getElementById("textInp")).value;
-    color =(<HTMLInputElement>document.getElementById("colorInp")).value.substr(1);
+    color = (<HTMLInputElement>document.getElementById("colorInp")).value.substr(1);
     let formContainer = <HTMLElement>document.getElementById("form-container");
     formContainer.classList.add('hide');
     const sketchInst = new p5(sketch);
@@ -40,15 +41,21 @@ form.addEventListener('submit', () => {
 function sendData(mx: number, my: number) {
     options.path = '/get_state?id=' + playerId + '&x=' + mx + '&y=' + my;
     let req = http.request(options, (res: any) => {
+        let data: any;
         res.on('data', (body: any) => {
-            serverResp = JSON.parse(new TextDecoder("utf-8").decode(body));
+            if (!data) {
+                data = body;
+            }
+            else {
+                data += body;
+            }
+        });
+        res.on('end', () => {
+            serverResp = JSON.parse(data);
             playerIndex = serverResp.playerIndex;
             serverFood = serverResp.food;
             serverPlayers = serverResp.players;
             leaderBoard.players = serverResp.leadersBoardPlayers;
-        });
-        res.on('end', () => {
-            console.log('req');
         });
     });
     req.end();
@@ -78,15 +85,22 @@ const sketch = (s: typeof p5) => {
         leaderBoard.showBoard(nickname);
     }
 
+    // s.mousePressed = () => {
+    //     s.noLoop();
+    // }
+    // s.mouseReleased = () => {
+    //     s.loop();
+    // }
+
     s.draw = () => {
         s.background('#f2fbff');
         food = [];
         for (let i = 0; i < serverFood.length; i++) {
-            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s,'', serverFood[i].color);
+            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s, serverFood[i].color);
         }
         players = [];
         for (let i = 0; i < serverPlayers.length; i++) {
-            players[i] = new Circle(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s, serverPlayers[i].nickname,serverPlayers[i].color);
+            players[i] = new Player(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s, serverPlayers[i].nickname, serverPlayers[i].color);
         }
         s.translate(s.width / 2, s.height / 2);
         if (prevR != serverPlayers[playerIndex].r) {
