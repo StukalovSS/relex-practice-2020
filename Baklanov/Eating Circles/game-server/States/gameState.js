@@ -8,7 +8,7 @@ module.exports = class GameState {
     index = 0;
     map = new Map();
     targets = [];
-    constructor(width, height, foodSize) {
+    constructor(width, height) {
         this.height = height;
         this.width = width;
     }
@@ -20,26 +20,37 @@ module.exports = class GameState {
     }
     init(foodSize, AmountOfFood, grainsColors) {
         for (let i = 0; i < AmountOfFood; i++) {
-            let color = grainsColors[this.random(0,grainsColors.length)];
+            let color = grainsColors[this.random(0, grainsColors.length)];
             let grain = new Circle(this.random(-this.width, this.width), this.random(-this.height, this.height), foodSize, color);
             this.food.push(grain);
         }
     }
-    addPlayer(playerId, R_PLAYER, nickname,pColor) {
+    addPlayer(playerId, R_PLAYER, nickname, pColor) {
         this.map.set(playerId, this.index);
-        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, nickname, pColor,0);
+        let player = new Player(this.random(-this.width, this.width), this.random(-this.height, this.height), R_PLAYER, nickname, pColor, 0);
         this.players.push(player);
         this.targets.push({ 'tarX': player.x, 'tarY': player.y });
         this.index++;
     }
     updateSt() {
         for (let i = 0; i < this.players.length; i++) {
-            this.players[i].updatePosition(this.targets[i].tarX, this.targets[i].tarY, this.width, this.height);
-            for (let k = 0; k < this.food.length; k++) {
-                if (this.players[i].eatingGrains(this.food[k])) {
-                    this.food.splice(k, 1);
-                }
+            if (this.players[i].isLife) {
+                this.players[i].updatePosition(this.targets[i].tarX, this.targets[i].tarY, this.width, this.height);
             }
+            this.food.forEach((grain, j) => {
+                if (this.players[i].isLife) {
+                    if (this.players[i].eats(grain, 'food')) {
+                        this.food.splice(j, 1);
+                    }
+                }
+            });
+            this.players.forEach((otherPlayer) => {
+                if (otherPlayer.isLife) {
+                    if (this.players[i].eats(otherPlayer, 'player')) {
+                        otherPlayer.eaten = true;
+                    }
+                }
+            });
         }
     }
 }
