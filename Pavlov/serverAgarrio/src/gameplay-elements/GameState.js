@@ -26,22 +26,6 @@ export class GameState {
   }
 
   /**
-   * Возвращает случайное число из интервала (min; max).
-   * @param {number} min наименьшее возможное число
-   * @param {number} max наибольшое возможное число
-   */
-  getRandom(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  /**
-   * Возвращает случайный цвет из массива COLORS.
-   */
-  getColor() {
-    return this.colors[Math.floor(this.getRandom(0,this.colors.length))];
-  }
-
-  /**
    * Инициализирует координаты корма на поле.
    * @param {number} radiusFood радиус корма
    */
@@ -57,6 +41,7 @@ export class GameState {
    * @param {string} namePlayer имя игрока
    * @param {number} radiusPlayer радиус игрока
    */
+  
   addPlayer(keyPlayer, namePlayer, radiusPlayer) {
     this.map.set(keyPlayer, this.index_player);
 
@@ -76,6 +61,23 @@ export class GameState {
    */
   addTarget(x1, y1, key) {
     this.targets[this.map.get(key)] = new Vector(x1, y1);
+  }
+
+  /**
+   * Возвращает случайное число из интервала (min; max).
+   * @param {number} min наименьшее возможное число
+   * @param {number} max наибольшое возможное число
+   */
+  getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+
+  /**
+   * Возвращает случайный цвет из массива COLORS.
+   */
+  getColor() {
+    return this.colors[Math.floor(this.getRandom(0,this.colors.length))];
   }
 
   /**

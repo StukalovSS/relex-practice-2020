@@ -2,9 +2,12 @@ import '../style/style.css';
 import { Food } from './objects/food';
 import { Player } from './objects/player';
 
+import p5 = require('../../node_modules/p5/lib/p5');
+import http = require('http');
+
+
 const p5 = require('../../node_modules/p5/lib/p5');
 const http = require('http');
-
 
 let key: string,
   players: any = [],
@@ -113,11 +116,13 @@ const sketch = (s: typeof p5) => {
 
     for (let i = -s.width * 2; i < s.width * 2; i = i + 50) {
       s.line(i, -s.height * 2, i, s.height * 2);
+
       s.stroke(126);
     }
 
     for (let i = -s.height * 2; i < s.height * 2; i = i + 50) {
       s.line(-s.width * 2, i, s.width * 2, i);
+
       s.stroke(126);
     }
 
@@ -132,6 +137,7 @@ const sketch = (s: typeof p5) => {
     }
 
     precRadius = ServerPlayers[currentID].r;
+
     updatePositionPlayer(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
   }
 }
@@ -143,21 +149,17 @@ const sketch = (s: typeof p5) => {
 const identWindow = document.createElement('div');
 document.body.appendChild(identWindow);
 identWindow.classList.add('identWindow');
-
 const identWindowInner = document.createElement('div');
 identWindow.appendChild(identWindowInner);
 identWindowInner.classList.add('identWindow__inner');
-
 const title = document.createElement('h2');
 identWindowInner.appendChild(title);
 title.classList.add('identWindow__title');
 title.innerHTML = 'Sign in';
-
 const nickName = document.createElement('input');
 identWindowInner.appendChild(nickName);
 nickName.classList.add('identWindow__input');
 nickName.setAttribute('placeholder', 'Enter Nick-Name');
-
 const namebtn = document.createElement('button');
 identWindowInner.appendChild(namebtn);
 namebtn.classList.add('identWindow__button');

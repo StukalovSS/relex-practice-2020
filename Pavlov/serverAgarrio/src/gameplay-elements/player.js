@@ -10,11 +10,14 @@ import { Vector } from '../enviroment-elements/vector.js';
 export class Player extends Circle {
   constructor(x, y, r, color, name) {
     super(x, y, r, color);
+
     this.name = name;
     this.prevPos = {x: x, y: y};
-    this.direction = new Vector(0, 0);
-    this.speed = 3;
+    this.move = new Vector(0, 0);
+
+    this.speed = 2;
     this.minSpeed = 1.1;
+
     this.isEaten = false;
   }
 
@@ -41,17 +44,17 @@ export class Player extends Circle {
     }
     let nx = x0 * this.speed / d;
     let ny = y0 * this.speed / d;
-    this.direction.x = lerp(this.direction.x, nx, 0.1);
-    this.direction.y = lerp(this.direction.y, ny, 0.1);
+    this.move.x = lerp(this.move.x, nx, 0.1);
+    this.move.y = lerp(this.move.y, ny, 0.1);
 
     this.prevPos.x = this.x;
     this.prevPos.y = this.y;
 
-    if (this.x + this.direction.x < w && this.x + this.direction.x > -w) {
-      this.x += this.direction.x;
+    if (this.x + this.move.x < w && this.x + this.move.x > -w) {
+      this.x += this.move.x;
     }
-    if (this.y + this.direction.y < h && this.y + this.direction.y > -h) {
-      this.y += this.direction.y;
+    if (this.y + this.move.y < h && this.y + this.move.y > -h) {
+      this.y += this.move.y;
     }
   }
 
