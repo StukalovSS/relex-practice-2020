@@ -1,6 +1,9 @@
-import { Component,ComponentFactoryResolver,ComponentRef,OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import '@angular/platform-browser-dynamic';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DataService } from '../data.service';
 import { ModalwindowsectionComponent } from '../modalwindow/modalwindowsection/modalwindowsection.component';
 import { INote } from './note.interface';
@@ -11,58 +14,80 @@ import { INote } from './note.interface';
   styleUrls: ['./container.component.scss']
 })
 /**
- * Класс контейнер, содержащий секции
+ * Класс главный контейнер приложения.
  */
-export class ContainerComponent implements OnInit {
-  
+export class ContainerComponent implements OnInit, OnDestroy {
+
   array;
-  faPlus = faPlus;
-  constructor(private resolver: ComponentFactoryResolver,public dataService: DataService) {}
+  icon = [ faPlus, faEllipsisV ];
+  unsubscribe$ = new Subject<void>();
+
+  @ViewChild('modalWindowContainer', { read: ViewContainerRef }) container;
+  componentRef: ComponentRef<any>;
+
+  constructor(private resolver: ComponentFactoryResolver, public dataService: DataService) {}
 
   ngOnInit(): void {
     this.update();
   }
 
+  ngOnDestroy(): void{
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   /**
-   * Метод, создающий динамический компонент - форму для добавления новой секции.
-  */
-  @ViewChild("modalWindowContainer", { read: ViewContainerRef }) container;
-  componentRef: ComponentRef<any>;
-  openForm(idSection,formStatus){
-    this.container.clear(); 
+   * Реализует перетаскивание секций.
+   * @param event событие перетаскивания секции
+   */
+  public drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.array, event.previousIndex, event.currentIndex);
+    this.dataService.updateLocalStorage();
+  }
+
+  /**
+   * Реализует добавление динамического компонента для добавления или редактирования секции.
+   * @param idSection id секции, которую необходимо редактировать. Если необходимо добавить новую секцию, данный параметр равен null
+   * @param formStatus задает значение кнопки в динамическом компоненте
+   */
+  public openForm(idSection, formStatus): void{
+    this.container.clear();
     const factory = this.resolver.resolveComponentFactory(ModalwindowsectionComponent);
     this.componentRef = this.container.createComponent(factory);
-    if(idSection){
-      this.componentRef.instance.nameSection = this.array[idSection].name;
+    if (idSection){
+      this.componentRef.instance.nameSection = this.dataService.arrayOfSection[this.dataService.findSectionPosById(idSection)].name;
     }
     this.componentRef.instance.formStatus = formStatus;
     this.componentRef.instance.output.subscribe(event => {
-      //если false - нажата кнопка закрытия формы
-      if(event != false){
-        if(idSection == null){
+      if (event !== false){
+        if (idSection == null){
           this.dataService.addNewSection(event);
         }
         else{
-          this.dataService.changeNameSection(idSection,event);
+          this.dataService.changeNameSection(idSection, event);
         }
       }
       this.componentRef.destroy();
     });
   }
 
-  addNewNote(note:INote){
+  /**
+   * Реализует добавление новой заметки.
+   * @param note новая заметка
+   */
+  public addNewNote(note: INote): void{
     this.dataService.addNewNote(note);
     this.update();
   }
- 
+
   /**
-   * Метод, реализующий подписку на данные с массивом секций.
+   * Обновление данных.
    */
-  update(){
-    this.dataService.observable$.subscribe(
+  private update(): void{
+    this.dataService.observable$.pipe(takeUntil(this.unsubscribe$)).subscribe(
       (vl) => {
-        this.array = vl
-      })
+        this.array = vl;
+      });
   }
-  
+
 }

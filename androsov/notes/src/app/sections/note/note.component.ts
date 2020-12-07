@@ -4,52 +4,50 @@ import { SectionsDataService } from '../sections-data.service';
 import { INote } from './../section/note.interface';
 
 @Component({
-  selector: 'app-note',
-  templateUrl: './note.component.html',
-  styleUrls: ['./note.component.scss']
+    selector: 'app-note',
+    templateUrl: './note.component.html',
+    styleUrls: ['./note.component.scss']
 })
 
 /**
  * Класс отвечает за хранение данных в заметке.
  */
-export class NoteComponent implements OnInit, INote {
-  faEdit = faEdit;
-  faTrashAlt = faTrashAlt;
+export class NoteComponent implements INote {
+    public readonly icons = {
+        faEdit,
+        faTrashAlt
+    };
 
-  constructor(public sectServ: SectionsDataService) {
-  }
+    constructor(public sectServ: SectionsDataService) {
+    }
 
-  @Input() header: string;
-  @Input() content: string;
-  @Input() date: Date;
-  @Input() id: number;
-  @Input() sectionId: number;
+    @Input() header: string;
+    @Input() content: string;
+    @Input() date: Date;
+    @Input() id: number;
+    @Input() sectionId: number;
 
-  @Output() clickOnTrash = new EventEmitter<number>();
+    @Output() clickOnTrash = new EventEmitter<number>();
 
-  invisibleForm = true;
+    public invisibleForm = true;
 
-  ngOnInit(): void {
-  }
+    /**
+     * В процессе удаления происходит отправка информации о своем удалении родительскому компоненту.
+     */
+    public delete(): void {
+        this.sectServ.deleteNote(this.sectionId, this.id);
+        this.clickOnTrash.emit(this.id);
+    }
 
-  /**
-   * В процессе удаления происходит отправка информации о своем удалении родительскому компоненту.
-   */
-  delete(): void {
-    this.sectServ.deleteNote(this.sectionId, this.id);
-    this.clickOnTrash.emit(this.id);
-  }
+    public changeFormVisibillity(): void {
+        this.invisibleForm = !this.invisibleForm;
+    }
 
-  changeFormVisibillity(): void {
-    this.invisibleForm = !this.invisibleForm;
-  }
-
-
-  changeNote(e: INote): void {
-    this.changeFormVisibillity();
-    this.sectServ.changeNoteContent(this.sectionId, this.id, e);
-    this.header = e.header;
-    this.content = e.content;
-    this.date = e.date;
-  }
+    public changeNote(e: INote): void {
+        this.changeFormVisibillity();
+        this.sectServ.changeNoteContent(this.sectionId, this.id, e);
+        this.header = e.header;
+        this.content = e.content;
+        this.date = e.date;
+    }
 }

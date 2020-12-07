@@ -1,6 +1,9 @@
+/**
+ * Интерфейс заметки.
+ */
 export interface INote{
-    id:number;
-    name:string;
-    nodeTxt:string;
-    date:string;
+  id: number;
+  name: string;
+  nodeTxt: string;
+  date: string;
 }

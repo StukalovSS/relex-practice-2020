@@ -1,19 +1,29 @@
 @import 'color';
 
 :host{
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
 }
 
 .h1-main{
-    text-align: center;
-    .h1__text{
-        font: {
-            family: fixedsys;
-            weight: 600;
-        }
-        color: $text-color;
+  height: 100px;
+  text-align: center;
+  
+  .h1__text{
+    font: {
+      family: fixedsys;
+      weight: 600;
     }
+
+    color: $text-color;
+  }
+
+  #lang-select{
+    font-size: 20px;
+    color:$text-color;
+  }
 }

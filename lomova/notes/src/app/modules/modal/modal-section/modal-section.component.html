@@ -1,14 +1,14 @@
-<div class="modal modal__add-section">
-    <div class="modal__inner">
-        <button class="btn modal__close" type="button" aria-label="Закрыть" (click)="closeModal.emit()">
-            <fa-icon [icon]="iconClose"></fa-icon>
-        </button>
-        <form class="form" [formGroup]="form" novalidate (ngSubmit)="onSection()">
-            <div class="form__item">
-                <label class="form__label" for="section-title">Заголовок секции</label>
-                <input class="form__input" id="section-title" name="section-title" formControlName="sectionTitle" >
-            </div>
-            <button class="btn form__add-btn" [disabled]="form.invalid" type="submit">Добавить</button>
-        </form>
-    </div>
+<div class="modal">
+  <div class="modal__inner">
+    <button class="btn modal__close" type="button" aria-label="Закрыть" name="close" (click)="closeModal.emit()">
+      <fa-icon [icon]="icons.close"></fa-icon>
+    </button>
+    <form class="form" [formGroup]="form" novalidate (ngSubmit)="onSection()">
+      <div class="form__item">
+        <label class="form__label" for="section-title" name="description-title">{{'modal.section-title' | translate}}</label>
+        <input class="form__input" id="section-title" name="title" formControlName="sectionTitle">
+      </div>
+      <button class="btn form__add-btn" [disabled]="form.invalid" type="submit" name="add">{{'modal.add' | translate}}</button>
+    </form>
+  </div>
 </div>

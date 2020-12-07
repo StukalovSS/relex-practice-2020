@@ -1,10 +1,17 @@
-import { NgModule } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 import { ColorPickerModule } from 'ngx-color-picker';
-
-import { SectionComponent } from '../section/section/section.component';
 import { NoteComponent } from '../section/note/note.component';
+import { SectionComponent } from '../section/section/section.component';
+
+
+const appRoutes: Routes = [
+  { path: '', component: SectionComponent }
+];
 
 @NgModule({
   declarations: [
@@ -14,7 +21,10 @@ import { NoteComponent } from '../section/note/note.component';
   imports: [
     CommonModule,
     FontAwesomeModule,
-    ColorPickerModule
+    ColorPickerModule,
+    RouterModule.forRoot(appRoutes),
+    DragDropModule,
+    TranslateModule
   ],
   exports: [
     SectionComponent,

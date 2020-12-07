@@ -1,54 +1,59 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { DataService } from '../../../services/data.service';
+import { TranslateService } from '@ngx-translate/core';
+import { DataService } from '../../../shared/services/data.service';
 
-@Component({
-  selector: 'app-modal',
-  templateUrl: './modal-section.component.html',
-  styleUrls: ['../modal.scss']
-})
+
 /**
- * Класс компонента модального окна для секции.
+ * Компонент модального окна секции.
+ * Используется для редактирования и добавления секций.
  */
+@Component({
+  selector: 'app-modal-section',
+  templateUrl: './modal-section.component.html',
+  styleUrls: ['./modal-section.component.scss']
+})
 export class ModalSectionComponent implements OnInit {
-  iconClose = faTimes;
-  idSection: number;
-  rename: boolean;
-  currTitle: string;
+
+  public readonly icons = {
+    close: faTimes
+  };
+
+  public idSection: number;
+  public rename: boolean;
+  public currTitle: string;
+  public form: FormGroup;
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() submitForm = new EventEmitter<void>();
-  form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService) {
-    this.form = formBuilder.group({
-      sectionTitle: new FormControl('', Validators.required)
-    });
+  constructor(private formBuilder: FormBuilder,
+              private dataService: DataService,
+              private translate: TranslateService
+             )
+    {
+      this.form = formBuilder.group({
+        sectionTitle: new FormControl('', Validators.required)
+      });
+  }
+
+  ngOnInit(): void {
+    if (this.rename) {
+      this.form.patchValue({ sectionTitle: this.currTitle });
+    }
   }
 
   /**
-   * Обрабатка события отправки формы. Редактирование и добавление новой секции.
+   * Обрабатывает событие отправки формы в зависимости от добавления или редактирования секции.
    */
-  onSection(): void {
+  public onSection(): void {
     if (!this.rename) {
-      this.dataService.addSection({
-        sectionId: this.idSection,
-        sectionTitle: this.form.value.sectionTitle,
-        notes: []
-      });
+      this.dataService.addSection(this.form.value.sectionTitle);
     }
     else {
       this.dataService.getSection(this.idSection).sectionTitle = this.form.value.sectionTitle;
     }
     this.submitForm.emit();
-  }
-
-  ngOnInit(): void {
-    if (this.rename) {
-      this.form.patchValue({
-        sectionTitle: this.currTitle
-      });
-    }
   }
 }
