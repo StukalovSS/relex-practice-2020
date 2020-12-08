@@ -1,21 +1,21 @@
 const p5 = require('../../node_modules/p5/lib/p5');
 const http = require('http');
 const documentStyles = require('../styles/document.css');
-const leadersBoardStyles = require('../styles/leaders-board.css')
-const startPageStyles = require('../styles/start-page.css')
+const leadersBoardStyles = require('../styles/leaders-board.css');
+const startPageStyles = require('../styles/start-page.css');
 import { Circle } from './circle';
 import { LeaderBoard } from './leaders-board';
-import { Player } from './player'
+import { Player } from './player';
 
 window.location.href = '/?#';
 const leaderBoard = new LeaderBoard();
-
 const options = {
     hostname: '127.0.0.1',
     port: 3000,
     path: '',
     method: 'Get'
-}
+};
+
 let playerId: string;
 let width: number;
 let height: number;
@@ -24,23 +24,33 @@ let food: any;
 let players: any;
 let serverPlayers: any;
 let serverFood: any;
-let zoom: number = 1.8;// оптимальное значение: 1.8
+let zoom = 1.8; // оптимальное значение: 1.8
 let newzoom = zoom;
 let serverResp: any;
 let prevR: number;
 let nickname: string;
 let color: any;
-let form = document.getElementById('playerForm');
+
+/**
+ * Обрабатывает форму и инициализирует игру, если форма заполнена правильно.
+ */
+const form = document.getElementById('playerForm');
 form.addEventListener('submit', () => {
-    nickname = (<HTMLInputElement>document.getElementById("textInp")).value;
-    color = (<HTMLInputElement>document.getElementById("colorInp")).value.substr(1);
-    let formContainer = <HTMLElement>document.getElementById("form-container");
+    nickname = (document.getElementById('textInp') as HTMLInputElement).value;
+    color = (document.getElementById('colorInp') as HTMLInputElement).value.substr(1);
+    const formContainer = document.getElementById('form-container') as HTMLElement;
     formContainer.classList.add('hide');
     const sketchInst = new p5(sketch);
 });
-function sendData(mx: number, my: number) {
+
+/**
+ * Отправляет координаты курсора мыши и получает новые координаты игрока
+ * @param mx положение мыши по X
+ * @param my положение мыши по Y
+ */
+function sendData(mx: number, my: number): void {
     options.path = '/get_state?id=' + playerId + '&x=' + mx + '&y=' + my;
-    let req = http.request(options, (res: any) => {
+    const req = http.request(options, (res: any) => {
         let data: any;
         res.on('data', (body: any) => {
             if (!data) {
@@ -60,8 +70,12 @@ function sendData(mx: number, my: number) {
     });
     req.end();
 }
+
 const sketch = (s: typeof p5) => {
     let FixedsysFont: any;
+    /**
+     * Перед началом отрисовки получает все необходимые данные
+     */
     s.preload = () => {
         FixedsysFont = s.loadFont('./assets/Fixedsys.ttf');
         s.loadJSON(`http://127.0.0.1:3000/create_player?nickname=${nickname}&color=${color}`, (response: any) => {
@@ -85,22 +99,33 @@ const sketch = (s: typeof p5) => {
         leaderBoard.showBoard(nickname);
     }
 
-    // s.mousePressed = () => {
-    //     s.noLoop();
-    // }
-    // s.mouseReleased = () => {
-    //     s.loop();
-    // }
+    function stopDraw(): void {
+        s.noLoop();
+    }
 
+    /**
+     * Выполняет отрисовку 
+     */
     s.draw = () => {
         s.background('#f2fbff');
+        if (!serverPlayers[playerIndex].isLife) {
+            stopDraw();
+        }
         food = [];
         for (let i = 0; i < serverFood.length; i++) {
-            food[i] = new Circle(serverFood[i].x, serverFood[i].y, serverFood[i].r, s, serverFood[i].color);
+            food[i] = new Circle(
+                serverFood[i].x, serverFood[i].y,
+                serverFood[i].r, s, serverFood[i].color);
         }
         players = [];
         for (let i = 0; i < serverPlayers.length; i++) {
-            players[i] = new Player(serverPlayers[i].x, serverPlayers[i].y, serverPlayers[i].r, s, serverPlayers[i].nickname, serverPlayers[i].color);
+            if (serverPlayers[i].isLife) {
+                const player = new Player(
+                    serverPlayers[i].x, serverPlayers[i].y,
+                    serverPlayers[i].r, s, serverPlayers[i].nickname,
+                    serverPlayers[i].color, serverPlayers[i].isLife);
+                players.push(player);
+            }
         }
         s.translate(s.width / 2, s.height / 2);
         if (prevR != serverPlayers[playerIndex].r) {
@@ -125,8 +150,10 @@ const sketch = (s: typeof p5) => {
             players[i].show();
         }
         prevR = serverPlayers[playerIndex].r;
-        leaderBoard.update(nickname);
-        sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
-    }
 
-}
+        leaderBoard.update(nickname);
+        
+        sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
+    };
+
+};

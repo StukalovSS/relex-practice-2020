@@ -1,7 +1,11 @@
+/**
+ * Доска лидеров
+ */
 export class LeaderBoard {
     leadersBoard: HTMLElement;
     players: any;
-    maxPlayers: number = 7;
+    maxPlayers = 7;
+    prevCountOfPlayers: number;
 
     private getPlayerIndex(nickname: string): number {
         for (let i = 0; i < this.players.length; i++) {
@@ -10,79 +14,101 @@ export class LeaderBoard {
     }
 
     constructor() {
-        this.leadersBoard = <HTMLElement>document.getElementById("leader-board-players");
+        this.leadersBoard = (document.getElementById('leader-board-players') as HTMLElement);
     }
 
+    /**
+     * Выполянет создание строчек доски
+     * @param nick ник игрока
+     */
     init(nick: string): void {
-        let Playerindex = this.getPlayerIndex(nick);
+        this.prevCountOfPlayers = this.players.length;
+        const Playerindex = this.getPlayerIndex(nick);
         if (Playerindex < this.maxPlayers) {
             for (let i = 0; i < this.players.length; i++) {
                 if (i != Playerindex) {
-                    let inner: string = `${i + 1}. ` + this.players[i].nickname;
-                    this.leadersBoard.appendChild(document.createElement("span")).innerHTML = inner;
+                    const inner = `${i + 1}. ` + this.players[i].nickname;
+                    this.leadersBoard.appendChild(document.createElement('span')).innerHTML = inner;
                 }
                 if (i == Playerindex) {
-                    let inner = `${i + 1}. ` + this.players[i].nickname
-                    this.leadersBoard.appendChild(document.createElement("span")).innerHTML = inner;
+                    const inner = `${i + 1}. ` + this.players[i].nickname;
+                    this.leadersBoard.appendChild(document.createElement('span')).innerHTML = inner;
                     this.leadersBoard.lastElementChild.classList.add('leader-board-current-player');
                 }
             }
             if (this.players.length < this.maxPlayers) {
                 for (let i = 0; i < this.maxPlayers - this.players.length; i++) {
-                    this.leadersBoard.appendChild(document.createElement("span"));
+                    this.leadersBoard.appendChild(document.createElement('span'));
                 }
             }
         }
         if (Playerindex >= this.maxPlayers) {
             for (let i = 0; i < this.maxPlayers - 1; i++) {
-                let inner: string = `${i + 1}. ` + this.players[i].nickname;
-                this.leadersBoard.appendChild(document.createElement("span")).innerHTML = inner;
+                const inner = `${i + 1}. ` + this.players[i].nickname;
+                this.leadersBoard.appendChild(document.createElement('span')).innerHTML = inner;
             }
-            let inner = `${Playerindex + 1}. ` + this.players[Playerindex].nickname
+            const inner = `${Playerindex + 1}. ` + this.players[Playerindex].nickname;
             this.leadersBoard.appendChild(document.createElement("span")).innerHTML = inner;
             this.leadersBoard.lastElementChild.classList.add('leader-board-current-player');
         }
     }
 
+    /**
+     * Отображает доску и запускает инициализацию 
+     */
     showBoard(nickname: string): void {
-        let leadersBoardCon = <HTMLElement>document.getElementById("leader-board-container");
+        const leadersBoardCon = document.getElementById('leader-board-container') as HTMLElement;
         leadersBoardCon.classList.add('showBoard');
         this.init(nickname);
-    };
+    }
 
+    clearRows(): void {
+        const LeadersBordsRows = this.leadersBoard.getElementsByTagName('span');
+        for (let i = 0; i < LeadersBordsRows.length; i++) {
+            LeadersBordsRows[i].innerHTML = '';
+        }
+    }
+
+    /**
+     * Обновляет данные на доске
+     */
     update(nick: string): void {
-        let Playerindex = this.getPlayerIndex(nick);
-        let LeadersBordsRows = this.leadersBoard.getElementsByTagName('span');
+        if (this.players.length != this.prevCountOfPlayers) {
+            this.prevCountOfPlayers = this.players.length;
+            this.clearRows();
+        }
+        const Playerindex = this.getPlayerIndex(nick);
+        const LeadersBordsRows = this.leadersBoard.getElementsByTagName('span');
         if (Playerindex < this.maxPlayers) {
-            
+
             if (this.players.length < this.maxPlayers) {
                 for (let i = 0; i < this.players.length; i++) {
                     if (i != Playerindex) {
-                        let inner: string = `${i + 1}. ` + this.players[i].nickname;
+                        const inner: string = `${i + 1}. ` + this.players[i].nickname;
                         if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
                             LeadersBordsRows[i].classList.remove('leader-board-current-player');
                         }
                         LeadersBordsRows[i].innerHTML = inner;
                     }
                     if (i == Playerindex) {
-                        let inner = `${i + 1}. ` + this.players[i].nickname
+                        const inner = `${i + 1}. ` + this.players[i].nickname;
                         LeadersBordsRows[i].innerHTML = inner;
                         LeadersBordsRows[i].classList.add('leader-board-current-player');
                     }
                 }
-            } 
-            
+            }
+
             if (this.players.length >= this.maxPlayers) {
                 for (let i = 0; i < this.maxPlayers; i++) {
                     if (i != Playerindex) {
-                        let inner: string = `${i + 1}. ` + this.players[i].nickname;
+                        const inner: string = `${i + 1}. ` + this.players[i].nickname;
                         if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
                             LeadersBordsRows[i].classList.remove('leader-board-current-player');
                         }
                         LeadersBordsRows[i].innerHTML = inner;
                     }
                     if (i == Playerindex) {
-                        let inner = `${i + 1}. ` + this.players[i].nickname
+                        const inner = `${i + 1}. ` + this.players[i].nickname;
                         LeadersBordsRows[i].innerHTML = inner;
                         LeadersBordsRows[i].classList.add('leader-board-current-player');
                     }
@@ -92,13 +118,13 @@ export class LeaderBoard {
 
         if (Playerindex >= this.maxPlayers) {
             for (let i = 0; i < this.maxPlayers - 1; i++) {
-                let inner: string = `${i + 1}. ` + this.players[i].nickname;
+                const inner = `${i + 1}. ` + this.players[i].nickname;
                 if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
                     LeadersBordsRows[i].classList.remove('leader-board-current-player');
                 }
                 LeadersBordsRows[i].innerHTML = inner;
             }
-            let inner = `${Playerindex + 1}. ` + this.players[Playerindex].nickname
+            const inner = `${Playerindex + 1}. ` + this.players[Playerindex].nickname;
             LeadersBordsRows[LeadersBordsRows.length - 1].innerHTML = inner;
             LeadersBordsRows[LeadersBordsRows.length - 1].classList.add('leader-board-current-player');
         }
