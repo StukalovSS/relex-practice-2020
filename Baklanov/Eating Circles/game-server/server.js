@@ -44,6 +44,11 @@ app.get("/create_player", (request, response) => {
     response.send(JSON.stringify({ "playerId": playerId, 'width': WIDTH, 'height': HEIGTH }));
 });
 
+app.get("/check_nick", (request, response) => {
+    isNicknameValid = gameSt.checkNickName(request.query.nickname);
+    response.send(JSON.stringify(isNicknameValid));
+});
+
 app.listen(3000, function () {
     console.log("сервер запущен");
 });

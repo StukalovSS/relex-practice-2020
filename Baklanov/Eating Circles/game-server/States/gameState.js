@@ -20,6 +20,16 @@ module.exports = class GameState {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
+    checkNickName(nickname) {
+        let flag = true;
+        for(let player of this.players) {
+            if(player.nickname == nickname) {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
     /**
      * Добавляет целевые координаты игрока
      * @param {string} player_id ID игрока 

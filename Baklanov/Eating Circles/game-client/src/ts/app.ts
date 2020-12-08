@@ -1,14 +1,20 @@
 const p5 = require('../../node_modules/p5/lib/p5');
 const http = require('http');
-const documentStyles = require('../styles/document.css');
-const leadersBoardStyles = require('../styles/leaders-board.css');
-const startPageStyles = require('../styles/start-page.css');
 import { Circle } from './circle';
 import { LeaderBoard } from './leaders-board';
 import { Player } from './player';
+import { StartPage } from './start-page'
+
+/**
+ * Стили
+ */
+const documentStyles = require('../styles/document.css');
+const leadersBoardStyles = require('../styles/leaders-board.css');
+const startPageStyles = require('../styles/start-page.css');
 
 window.location.href = '/?#';
 const leaderBoard = new LeaderBoard();
+const startPage = new StartPage();
 const options = {
     hostname: '127.0.0.1',
     port: 3000,
@@ -34,12 +40,10 @@ let color: any;
 /**
  * Обрабатывает форму и инициализирует игру, если форма заполнена правильно.
  */
-const form = document.getElementById('playerForm');
-form.addEventListener('submit', () => {
-    nickname = (document.getElementById('textInp') as HTMLInputElement).value;
-    color = (document.getElementById('colorInp') as HTMLInputElement).value.substr(1);
-    const formContainer = document.getElementById('form-container') as HTMLElement;
-    formContainer.classList.add('hide');
+document.getElementById('playerForm').addEventListener('submit', () => {
+    nickname = startPage.getNickname();
+    color = startPage.getColor();
+    startPage.hide();
     const sketchInst = new p5(sketch);
 });
 
@@ -152,7 +156,7 @@ const sketch = (s: typeof p5) => {
         prevR = serverPlayers[playerIndex].r;
 
         leaderBoard.update(nickname);
-        
+
         sendData(s.mouseX - s.width / 2, s.mouseY - s.height / 2);
     };
 
