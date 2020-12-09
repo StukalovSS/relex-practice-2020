@@ -6,14 +6,14 @@ const Vector = require('../Objects/vector');
  * Состояние игры.
  */
 module.exports = class GameState {
-    food = [];
-    players = [];
-    index = 0;
-    map = new Map();
-    targets = [];
     constructor(width, height) {
         this.height = height;
         this.width = width;
+        this.food = [];
+        this.players = [];
+        this.index = 0;
+        this.map = new Map();
+        this.targets = [];
     }
 
     random(min, max) {
@@ -22,8 +22,8 @@ module.exports = class GameState {
 
     checkNickName(nickname) {
         let flag = true;
-        for(let player of this.players) {
-            if(player.nickname == nickname) {
+        for (let player of this.players) {
+            if (player.nickname == nickname) {
                 flag = false;
             }
         }
