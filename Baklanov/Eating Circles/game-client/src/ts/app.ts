@@ -3,7 +3,7 @@ const http = require('http');
 import { Circle } from './circle';
 import { LeaderBoard } from './leaders-board';
 import { Player } from './player';
-import { StartPage } from './start-page'
+import { StartPage } from './start-page';
 
 /**
  * Стили
@@ -11,6 +11,7 @@ import { StartPage } from './start-page'
 const documentStyles = require('../styles/document.css');
 const leadersBoardStyles = require('../styles/leaders-board.css');
 const startPageStyles = require('../styles/start-page.css');
+const gameOverScreenStyles = require('../styles/game-over-screen.css')
 
 window.location.href = '/?#';
 const leaderBoard = new LeaderBoard();

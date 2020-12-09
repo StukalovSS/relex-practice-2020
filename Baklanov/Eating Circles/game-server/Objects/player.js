@@ -115,6 +115,7 @@ module.exports = class Player extends Circle {
         }
         if (this.r > other.r && other.r != 0) {
             this.r += other.r / 10;
+            this.points += 12 + other.points * 0.3;
             this.changeSpeed();
             return true;
         } else {

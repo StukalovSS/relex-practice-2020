@@ -62,11 +62,15 @@ export class LeaderBoard {
         this.init(nickname);
     }
 
-    clearRows(): void {
+    private clearRows(): void {
         const LeadersBordsRows = this.leadersBoard.getElementsByTagName('span');
         for (let i = 0; i < LeadersBordsRows.length; i++) {
             LeadersBordsRows[i].innerHTML = '';
         }
+    }
+
+    private insertInner(LeadersBordsRows: any, numberOfPlayer: number, Playerindex: number): void {
+        
     }
 
     /**
@@ -80,26 +84,43 @@ export class LeaderBoard {
         const Playerindex = this.getPlayerIndex(nick);
         const LeadersBordsRows = this.leadersBoard.getElementsByTagName('span');
         if (Playerindex < this.maxPlayers) {
-
+            let numberOfPlayers: number;
             if (this.players.length < this.maxPlayers) {
-                for (let i = 0; i < this.players.length; i++) {
-                    if (i != Playerindex) {
-                        const inner: string = `${i + 1}. ` + this.players[i].nickname;
-                        if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
-                            LeadersBordsRows[i].classList.remove('leader-board-current-player');
-                        }
-                        LeadersBordsRows[i].innerHTML = inner;
-                    }
-                    if (i == Playerindex) {
-                        const inner = `${i + 1}. ` + this.players[i].nickname;
-                        LeadersBordsRows[i].innerHTML = inner;
-                        LeadersBordsRows[i].classList.add('leader-board-current-player');
-                    }
-                }
+                numberOfPlayers = this.players.length;
+                // for (let i = 0; i < this.players.length; i++) {
+                //     if (i != Playerindex) {
+                //         const inner: string = `${i + 1}. ` + this.players[i].nickname;
+                //         if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
+                //             LeadersBordsRows[i].classList.remove('leader-board-current-player');
+                //         }
+                //         LeadersBordsRows[i].innerHTML = inner;
+                //     }
+                //     if (i == Playerindex) {
+                //         const inner = `${i + 1}. ` + this.players[i].nickname;
+                //         LeadersBordsRows[i].innerHTML = inner;
+                //         LeadersBordsRows[i].classList.add('leader-board-current-player');
+                //     }
+                // }
             }
 
             if (this.players.length >= this.maxPlayers) {
-                for (let i = 0; i < this.maxPlayers; i++) {
+                numberOfPlayers = this.maxPlayers;
+                // for (let i = 0; i < this.maxPlayers; i++) {
+                //     if (i != Playerindex) {
+                //         const inner: string = `${i + 1}. ` + this.players[i].nickname;
+                //         if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
+                //             LeadersBordsRows[i].classList.remove('leader-board-current-player');
+                //         }
+                //         LeadersBordsRows[i].innerHTML = inner;
+                //     }
+                //     if (i == Playerindex) {
+                //         const inner = `${i + 1}. ` + this.players[i].nickname;
+                //         LeadersBordsRows[i].innerHTML = inner;
+                //         LeadersBordsRows[i].classList.add('leader-board-current-player');
+                //     }
+                // }
+            }
+            for (let i = 0; i < numberOfPlayers; i++) {
                     if (i != Playerindex) {
                         const inner: string = `${i + 1}. ` + this.players[i].nickname;
                         if (LeadersBordsRows[i].classList.contains('leader-board-current-player')) {
@@ -113,7 +134,6 @@ export class LeaderBoard {
                         LeadersBordsRows[i].classList.add('leader-board-current-player');
                     }
                 }
-            }
         }
 
         if (Playerindex >= this.maxPlayers) {
